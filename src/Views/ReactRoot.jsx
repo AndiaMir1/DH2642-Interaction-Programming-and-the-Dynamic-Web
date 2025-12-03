@@ -1,9 +1,15 @@
 import { observer } from "mobx-react-lite";
+import { MainPage } from "./mainPage";
+import { BrowserRouter } from "react-router-dom";
 
 const ReactRoot = observer(function ReactRoot(props){
     return (
+        <BrowserRouter>
     <div>
-            <h1>SUCCESS</h1>
-            </div>);
+        <MainPage model={props.model} />
+    </div>
+    </BrowserRouter>
+
+    );
 })
 export default ReactRoot;
