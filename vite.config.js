@@ -3,7 +3,7 @@ const pages = {
     "react":{
         entry: '/src/index.jsx',
         title: "HereComesTheSong React",
-        body: '<div id ="root"></div>'
+        body: 'Choose web frameowrk<div id ="root"></div>'
     },
 
 }
