@@ -1,7 +1,4 @@
-import { createElement, Fragment} from "react";
-
-window.React = { createElement: createElement, Fragment: Fragment} ;
-
+import React from "react";
 import { createRoot } from "react-dom/client";
 import ReactRoot from "./Views/ReactRoot.jsx";
 import { reactiveModel } from "./model/mobxReactiveModel.jsx";
