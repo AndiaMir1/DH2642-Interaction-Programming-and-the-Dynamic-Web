@@ -1,4 +1,7 @@
 //model
 export const model = {
+
+    user:null,
+    
     
 }
