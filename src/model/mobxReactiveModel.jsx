@@ -1,6 +1,11 @@
 //reactiveModel
 
-import { observable } from "mobx";
-import { model } from "./appModel.js";
+import { observable, configure } from "mobx";
+import rootModel from "./appModel.js";
 
-export const reactiveModel = observable(model);
+configure({ enforceActions: "observed" });
+
+export const appStore = observable(rootModel);
+export const reactiveModel = appStore;
+
+window.appStore = appStore;

@@ -1,9 +1,11 @@
 
-const pages = { 
-    "react":{
-        entry: '/src/index.jsx',
-        title: "HereComesTheSong React",
-        body: 'Choose web frameowrk<div id ="root"></div>'
-    },
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-}
+export default defineConfig({
+  plugins: [react()],
+  root: '.',
+  build: {
+    outDir: 'dist'
+  }
+})
