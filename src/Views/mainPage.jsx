@@ -11,6 +11,7 @@ export function MainPage (props) {
 
             <div className="content">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 <Routes>
                     <Route
                         path="/"
@@ -25,6 +26,9 @@ export function MainPage (props) {
                         element={<h1>404 - Page Not Found</h1>}
                     />
                 </Routes>
+=======
+                <h1>Welcome to Here Comse The Song</h1>
+>>>>>>> Stashed changes
 =======
                 <h1>Welcome to Here Comse The Song</h1>
 >>>>>>> Stashed changes

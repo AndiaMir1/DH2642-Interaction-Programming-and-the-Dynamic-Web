@@ -1,7 +1,10 @@
 import { makeObservable, observable, action } from "mobx";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 =======
+=======
+>>>>>>> Stashed changes
 
 import { fetchWeatherData } from "../../apiConfig/weatherSource"
 
@@ -63,6 +66,11 @@ class RootModel {
 export default new RootModel();
     
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+};
+
+>>>>>>> Stashed changes
 =======
 };
 
