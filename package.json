@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@babel/core": "latest",
+    "@vitejs/plugin-react": "^5.1.1",
     "babel-plugin-module-resolver": "latest",
     "happy-dom": "latest",
     "react-test-renderer": "latest",
