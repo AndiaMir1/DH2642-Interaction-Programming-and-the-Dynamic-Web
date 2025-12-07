@@ -1,7 +1,7 @@
 //buttons and css, go between 
 import { Link } from 'react-router-dom'
 
-export default function NaviagtionBar(props) {
+export default function NavigationBar(props) {
     return (
         <nav className='navigation-bar'>
             <div className='nav-title'>
@@ -15,12 +15,13 @@ export default function NaviagtionBar(props) {
                 <Link to="/weather"className="nav-button">
                     Weather
                 </Link>
-                <Link to="/about"className="nav-button">
-                    About us
-                </Link>
                 <Link to="/profile"className="nav-button">
                     Profile
                 </Link>
+                <Link to="/about"className="nav-button">
+                    About us
+                </Link>
+                
             </div>
         </nav>
 

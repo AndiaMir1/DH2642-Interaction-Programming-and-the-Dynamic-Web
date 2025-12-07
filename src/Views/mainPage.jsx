@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import NaviagtionBar from "./navigationBar";
+import NavigationBar from "./navigationBar";
 import ProfilePresenter from "../Presenters/profilePresenter";
 import WeatherPresenter from "../Presenters/weatherPresenter";
 
