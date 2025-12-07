@@ -1,6 +1,6 @@
 import { makeObservable, observable, action } from "mobx";
 
-import { fetchWeatherData } from "../../apiConfig/weatherSource"
+import { fetchWeatherData } from "../apiConfig/weatherSource"
 
 //Holds the global state of the application
 class RootModel {
