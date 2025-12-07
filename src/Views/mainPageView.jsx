@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import NavigationBar from "./navigationBar";
+import NavigationBar from "./navigationBarView";
 import ProfilePresenter from "../Presenters/profilePresenter";
 import WeatherPresenter from "../Presenters/weatherPresenter";
 
@@ -8,7 +8,7 @@ export function MainPage (props) {
 
     return (
         <div className="main-page">
-            <NaviagtionBar />
+            <NavigationBar />
 
             <div className="content">
                 <Routes>

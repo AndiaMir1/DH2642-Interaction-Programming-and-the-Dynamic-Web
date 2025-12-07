@@ -1,7 +1,7 @@
 import React from "react";
-import { observer } from "mobx-ract-lite";
-import { MainPage } from "/src/Views/mainPage.jsx"
-import NaviagtionBar from "../Views/navigationBar";
-import WeatherView from "../Views/weatherView";
+import { observer } from "mobx-react-lite";
+import { MainPage } from "../Views/mainPageView.jsx"
+import NavigationBar from "../Views/navigationBarView.jsx";
+import WeatherView from "../Views/weatherView.jsx";
 
 

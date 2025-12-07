@@ -32,6 +32,12 @@ class RootModel {
         this.currentCity = city;
     }
 
+    // Set user authentication state
+    setUser(user) {
+        this.user = user;
+        this.isUserLoggedIn = !!user;
+    }
+
     // Get data from weather API
     async getWeather(city) {
         if (!city) {

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { MainPage } from "./mainPage.jsx";
+import { MainPage } from "./mainPageView.jsx";
 import { BrowserRouter } from "react-router-dom";
 
 const ReactRoot = observer(function ReactRoot(props){
