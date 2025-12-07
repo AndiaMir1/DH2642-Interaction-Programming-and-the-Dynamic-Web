@@ -1,31 +1,33 @@
 export function AuthView(props) {
-    return (
-        <div className="auth-view">
-            <h2>{props.isSignedUp ? "Sign Up" : "Sign In"}</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={props.email}
-                onChange={(e) => props.setEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={props.password}
-                onChange={(e) => props.setPassword(e.target.value)}
-            />
-            <button onClick={props.signInWithEmail}>
-                {props.isSignedUp ? "Sign Up" : "Sign In"}
-            </button>
-            <button onClick={props.signInWithGoogle}>
-                Sign In with Google
-            </button>
-            <p onClick={() => props.setIsSignedUp(!props.isSignedUp)}>
-                {props.isSignedUp
-                    ? "Already have an account? Sign In"
-                    : "Don't have an account? Sign Up"}
-            </p>
-            {props.error && <p className="error-message">{props.error}</p>}
-        </div>
-    );
-}   
+
+    function handleEmailChangeACB(e) {
+        props.setEmail(e.target.value);
+    }
+
+    function handlePasswordChangeACB(e) {
+        props.setPassword(e.target.value);
+    }
+
+    function handleToggleACB() {
+        props.toggleMode();
+    }
+
+    function handleSubmitACB() {
+        props.submit();
+    }
+
+  return (
+    <div>
+      <h1></h1>
+      <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
+      <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} />
+      <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} />
+      {props.error && <div style={{ color: "maroon" }}>{props.error}</div>}
+      <button onClick={handleSubmitACB}>{props.isSignUp ? "Sign Up" : "Sign In"}</button>
+        <p>
+        {props.isSignUp ? "Already have an account?" : "Don't have an account?"} 
+        <button onClick={handleToggleACB}>{props.isSignUp ? "Sign In" : "Sign Up"}</button>
+      </p>
+    </div>
+  );
+}

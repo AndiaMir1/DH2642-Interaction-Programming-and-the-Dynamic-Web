@@ -1,14 +1,8 @@
 import { makeObservable, observable, action } from "mobx";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 
-export const model = {
-    user:undefined,
-    isUserLoggedIn:false,
-    currentView: "main"};
-
-//Holds the global state of the application
+// Holds the global state of the application
 class RootModel {
-
     isUserLoggedIn = true;
     user = true;
     currentView = "main";
@@ -16,7 +10,7 @@ class RootModel {
     isLoading = false;
     currentCity = null;
 
-    //making properties observable and actions
+    // making properties observable and actions
     constructor() {
         makeObservable(this, {
             isUserLoggedIn: observable,
@@ -31,21 +25,15 @@ class RootModel {
             setCity: action.bound,
             setUser: action.bound,
         });
-    } 
+    }
 
-    //Save the selected city in MobX
+    // Save the selected city in MobX
     setCity(city) {
         this.currentCity = city;
     }
 
-    //save user info in MobX
-    setUser(user) {
-        this.user = user;
-        this.isUserLoggedIn = !!user; //true if user is not null
-    }   
-
-    //Get data from weather API
-    async getWeather(city) { 
+    // Get data from weather API
+    async getWeather(city) {
         if (!city) {
             console.warn("City is not chosen");
             return;
