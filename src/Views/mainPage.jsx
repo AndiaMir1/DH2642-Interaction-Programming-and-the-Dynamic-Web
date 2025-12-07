@@ -10,9 +10,20 @@ export function MainPage (props) {
             <NaviagtionBar model={props.model}/>
 
             <div className="content">
-
-                <h1>Welcome to Here Comse The Song</h1>
-
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<h1>Welcome to Here Comses the Song</h1>}
+                    />
+                    <Route
+                        path="/profile"
+                        element={<ProfilePresenter />}
+                    />
+                    <Route
+                        path="*"
+                        element={<h1>404 - Page Not Found</h1>}
+                    />
+                </Routes>
             </div>
         </div>
     );
