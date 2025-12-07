@@ -12,11 +12,14 @@ export default function NaviagtionBar(props) {
                 <Link to="/"className="nav-button">
                     Home
                 </Link>
-                <Link to="/profile"className="nav-button">
-                    Profile
+                <Link to="/weather"className="nav-button">
+                    Weather
                 </Link>
                 <Link to="/about"className="nav-button">
                     About us
+                </Link>
+                <Link to="/profile"className="nav-button">
+                    Profile
                 </Link>
             </div>
         </nav>
