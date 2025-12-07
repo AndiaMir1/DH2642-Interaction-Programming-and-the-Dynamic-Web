@@ -10,13 +10,10 @@ export function MainPage (props) {
             <NaviagtionBar model={props.model}/>
 
             <div className="content">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
                 <Routes>
                     <Route
                         path="/"
-                        element={<h1>Welcome to Here Comses the Song</h1>}
+                        element={<h1>Welcome to Here Comes the Song</h1>}
                     />
                     <Route
                         path="/profile"
@@ -27,15 +24,6 @@ export function MainPage (props) {
                         element={<h1>404 - Page Not Found</h1>}
                     />
                 </Routes>
-=======
-                <h1>Welcome to Here Comse The Song</h1>
->>>>>>> Stashed changes
-=======
-                <h1>Welcome to Here Comse The Song</h1>
->>>>>>> Stashed changes
-=======
-                <h1>Welcome to Here Comse The Song</h1>
->>>>>>> Stashed changes
             </div>
         </div>
     );

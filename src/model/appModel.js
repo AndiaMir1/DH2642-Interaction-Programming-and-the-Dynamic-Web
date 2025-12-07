@@ -1,31 +1,15 @@
 import { makeObservable, observable, action } from "mobx";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import { fetchWeatherData } from "../apiConfig/weatherSource";
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
-import { fetchWeatherData } from "../../apiConfig/weatherSource"
-
-export const model = {
-    isUserLoggedIn:false,
-    currentView: "main"
->>>>>>> Stashed changes
-
-//Holds the global state of the application
+// Holds the global state of the application
 class RootModel {
-
     isUserLoggedIn = true;
     currentView = "main";
     weatherData = null;
     isLoading = false;
     currentCity = null;
 
-    //making properties observable and actions
+    // making properties observable and actions
     constructor() {
         makeObservable(this, {
             isUserLoggedIn: observable,
@@ -38,15 +22,15 @@ class RootModel {
             getWeather: action.bound,
             setCity: action.bound,
         });
-    } 
+    }
 
-    //Save the selected city in MobX
+    // Save the selected city in MobX
     setCity(city) {
         this.currentCity = city;
     }
 
-    //Get data from weather API
-    async getWeather(city) { 
+    // Get data from weather API
+    async getWeather(city) {
         if (!city) {
             console.warn("City is not chosen");
             return;
@@ -67,19 +51,3 @@ class RootModel {
 }
 
 export default new RootModel();
-    
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-};
-
->>>>>>> Stashed changes
-=======
-};
-
->>>>>>> Stashed changes
-=======
-};
-
->>>>>>> Stashed changes
