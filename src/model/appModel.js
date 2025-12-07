@@ -4,6 +4,7 @@ import { fetchWeatherData } from "../apiConfig/weatherSource";
 // Holds the global state of the application
 class RootModel {
     isUserLoggedIn = true;
+    user = true;
     currentView = "main";
     weatherData = null;
     isLoading = false;
@@ -14,6 +15,7 @@ class RootModel {
         makeObservable(this, {
             isUserLoggedIn: observable,
             currentView: observable,
+            user: observable,
 
             weatherData: observable,
             isLoading: observable,
@@ -21,6 +23,7 @@ class RootModel {
 
             getWeather: action.bound,
             setCity: action.bound,
+            setUser: action.bound,
         });
     }
 
