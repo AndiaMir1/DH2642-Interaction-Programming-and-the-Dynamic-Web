@@ -1,7 +1,6 @@
-import React from "react";
 import { useObserver } from "mobx-react-lite";
 import { appStore } from "../model/mobxReactiveModel.jsx";
-import ProfileView from "../views/profileView.jsx";
+import ProfileView  from "/src/Views/profileView.jsx";
 
 export default function ProfilePresenter() {
     function handleSavedACB(newCity) {

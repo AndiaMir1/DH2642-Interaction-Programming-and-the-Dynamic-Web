@@ -1,15 +1,27 @@
 import React, { useState } from "react";
+import "./style/profileView.css";
 
 export default function ProfileView(props) {
-    const [cityInput, setCityInput] = useState(props.currentCity || "");
+    const [cityInput, setCityInput] = useState("");
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
 
     function onSavedACB(){
-        if (cityInput && props.onSaveClick) {
-            props.onSaveClick(cityInput);
+        const trimmedCity = cityInput.trim();
+        if (trimmedCity && props.onSaveClick) {
+            props.onSaveClick(trimmedCity);
+            setTimeout(() => {
+                setCityInput("");
+            }, 0);
+        }
+    }
+
+    function onKeyDownACB(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            onSavedACB();
         }
     } 
     return (
@@ -28,7 +40,8 @@ export default function ProfileView(props) {
                     type="text" 
                     placeholder="Enter city name" 
                     value={cityInput} 
-                    onChange={onTextChangeACB} 
+                    onChange={onTextChangeACB}
+                    onKeyDown={onKeyDownACB}
                 />
                 <button 
                     onClick={onSavedACB}
