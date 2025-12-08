@@ -1,0 +1,65 @@
+@import './variables.css';
+
+.navigation-bar {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-title h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: -0.022em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-button {
+    color: var(--primary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.nav-button:hover {
+    background: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+}
+
+.nav-button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .navigation-bar {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-title h1 {
+        font-size: 1.2rem;
+    }
+}

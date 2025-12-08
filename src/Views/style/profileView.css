@@ -1,0 +1,49 @@
+@import './variables.css';
+
+.profile-view {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-view h1 {
+    margin-bottom: 2rem;
+}
+
+.current-location,
+.change-location {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.current-location:hover,
+.change-location:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.current-location h2,
+.change-location h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.current-location p {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.current-location strong {
+    color: #d15fbe;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem;
+    }
+}

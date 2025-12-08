@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "firebase": "latest",
+    "framer-motion": "^12.23.25",
     "mobx": "latest",
     "mobx-react-lite": "latest",
     "react": "latest",

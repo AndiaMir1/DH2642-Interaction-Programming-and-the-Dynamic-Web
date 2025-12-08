@@ -1,5 +1,6 @@
 //buttons and css, go between 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import "./style/navigationBarView.css";
 
 export default function NavigationBar(props) {
     return (

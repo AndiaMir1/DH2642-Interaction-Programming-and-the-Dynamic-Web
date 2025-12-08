@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import NavigationBar from "./navigationBarView";
 import ProfilePresenter from "../Presenters/profilePresenter";
 import WeatherPresenter from "../Presenters/weatherPresenter";
+import "./style/mainPageView.css";
 
 export function MainPage (props) {
 
