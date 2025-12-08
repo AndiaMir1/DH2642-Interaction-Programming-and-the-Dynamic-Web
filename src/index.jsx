@@ -1,4 +1,4 @@
-import React from "react";
+
 import { createRoot } from "react-dom/client";
 import "./Views/style/style.css";
 import ReactRoot from "./Views/ReactRoot.jsx";

@@ -14,7 +14,7 @@ export default function WeatherView(props) {
     const windSpeed = data.wind.speed;
     const humidity = data.main.humidity;
     const pressure = data.main.pressure;
-    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png;`
+    const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
 
     return (
         <div className="weather-view">
