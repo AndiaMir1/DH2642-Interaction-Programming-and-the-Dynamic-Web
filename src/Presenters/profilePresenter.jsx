@@ -11,7 +11,7 @@ export default function ProfilePresenter() {
     return useObserver(function renderPresenter() {
 
         const currentCity = appStore.currentCity;
-        const isLoading = appStore.isLoading;
+        const isLoading = appStore.weatherPromiseState.promise && !appStore.weatherPromiseState.data && !appStore.weatherPromiseState.error;
 
         return (
             <div>

@@ -1,9 +1,9 @@
 //reactiveModel
 
 import { observable, configure } from "mobx";
-import rootModel from "./appModel.js";
+import { rootModel } from "./appModel.js";
 
-configure({ enforceActions: "observed" });
+configure({ enforceActions: "never" }); // Changed to "never" since we're not using MobX actions
 
 export const appStore = observable(rootModel);
 export const reactiveModel = appStore;

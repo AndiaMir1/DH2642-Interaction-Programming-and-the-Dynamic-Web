@@ -1,62 +1,105 @@
-import { makeObservable, observable, action } from "mobx";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
+import { getTrack, getArtist } from "../apiConfig/musicSource";
 
-// Holds the global state of the application
-class RootModel {
-    isUserLoggedIn = true;
-    user = true;
-    currentView = "main";
-    weatherData = null;
-    isLoading = false;
-    currentCity = null;
+function resolvePromise(promise, stateObject) {
+    stateObject.promise = promise;
+    stateObject.data = null;
+    stateObject.error = null;
 
-    // making properties observable and actions
-    constructor() {
-        makeObservable(this, {
-            isUserLoggedIn: observable,
-            currentView: observable,
-            user: observable,
-
-            weatherData: observable,
-            isLoading: observable,
-            currentCity: observable,
-
-            getWeather: action.bound,
-            setCity: action.bound,
-            setUser: action.bound,
+    promise
+        .then(function(data) {
+            if (stateObject.promise === promise) {
+                stateObject.data = data;
+                stateObject.error = null;
+            }
+        })
+        .catch(function(error) {
+            if (stateObject.promise === promise) {
+                stateObject.data = null;
+                stateObject.error = error;
+            }
         });
-    }
+}
 
-    // Save the selected city in MobX
+export const rootModel = {
+
+    isUserLoggedIn: true,
+    user: true,
+    currentView: "main",
+
+    currentCity: null,
+    weatherPromiseState: {},
+
+    tracks: [], 
+    currentTrackId: null,
+    currentArtistId: null,
+    searchParams: {},
+    searchResultsPromiseState: {},
+    currentTrackPromiseState: {},
+    currentArtistPromiseState: {},
+
     setCity(city) {
         this.currentCity = city;
-    }
+    },
 
-    // Set user authentication state
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
-    }
+    },
 
-    // Get data from weather API
-    async getWeather(city) {
+    setCurrentTrackId(trackId) {
+        this.currentTrackId = trackId;
+    },
+
+    setCurrentArtistId(artistId) {
+        this.currentArtistId = artistId;
+    },
+
+    addToTracks(trackToAdd) {
+        this.tracks = [...this.tracks, trackToAdd];
+    },
+
+    removeFromTracks(trackToRemove) {
+        function shouldWeKeepTrackCB(track) {
+            return trackToRemove.id !== track.id;
+        }
+        this.tracks = this.tracks.filter(shouldWeKeepTrackCB);
+    },
+
+    setSearchQuery(query) {
+        this.searchParams.query = query;
+    },
+
+    setSearchType(type) {
+        this.searchParams.type = type;
+    },
+
+    getWeather(city) {
         if (!city) {
             console.warn("City is not chosen");
             return;
         }
+        resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
+    },
 
-        this.isLoading = true;
-        this.weatherData = null;
+    doMusicSearch(params) {
+        console.log("Music search not implemented yet", params);
 
-        try {
-            const data = await fetchWeatherData(city);
-            this.weatherData = data;
-        } catch (error) {
-            console.error("Failed to fetch weather data:", error);
-        } finally {
-            this.isLoading = false;
+    },
+
+    currentTrackEffect() {
+        if (this.currentTrackId) {
+            resolvePromise(getTrack(this.currentTrackId), this.currentTrackPromiseState);
+        } else {
+            this.currentTrackPromiseState = {};
+        }
+    },
+
+    currentArtistEffect() {
+        if (this.currentArtistId) {
+            resolvePromise(getArtist(this.currentArtistId), this.currentArtistPromiseState);
+        } else {
+            this.currentArtistPromiseState = {};
         }
     }
-}
-
-export default new RootModel();
+};
