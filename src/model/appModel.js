@@ -1,42 +1,25 @@
-import { makeObservable, observable, action } from "mobx";
+//import { makeObservable, observable, action } from "mobx";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 
 // Holds the global state of the application
-class RootModel {
-    isUserLoggedIn = true;
-    user = true;
-    currentView = "main";
-    weatherData = null;
-    isLoading = false;
-    currentCity = null;
-
-    // making properties observable and actions
-    constructor() {
-        makeObservable(this, {
-            isUserLoggedIn: observable,
-            currentView: observable,
-            user: observable,
-
-            weatherData: observable,
-            isLoading: observable,
-            currentCity: observable,
-
-            getWeather: action.bound,
-            setCity: action.bound,
-            setUser: action.bound,
-        });
-    }
+export const model = {
+    isUserLoggedIn : true,
+    user : true,
+    currentView : "main",
+    weatherData : null,
+    isLoading : false,
+    currentCity : null,
 
     // Save the selected city in MobX
     setCity(city) {
         this.currentCity = city;
-    }
+    },
 
     // Set user authentication state
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
-    }
+    },
 
     // Get data from weather API
     async getWeather(city) {
@@ -57,6 +40,6 @@ class RootModel {
             this.isLoading = false;
         }
     }
-}
+};
 
-export default new RootModel();
+
