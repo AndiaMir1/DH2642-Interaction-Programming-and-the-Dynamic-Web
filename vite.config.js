@@ -6,5 +6,15 @@ export default defineConfig({
   root: '.',
   build: {
     outDir: 'dist'
+  },
+
+  server: {
+    proxy: {
+      '/deezer': {
+        target: 'https://api.deezer.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/deezer/, '')
+      }
+    }
   }
 })
