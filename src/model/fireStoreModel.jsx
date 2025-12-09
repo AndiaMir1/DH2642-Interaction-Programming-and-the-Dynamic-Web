@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-//import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from "../../firebaseConfig.js";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -7,12 +7,24 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 const app = initializeApp(firebaseConfig);
 const database = getFirestore(app);
 const COLLECTION_USER_DATA = "USERS";
-const theDoc = doc(database, COLLECTION_USER_DATA, "userData");
+let theDoc = null;
+export const auth = getAuth(app);
+
 
 export function connectToPersistence(model, watchFunction){
     model.ready = false;
+    model.user = undefined;
 
-    getDoc(theDoc).then(loadACB).catch(catchErrorACB);
+    onAuthStateChanged(auth, function(user) {
+        model.setUser(user);
+
+        if(!user) {
+            model.ready = true;
+            return;
+        }
+        theDoc = doc(database, COLLECTION_USER_DATA, "userData");
+        getDoc(theDoc).then(loadACB).catch(catchErrorACB);
+    });
 
     function loadACB(snapshot){
         
@@ -57,9 +69,6 @@ const COLLECTION_USER_DATA = "USER_DATA";
 
 export const auth = getAuth(app);
 
-export function connectToPersistence(model, watcher) {
-    model.ready = false;
-    model.user = undefined;
 
     onAuthStateChanged(auth, function(user) {
         model.setUser(user);

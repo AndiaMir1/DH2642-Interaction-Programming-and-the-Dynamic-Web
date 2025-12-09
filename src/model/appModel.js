@@ -24,7 +24,7 @@ function resolvePromise(promise, stateObject) {
 export const rootModel = {
 
     isUserLoggedIn: true,
-    user: true,
+    user: undefined,
     currentView: "main",
     currentCity: null,
     weatherPromiseState: {},

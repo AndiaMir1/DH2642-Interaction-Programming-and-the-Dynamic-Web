@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import auth from "../Views/authPage";
+import { auth } from "../model/fireStoreModel";
 import { AuthView } from "../Views/authView";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
-function AuthPresenter({ model }) {
+export const AuthPresenter= observer(function AuthPresenter(props) {
+    const model = props.model;
+ 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSignUp, setIsSignUp] = useState(false);
@@ -22,9 +24,15 @@ function AuthPresenter({ model }) {
     function submit() {
         if (isSignUp) {
             createUserWithEmailAndPassword(auth, email, password)
+            .then(function(userCredential) {
+                model.setUser(userCredential.user);
+            })
                 .catch(handleAuthError);
         } else {
             signInWithEmailAndPassword(auth, email, password)
+            .then(function(userCredential) {
+                model.setUser(userCredential.user);
+            })
                 .catch(handleAuthError);
         }
     }
@@ -41,7 +49,4 @@ function AuthPresenter({ model }) {
             error={error}
         />
     );
-}
-
-// Wrap with observer before exporting
-export default observer(AuthPresenter);
+});
