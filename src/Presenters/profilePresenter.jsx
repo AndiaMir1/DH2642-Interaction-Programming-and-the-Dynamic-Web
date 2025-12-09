@@ -1,17 +1,17 @@
 import { useObserver } from "mobx-react-lite";
-import { appStore } from "../model/mobxReactiveModel.jsx";
+import { reactiveModel } from "../model/mobxReactiveModel.jsx";
 import ProfileView  from "/src/Views/profileView.jsx";
 
 export default function ProfilePresenter() {
     function handleSavedACB(newCity) {
-        appStore.setCity(newCity);
-        appStore.getWeather(newCity);
+        reactiveModel.setCity(newCity);
+        reactiveModel.getWeather(newCity);
     }
 
     return useObserver(function renderPresenter() {
 
-        const currentCity = appStore.currentCity;
-        const isLoading = appStore.weatherPromiseState.promise && !appStore.weatherPromiseState.data && !appStore.weatherPromiseState.error;
+        const currentCity = reactiveModel.currentCity;
+        const isLoading = reactiveModel.weatherPromiseState.promise && !reactiveModel.weatherPromiseState.data && !reactiveModel.weatherPromiseState.error;
 
         return (
             <div>

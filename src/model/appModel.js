@@ -26,7 +26,6 @@ export const rootModel = {
     isUserLoggedIn: true,
     user: true,
     currentView: "main",
-
     currentCity: null,
     weatherPromiseState: {},
 

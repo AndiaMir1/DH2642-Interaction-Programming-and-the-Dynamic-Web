@@ -1,14 +1,14 @@
 import React from "react";
 import { useObserver } from "mobx-react-lite";
-import { appStore } from "../model/mobxReactiveModel";
+import { reactiveModel } from "../model/mobxReactiveModel";
 import WeatherView from "../Views/weatherView";
 import { SuspenseView } from "../Views/suspenseView";
 
 export default function WeatherPresenter() {
 
     return useObserver(function renderPresenter() {
-        const weatherPromiseState = appStore.weatherPromiseState;
-        const currentCity = appStore.currentCity;
+        const weatherPromiseState = reactiveModel.weatherPromiseState;
+        const currentCity = reactiveModel.currentCity;
 
         if (!currentCity) {
             return <h2>Please choose a city in your Profile</h2>;
