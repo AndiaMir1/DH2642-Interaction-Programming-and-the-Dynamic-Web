@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./style/profileView.css";
-// 1. IMPORT THE API FUNCTION
+// 1.
 import { searchMusic } from "../apiConfig/musicSource"; 
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
 
-    // 2. ADD STATE FOR MUSIC SEARCH
+    // 2.
     const [artistInput, setArtistInput] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
@@ -31,9 +31,9 @@ export default function ProfileView(props) {
         }
     } 
 
-    // 3. ADD FUNCTION TO HANDLE SEARCH BUTTON CLICK
+    // 3.
     async function onSearchMusicACB() {
-        if (!artistInput) return; // Don't search if empty
+        if (!artistInput) return; 
         const results = await searchMusic(artistInput);
         setSearchResults(results);
     }
@@ -65,7 +65,7 @@ export default function ProfileView(props) {
                 </button>
             </section>
 
-            {/* 4. NEW SECTION: MUSIC TEST AREA */}
+            {/* 4. Music test thinngy */}
             <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
                 <h2>🎵 Test Spotify API</h2>
                 <input 
@@ -76,7 +76,7 @@ export default function ProfileView(props) {
                 />
                 <button onClick={onSearchMusicACB}>Search Songs</button>
 
-                {/* Display Results */}
+                {/* Resultat ellr ngt */}
                 <div style={{ marginTop: "15px", textAlign: "left" }}>
                     {searchResults.map(track => (
                         <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
