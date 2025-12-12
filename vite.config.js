@@ -7,13 +7,21 @@ export default defineConfig({
   build: {
     outDir: 'dist'
   },
-
   server: {
     proxy: {
-      '/deezer': {
-        target: 'https://api.deezer.com',
+      '/spotify-api': {
+        // Point to the real Spotify API
+        target: 'https://api.spotify.com', 
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/deezer/, '')
+        // Removes '/spotify-api' so the API sees '/v1/search'
+        rewrite: (path) => path.replace(/^\/spotify-api/, '')
+      },
+      '/spotify-auth': {
+        // Point to the real Spotify Auth server
+        target: 'https://accounts.spotify.com',
+        changeOrigin: true,
+        // Removes '/spotify-auth' so the server sees '/api/token'
+        rewrite: (path) => path.replace(/^\/spotify-auth/, '')
       }
     }
   }
