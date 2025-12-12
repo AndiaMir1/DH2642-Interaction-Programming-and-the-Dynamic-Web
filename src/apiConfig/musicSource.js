@@ -1,5 +1,3 @@
-// src/apiConfig/musicSource.js
-
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
@@ -36,7 +34,7 @@ async function getAccessToken() {
     return accessToken;
 }
 
-// --- Helper: Fetch Wrapper ---
+
 async function fetchFromSpotify(endpoint) {
     const token = await getAccessToken();
     const res = await fetch(`/spotify-api/v1${endpoint}`, {
