@@ -12,7 +12,7 @@ async function getAccessToken() {
         return accessToken;
     }
 
-    // If not, ask Spotify for a new one using our Proxy
+    
     const authString = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
     
     const response = await fetch('/spotify-auth/api/token', {
