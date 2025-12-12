@@ -6,12 +6,12 @@ import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
 
-// 1. IMPORT THE FUNCTION
-import { searchMusic } from "../apiConfig/musicSource"; // <--- ADD THIS
+// 1. Test grej för Spotify API
+import { searchMusic } from "../apiConfig/musicSource";
 
 export function MainPage (props) {
 
-    window.searchMusic = searchMusic; // <--- ADD THIS
+    window.searchMusic = searchMusic;
     
     return (
         <div className="main-page">
