@@ -6,8 +6,13 @@ import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
 
+// 1. IMPORT THE FUNCTION
+import { searchMusic } from "../apiConfig/musicSource"; // <--- ADD THIS
+
 export function MainPage (props) {
 
+    window.searchMusic = searchMusic; // <--- ADD THIS
+    
     return (
         <div className="main-page">
             <NavigationBar />
