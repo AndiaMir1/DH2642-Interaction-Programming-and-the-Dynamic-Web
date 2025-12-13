@@ -3,6 +3,7 @@ import { MainPage } from "./mainPageView.jsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthPage from "./authPage.jsx";
 
+
 const ReactRoot = observer(function ReactRoot(props){
 
     if(!props.model.user) {

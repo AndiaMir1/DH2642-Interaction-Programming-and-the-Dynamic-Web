@@ -32,9 +32,10 @@ export function connectToPersistence(model, watchFunction) {
                     //default values:
                     const data = snapshot.data() || {};
                     model.currentCity = data.currentCity;
-                   
+                    //model.username = data.username;
                     model.getWeather(model.currentCity);
-        
+                    //friends list imp
+                    model.friends = data.friends || [];
                     model.ready = true;
             })
         .catch(function getDocErrorACB(err) {
@@ -42,7 +43,8 @@ export function connectToPersistence(model, watchFunction) {
             model.ready = true;
         });
     } else {
-        currentCity = null;
+        model.currentCity = null;
+        //model.username = null;
         model.ready = true;
         //favoriteGenre=null;
         //likedSongs =[];
@@ -60,7 +62,8 @@ export function connectToPersistence(model, watchFunction) {
     }
     //return properties of observed model
     function watchACB() {
-        return model.currentCity;
+        return [model.currentCity/*,
+                model.username*/];
         //favorite genre
         //liked songs
         //produced playlists
@@ -74,7 +77,8 @@ export function connectToPersistence(model, watchFunction) {
             const docRef = doc(db, "USER", model.user.uid);
             //only saves if model is ready (data has been loaded)
             setDoc(docRef, {
-               currentCity: model.currentCity
+               currentCity: model.currentCity,
+               /*username: model.username*/
             }, {merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success

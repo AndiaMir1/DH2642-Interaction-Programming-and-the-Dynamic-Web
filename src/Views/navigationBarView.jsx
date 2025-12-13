@@ -16,11 +16,14 @@ export default function NavigationBar(props) {
                 <Link to="/weather"className="nav-button">
                     Weather
                 </Link>
-                <Link to="/profile"className="nav-button">
-                    Profile
+                <Link to="/friends" className="nav-button">
+                Friends
                 </Link>
                 <Link to="/about"className="nav-button">
                     About us
+                </Link>
+                <Link to="/profile"className="nav-button">
+                    Profile
                 </Link>
                 <Link to="/logout" className="nav-button">Sign Out
                 </Link>
@@ -29,4 +32,5 @@ export default function NavigationBar(props) {
         </nav>
 
     );
+    
 } 

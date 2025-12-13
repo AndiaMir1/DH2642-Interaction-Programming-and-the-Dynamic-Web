@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { auth } from "../model/fireStoreModel";
 import { AuthView } from "../Views/authView";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export const AuthPresenter= observer(function AuthPresenter(props) {
     const model = props.model;
@@ -11,6 +11,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     const [password, setPassword] = useState("");
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState("");
+    const [displayName, setDisplayName] = useState("");
 
     function toggleMode() {
         setIsSignUp(!isSignUp);
@@ -24,7 +25,11 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     function submit() {
         if (isSignUp) {
             createUserWithEmailAndPassword(auth, email, password)
-            .then(function(userCredential) {
+            .then(async function(userCredential) {
+                await updateProfile(userCredential.user, {
+                    displayName: displayName
+                });
+
                 model.setUser(userCredential.user);
             })
                 .catch(handleAuthError);
@@ -32,6 +37,8 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
             signInWithEmailAndPassword(auth, email, password)
             .then(function(userCredential) {
                 model.setUser(userCredential.user);
+               // model.setUsername(username);
+
             })
                 .catch(handleAuthError);
         }
@@ -41,8 +48,10 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
         <AuthView
             email={email}
             password={password}
+            displayName={displayName}
             setEmail={setEmail}
             setPassword={setPassword}
+            setDisplayName={setDisplayName}
             isSignUp={isSignUp}
             toggleMode={toggleMode}
             submit={submit}

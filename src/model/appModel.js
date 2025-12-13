@@ -1,5 +1,6 @@
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 import { getTrack, getArtist } from "../apiConfig/musicSource";
+import { searchMusic } from "../apiConfig/musicSource";
 
 function resolvePromise(promise, stateObject) {
     stateObject.promise = promise;
@@ -27,28 +28,32 @@ export const rootModel = {
     user: undefined,
     currentView: "main",
     currentCity: null,
-    userName: null,
+    //username: null,
     weatherPromiseState: {},
 
     tracks: [], 
     currentTrackId: null,
     currentArtistId: null,
     searchParams: {},
-    searchResultsPromiseState: {},
     currentTrackPromiseState: {},
     currentArtistPromiseState: {},
+    spotifyToken: null,
+    searchResultsPromiseState: {},
+
+    //friends list imp
+    friends: [],
 
     setCity(city) {
         this.currentCity = city;
     },
 
-    setUserName(name) {
-        this.userName = name;
-    },
-
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
+    },
+
+    userName() {
+        return this.user?.displayName || "";
     },
 
     setCurrentTrackId(trackId) {
@@ -78,6 +83,39 @@ export const rootModel = {
         this.searchParams.type = type;
     },
 
+    // friends list imp
+    setFriends(friendsArray) {
+        this.friends = friendsArray;
+    },
+
+    addFriend (friendUid) {
+        if (this.friends.indexOf(friendUid) === -1) {
+            this.friends = [...this.friends, friendUid];
+            this.persistFriends()
+        }
+    },        
+
+
+    removeFriend (friendUid) {
+        function shouldKeepACB(uid) {
+            return uid !== friendUid;
+        }
+        this.friends = this.friends.filter(shouldKeepACB)
+        this.persistFriends();
+    },
+
+    persistFriends () {
+        if (!this.user) return;
+        const docRef = doc(db, "USER", this.user.uid);
+        setDoc(docRef, {friends: this.friends}, {merge : true })
+        .then(function persistSuccessACB() {
+            console.log("friends list updated");
+        })
+        .catch(function persistErrorACB(err) {
+            console.error("Error updating friends list", err);
+        });
+    },
+
     getWeather(city) {
         if (!city) {
             console.warn("City is not chosen");
@@ -86,9 +124,17 @@ export const rootModel = {
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
     },
 
-    doMusicSearch(params) {
-        console.log("Music search not implemented yet", params);
+    
 
+    setSpotifyToken: function (token) {
+        this.spotifyToken = token;
+    },
+
+    doMusicSearch: function (query) {
+        resolvePromise(
+            searchMusic(query),
+            this.searchResultsPromiseState
+        );
     },
 
     currentTrackEffect() {

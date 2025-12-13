@@ -8,6 +8,10 @@ export function AuthView(props) {
         props.setPassword(e.target.value);
     }
 
+    function handleUsernameChangeACB(e) {
+      props.setDisplayName(e.target.value);
+    }
+
     function handleToggleACB() {
         props.toggleMode();
     }
@@ -22,7 +26,17 @@ export function AuthView(props) {
       <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
       <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} />
       <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} />
-      {props.error && <div style={{ color: "pink" }}>{props.error}</div>}
+
+      {props.isSignUp && (
+        <input type="displayName" 
+        value={props.displayName}
+         placeholder="username" 
+         onChange={handleUsernameChangeACB} 
+         />
+)}
+      
+
+      {props.error && <div style={{ color: "purple" }}>{props.error}</div>}
       <button onClick={handleSubmitACB}>{props.isSignUp ? "Sign Up" : "Sign In"}</button>
         <p>
         {props.isSignUp ? "Already have an account?" : "Don't have an account?"} 
