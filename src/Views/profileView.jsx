@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style/profileView.css";
 // 1. IMPORT THE REDIRECT FUNCTION
-import { searchMusic, redirectToSpotifyLogin } from "../apiConfig/musicSource"; 
+import { searchMusic, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource"; 
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
@@ -9,6 +9,18 @@ export default function ProfileView(props) {
     const [artistInput, setArtistInput] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [showChangeName, setShowChangeName] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("spotifyToken");
+        if (token) {
+            getCurrentUser(token).then(data => {
+                console.log("🕵️ IDENTITY CHECK:");
+                console.log("Name:", data.display_name);
+                console.log("Email:", data.email);
+                console.log("ID:", data.id);
+            });
+        }
+    }, []);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);

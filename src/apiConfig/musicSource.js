@@ -82,3 +82,13 @@ export async function getArtist(artistId, token) {
     // 3. Return the result
     return await response.json();
 }
+
+export async function getCurrentUser(token) {
+    if (!token) return null;
+
+    const response = await fetch("https://api.spotify.com/v1/me", {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    return await response.json();
+}
