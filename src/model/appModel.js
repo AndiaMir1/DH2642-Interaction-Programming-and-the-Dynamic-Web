@@ -30,6 +30,8 @@ export const rootModel = {
     userName: null,
     weatherPromiseState: {},
 
+    spotifyToken: null,
+
     tracks: [], 
     currentTrackId: null,
     currentArtistId: null,
@@ -49,6 +51,10 @@ export const rootModel = {
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
+    },
+
+    setSpotifyToken(token) {  // <--- NEW
+        this.spotifyToken = token;
     },
 
     setCurrentTrackId(trackId) {
@@ -92,8 +98,8 @@ export const rootModel = {
     },
 
     currentTrackEffect() {
-        if (this.currentTrackId) {
-            resolvePromise(getTrack(this.currentTrackId), this.currentTrackPromiseState);
+        if (this.currentTrackId && this.spotifyToken) { // <--- CHECK FOR TOKEN
+            resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
         } else {
             this.currentTrackPromiseState = {};
         }

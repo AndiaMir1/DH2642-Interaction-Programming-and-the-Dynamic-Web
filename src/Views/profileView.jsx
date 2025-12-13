@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import "./style/profileView.css";
-// 1.
-import { searchMusic } from "../apiConfig/musicSource"; 
+// 1. IMPORT THE REDIRECT FUNCTION
+import { searchMusic, redirectToSpotifyLogin } from "../apiConfig/musicSource"; 
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [input, setInput] = useState("");
-    // 2.
     const [artistInput, setArtistInput] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [showChangeName, setShowChangeName] = useState(false);
+
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
@@ -48,15 +48,19 @@ export default function ProfileView(props) {
      
     function onChangeNameACB(){
         setShowChangeName(true);
+    }
         
-}
-        
-    
-
-    // 3.
+    // 2. UPDATE SEARCH TO USE THE SAVED TOKEN
     async function onSearchMusicACB() {
         if (!artistInput) return; 
-        const results = await searchMusic(artistInput);
+        
+        const token = localStorage.getItem("spotifyToken");
+        if (!token) {
+            alert("You need to log in below first!");
+            return;
+        }
+
+        const results = await searchMusic(artistInput, token);
         setSearchResults(results);
     }
 
@@ -113,6 +117,17 @@ export default function ProfileView(props) {
             {/* 4. Music test thinngy */}
             <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
                 <h2>🎵 Test Spotify API</h2>
+
+                {/* 3. ADD LOGIN BUTTON HERE */}
+                <button 
+                    onClick={redirectToSpotifyLogin} 
+                    style={{ marginBottom: "15px", backgroundColor: "#1DB954", color: "white", border: "none", padding: "8px 15px", borderRadius: "20px", cursor: "pointer" }}
+                >
+                    Log in with Spotify
+                </button>
+
+                <br />
+
                 <input 
                     type="text" 
                     placeholder="Type an artist (e.g. Queen)" 

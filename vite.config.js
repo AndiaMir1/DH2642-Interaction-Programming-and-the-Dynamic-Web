@@ -14,21 +14,7 @@ export default defineConfig({
     }
   },
   server: {
-    proxy: {
-      '/spotify-api': {
-        
-        target: 'https://api.spotify.com', 
-        changeOrigin: true,
-        
-        rewrite: (path) => path.replace(/^\/spotify-api/, '')
-      },
-      '/spotify-auth': {
-        
-        target: 'https://accounts.spotify.com',
-        changeOrigin: true,
-        
-        rewrite: (path) => path.replace(/^\/spotify-auth/, '')
-      }
-    }
-  }
+    port: 5173, 
+    host: "127.0.0.1", // <--- ADD THIS LINE!
+  },
 })

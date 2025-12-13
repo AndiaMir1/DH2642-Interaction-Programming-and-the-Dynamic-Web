@@ -5,6 +5,7 @@ import WeatherPresenter from "../Presenters/weatherPresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
+import CallbackView from "./CallbackView";
 
 // 1. Test grej för Spotify API
 import { searchMusic } from "../apiConfig/musicSource";
@@ -38,6 +39,11 @@ export function MainPage (props) {
                     <Route path="/authpage"
                         element={<AuthPage model={props.model}/>}
                         />
+
+                    <Route 
+                        path="/callback" 
+                        element={<CallbackView model={props.model} />} 
+                    />
 
                     <Route
                         path="*"
