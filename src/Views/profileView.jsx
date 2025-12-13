@@ -5,14 +5,18 @@ import { searchMusic } from "../apiConfig/musicSource";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
-
+    const [input, setInput] = useState("");
     // 2.
     const [artistInput, setArtistInput] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-
+    const [showChangeName, setShowChangeName] = useState(false);
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
+
+    function textChangeACB(ev){
+        setInput(ev.target.value);
+       }
 
     function onSavedACB(){
         const trimmedCity = cityInput.trim();
@@ -24,12 +28,30 @@ export default function ProfileView(props) {
         }
     }
 
+    function onTestSavedACB(){
+        const trimmedInput = input.trim();
+        if (trimmedInput && props.onSaveClick) {
+            props.onSaveClick(trimmedInput);
+            setTimeout(() => {
+                setInput("");
+                setShowChangeName(false);
+            }, 0);
+        }
+    }
+
     function onKeyDownACB(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
             onSavedACB();
         }
-    } 
+    }
+     
+    function onChangeNameACB(){
+        setShowChangeName(true);
+        
+}
+        
+    
 
     // 3.
     async function onSearchMusicACB() {
@@ -47,7 +69,30 @@ export default function ProfileView(props) {
                     <strong> {props.currentCity || "Not Selected"} </strong>
                 </p>
             </section>
-
+            
+            <section className="current-location" onClick={onChangeNameACB}>
+                <p>Name: 
+                    <strong> {props.userName || "Not Selected"} </strong>
+                </p>
+            </section>
+            {showChangeName && (
+                <section className="change-location">
+                <input 
+                    type="text" 
+                    placeholder="Change name" 
+                    value={input} 
+                    onChange={textChangeACB}
+                    onKeyDown={onKeyDownACB}
+                />
+                <button 
+                    onClick={onTestSavedACB}
+                    disabled={props.isSaving}
+                >
+                    {props.isSaving ? "Saving..." : "Save"}
+                </button>
+                </section>
+        )}
+            
             <section className="change-location">
                 <h2>Change City</h2>
                 <input 

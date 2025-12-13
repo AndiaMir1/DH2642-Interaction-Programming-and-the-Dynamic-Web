@@ -8,6 +8,10 @@ export default function ProfilePresenter() {
         reactiveModel.getWeather(newCity);
     }
 
+    function handleSavedNameACB(input){
+        reactiveModel.setUserName(input);
+    }
+
     return useObserver(function renderPresenter() {
 
         const currentCity = reactiveModel.currentCity;
@@ -16,9 +20,12 @@ export default function ProfilePresenter() {
         return (
             <div>
                 <ProfileView
+                    //text = {reactiveModel.searchParams.query}
+                    onTextChange={function handleTextChangeACB(text){reactiveModel.setSearchQuery(text);}}
                     currentCity={currentCity}
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
+                    onTestSaveClick={handleSavedNameACB}
                 />
             </div>
         );

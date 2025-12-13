@@ -27,6 +27,7 @@ export const rootModel = {
     user: undefined,
     currentView: "main",
     currentCity: null,
+    userName: null,
     weatherPromiseState: {},
 
     tracks: [], 
@@ -39,6 +40,10 @@ export const rootModel = {
 
     setCity(city) {
         this.currentCity = city;
+    },
+
+    setUserName(name) {
+        this.userName = name;
     },
 
     setUser(user) {
