@@ -1,1 +1,0 @@
-export const DEEZER_API_URL = "/deezer";

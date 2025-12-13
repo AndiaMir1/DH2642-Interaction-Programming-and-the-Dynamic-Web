@@ -15,10 +15,19 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/deezer': {
-        target: 'https://api.deezer.com',
+      '/spotify-api': {
+        
+        target: 'https://api.spotify.com', 
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/deezer/, '')
+        
+        rewrite: (path) => path.replace(/^\/spotify-api/, '')
+      },
+      '/spotify-auth': {
+        
+        target: 'https://accounts.spotify.com',
+        changeOrigin: true,
+        
+        rewrite: (path) => path.replace(/^\/spotify-auth/, '')
       }
     }
   }
