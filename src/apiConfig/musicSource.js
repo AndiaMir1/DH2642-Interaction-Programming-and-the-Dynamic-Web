@@ -1,7 +1,7 @@
 import { generateCodeVerifier, generateCodeChallenge } from './authUtils';
 
 // Note: No CLIENT_SECRET needed anymore!
-const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const clientId = "0bf46ccccb384414b50e9761bc036e4c"
 const redirectUri = 'http://127.0.0.1:5173/callback'; // Make sure this port matches your local server
 
 // 1. Start Login: Generates security keys and sends user to Spotify
