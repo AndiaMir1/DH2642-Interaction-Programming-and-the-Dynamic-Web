@@ -1,38 +1,44 @@
-import { DEEZER_API_URL } from "./musicConfig";
+var spotifyToken = null;
 
+export function setSpotifyToken(token) {
+    spotifyToken = token;
+}
 
-export const getTrack = async (trackId) => {
-  try {
-    const res = await fetch(`${DEEZER_API_URL}/track/${trackId}`);
-    const data = await res.json();
-    return data; 
-  } catch (error) {
-    console.error("Error fetching track:", error);
-    return null;
-  }
-};
+async function fetchFromSpotify(endpoint) {
+    if (!spotifyToken) {
+        throw new Error("Spotify token missing");
+    }
 
+    var response = await fetch(
+        "https://api.spotify.com/v1" + endpoint,
+        {
+            headers: {
+                Authorization: "Bearer " + spotifyToken
+            }
+        }
+    );
 
-export const getArtist = async (artistId) => {
-  try {
-    const res = await fetch(`${DEEZER_API_URL}/artist/${artistId}`);
-    const data = await res.json();
-    return data; 
-  } catch (error) {
-    console.error("Error fetching artist:", error);
-    return null;
-  }
-};
+    if (!response.ok) {
+        throw new Error("Spotify API error");
+    }
 
+    return await response.json();
+}
 
-export const getGenre = async (genreId) => {
-  if (!genreId) return null;
-  try {
-    const res = await fetch(`${DEEZER_API_URL}/genre/${genreId}`);
-    const data = await res.json();
-    return data; 
-  } catch (error) {
-    console.error("Error fetching genre:", error);
-    return null;
-  }
-};
+export async function searchMusic(query) {
+    if (!query) return [];
+
+    var data = await fetchFromSpotify(
+        "/search?q=" + encodeURIComponent(query) + "&type=track&limit=10"
+    );
+
+    return data.tracks.items;
+}
+
+export async function getTrack(id) {
+    return await fetchFromSpotify("/tracks/" + id);
+}
+
+export async function getArtist(id) {
+    return await fetchFromSpotify("/artists/" + id);
+}

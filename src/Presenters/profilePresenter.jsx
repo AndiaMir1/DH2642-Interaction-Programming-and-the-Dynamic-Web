@@ -1,24 +1,33 @@
 import { useObserver } from "mobx-react-lite";
-import { appStore } from "../model/mobxReactiveModel.jsx";
+import { reactiveModel } from "../model/mobxReactiveModel.jsx";
 import ProfileView  from "/src/Views/profileView.jsx";
-
 export default function ProfilePresenter() {
     function handleSavedACB(newCity) {
-        appStore.setCity(newCity);
-        appStore.getWeather(newCity);
+        reactiveModel.setCity(newCity);
+        reactiveModel.getWeather(newCity);
     }
+    
+    function handleSearchMusicACB(query) {
+    reactiveModel.doMusicSearch(query);
+}
 
-    return useObserver(function renderPresenter() {
 
-        const currentCity = appStore.currentCity;
-        const isLoading = appStore.isLoading;
+    return useObserver(function renderPresenterACB() {
+        
+        const currentCity = reactiveModel.currentCity;
+        const isLoading = reactiveModel.weatherPromiseState.promise && !reactiveModel.weatherPromiseState.data && !reactiveModel.weatherPromiseState.error;
 
         return (
             <div>
                 <ProfileView
+                    currentUsername = {reactiveModel.currentUsername}
                     currentCity={currentCity}
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
+                    
+                    onSearchMusic={handleSearchMusicACB}
+                    searchResults={reactiveModel.searchResultsPromiseState.data || []}
+
                 />
             </div>
         );

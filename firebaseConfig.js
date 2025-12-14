@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyArrq_kIMBcOTnSCP5HxoGx1Y2HHsnrOl0",
-  authDomain: "herecomesthesong-fd7f1.firebaseapp.com",
-  projectId: "herecomesthesong-fd7f1",
-  storageBucket: "herecomesthesong-fd7f1.firebasestorage.app",
-  messagingSenderId: "784065482200",
-  appId: "1:784065482200:web:c40160f7178fc6568bf6ad",
-  measurementId: "G-8LVY19W5XE"
+  apiKey: "AIzaSyA-ZGEqS6vUz0GggvzQWwo0U-89v0qW0SA",
+  authDomain: "herecomesthesong-972a6.firebaseapp.com",
+  projectId: "herecomesthesong-972a6",
+  storageBucket: "herecomesthesong-972a6.firebasestorage.app",
+  messagingSenderId: "606654316172",
+  appId: "1:606654316172:web:88bf84f281f21e4ff545a9",
+  measurementId: "G-BE3MQ3NGDJ"
 };

@@ -1,11 +1,12 @@
 //reactiveModel
 
-import { observable, configure } from "mobx";
-import rootModel from "./appModel.js";
+import { observable, configure, reaction } from "mobx";
+import { rootModel } from "./appModel.js";
 
-configure({ enforceActions: "observed" });
+configure({ enforceActions: "never" }); // Changed to "never" since we're not using MobX actions
 
-export const appStore = observable(rootModel);
-export const reactiveModel = appStore;
+export const reactiveModel = observable(rootModel);
+import {connectToPersistence} from "/src/model/fireStoreModel.js";
+connectToPersistence(reactiveModel, reaction);
+window.appStore = reactiveModel;
 
-window.appStore = appStore;

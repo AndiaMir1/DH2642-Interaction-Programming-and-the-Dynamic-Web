@@ -1,62 +1,174 @@
-import { makeObservable, observable, action } from "mobx";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "./fireStoreModel.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
+import { getTrack, getArtist } from "../apiConfig/musicSource";
+import { searchMusic } from "../apiConfig/musicSource";
 
-// Holds the global state of the application
-class RootModel {
-    isUserLoggedIn = true;
-    user = true;
-    currentView = "main";
-    weatherData = null;
-    isLoading = false;
-    currentCity = null;
+function resolvePromise(promise, stateObject) {
+    stateObject.promise = promise;
+    stateObject.data = null;
+    stateObject.error = null;
 
-    // making properties observable and actions
-    constructor() {
-        makeObservable(this, {
-            isUserLoggedIn: observable,
-            currentView: observable,
-            user: observable,
-
-            weatherData: observable,
-            isLoading: observable,
-            currentCity: observable,
-
-            getWeather: action.bound,
-            setCity: action.bound,
-            setUser: action.bound,
+    promise
+        .then(function(data) {
+            if (stateObject.promise === promise) {
+                stateObject.data = data;
+                stateObject.error = null;
+            }
+        })
+        .catch(function(error) {
+            if (stateObject.promise === promise) {
+                stateObject.data = null;
+                stateObject.error = error;
+            }
         });
-    }
+}
 
-    // Save the selected city in MobX
+export const rootModel = {
+
+    isUserLoggedIn: true,
+    user: undefined,
+    currentView: "main",
+    currentCity: null,
+    currentUsername: null,
+    weatherPromiseState: {},
+    //friends list imp
+    selectedUserUid: null,
+
+    tracks: [], 
+    currentTrackId: null,
+    currentArtistId: null,
+    searchParams: {},
+    currentTrackPromiseState: {},
+    currentArtistPromiseState: {},
+    spotifyToken: null,
+    searchResultsPromiseState: {},
+
+    //friends list imp
+    friends: [],
+
     setCity(city) {
         this.currentCity = city;
-    }
+    },
 
-    // Set user authentication state
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
-    }
+    },
+    
+    setUsername(name) {
+       this.currentUsername = name;
+    },
+    
+    setCurrentTrackId(trackId) {
+        this.currentTrackId = trackId;
+    },
 
-    // Get data from weather API
-    async getWeather(city) {
+    setCurrentArtistId(artistId) {
+        this.currentArtistId = artistId;
+    },
+
+    addToTracks(trackToAdd) {
+        this.tracks = [...this.tracks, trackToAdd];
+    },
+
+    removeFromTracks(trackToRemove) {
+        function shouldWeKeepTrackCB(track) {
+            return trackToRemove.id !== track.id;
+        }
+        this.tracks = this.tracks.filter(shouldWeKeepTrackCB);
+    },
+
+    setSearchQuery(query) {
+        this.searchParams.query = query;
+    },
+
+    setSearchType(type) {
+        this.searchParams.type = type;
+    },
+
+    // friends list imp
+    setFriends(friendsArray) {
+        this.friends = friendsArray;
+    },
+
+    addFriend (friendUid) {
+        if (this.friends.indexOf(friendUid) === -1) {
+            this.friends = [...this.friends, friendUid];
+            this.persistFriends()
+        }
+    },        
+
+
+    removeFriend (friendUid) {
+        function shouldKeepACB(uid) {
+            return uid !== friendUid;
+        }
+        this.friends = this.friends.filter(shouldKeepACB)
+        this.persistFriends();
+    },
+
+    persistFriends () {
+        if (!this.user) return;
+        const docRef = doc(db, "USER", this.user.uid);
+        setDoc(docRef, {friends: this.friends}, {merge : true })
+        .then(function persistSuccessACB() {
+            console.log("friends list updated");
+        })
+        .catch(function persistErrorACB(err) {
+            console.error("Error updating friends list", err);
+        });
+    },
+//OSÄKER!
+    async findUserUidByUsername (username) {
+        if(!username) return null;
+        
+        const userQuery = query(collection(db, "USER"), where("username", "==", username));
+
+            const querySnapshot = await getDocs(userQuery);
+
+            if (querySnapshot.empty) {
+                 console.log("vad fan");
+                return null;
+               
+            }
+            
+           return querySnapshot.docs[0].id;
+    },
+
+
+    getWeather(city) {
         if (!city) {
             console.warn("City is not chosen");
             return;
         }
+        resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
+    },
 
-        this.isLoading = true;
-        this.weatherData = null;
+    setSpotifyToken: function (token) {
+        this.spotifyToken = token;
+    },
 
-        try {
-            const data = await fetchWeatherData(city);
-            this.weatherData = data;
-        } catch (error) {
-            console.error("Failed to fetch weather data:", error);
-        } finally {
-            this.isLoading = false;
+    doMusicSearch: function (query) {
+        resolvePromise(
+            searchMusic(query),
+            this.searchResultsPromiseState
+        );
+    },
+
+    currentTrackEffect() {
+        if (this.currentTrackId) {
+            resolvePromise(getTrack(this.currentTrackId), this.currentTrackPromiseState);
+        } else {
+            this.currentTrackPromiseState = {};
+        }
+    },
+
+    currentArtistEffect() {
+        if (this.currentArtistId) {
+            resolvePromise(getArtist(this.currentArtistId), this.currentArtistPromiseState);
+        } else {
+            this.currentArtistPromiseState = {};
         }
     }
-}
-
-export default new RootModel();
+};
