@@ -24,6 +24,10 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
 
     async function submit() {
         if (isSignUp) {
+            if(!username || username.trim() === ""){
+                setError("Username is required");
+                return;
+            }
             const existingUid = await model.findUserUidByUsername(username);
             if(existingUid !==null){
                 setError("Username already taken");

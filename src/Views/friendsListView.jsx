@@ -1,17 +1,42 @@
 import React, { useState } from "react";
+import { onEnterKey } from "../utils/viewHandlers";
 
 export default function FriendsListView(props) {
-    const [newFriend, setNewFriend] = useState("");
+    const [query, setQuery] = useState("");
+    const [results, setResults] =  useState([]);
+    const [error, setError] = useState(null);
 
     function handleInputACB(event) {
-        setNewFriend(event.target.value);
+        setQuery(event.target.value);
+        setError(null);
     }
 
-    function handleAddACB() {
-        const uid = newFriend.trim();
-        if (uid && props.onAddFriend) {
-            props.onAddFriend(uid);
-            setNewFriend("");
+    async function handleSearchACB() {
+        const trimmed = query.trim();
+        if(!trimmed || !props.onSearch) return;
+        
+        setError(null);
+        const result = await props.onSearch(trimmed);
+            if (!result  || result.length ===0) {
+                setResults([]);
+                setError("user not found");
+            } else {
+                setResults(result);
+                setError(null);
+            }
+        }
+
+    function handleAddFriendACB(uid) {
+        if (props.onSelectFriend) {
+            props.onSelectFriend(uid);
+            setResults([]);
+            setQuery("");
+        }
+    }
+
+    function handleSelectFriendACB(uid) {
+        if (props.onSelectFriend) {
+            props.onSelectFriend(uid);
         }
     }
 
@@ -19,29 +44,54 @@ export default function FriendsListView(props) {
         if (props.onRemoveFriend) {
             props.onRemoveFriend(uid);
         }
+
     }
 
     return (
-        <div className="friends-list">
+    <div className="friends-list">
             <h2>Friends</h2>
-
-            <div className="add-friend">
-                <input
-                    type="newfriend"
-                    value={newFriend}
-                    input="Enter friend UID"
-                    onChange={handleInputACB}
+            <input 
+                type="search-friend"
+                placeholder="Search"
+                value={query}
+                onChange={handleInputACB}
+                
                 />
-                <button onClick={handleAddACB}>Add Friend</button>
-            </div>
+                
+                <button onClick={handleSearchACB}>Search</button>
 
+                {error && <p style={{color: "red"}}>{error}</p>}
+
+                <ul>
+                    {results.map(function (user) {
+                        return (
+                            <li key ={user.uid}>
+                                <button onClick={function() {
+                                    handleAddFriendACB(user.uid);
+                                }}
+                                >
+                                    {user.username}
+                                </button>
+
+                            </li>
+                        );
+                    })}
+                </ul>
+
+     
             <ul>
                 {props.friends.length === 0 && <li>No friends added yet.</li>}
-                {props.friends.map(function(uid) {
+                {props.friends.map(function(user) {
                     return (
                         <li key={uid}>
-                            {uid}{" "}
-                            <button onClick={function() { handleRemoveACB(uid); }}>
+                            <button onClick={function() { handleSelectFriendACB(uid); }}>
+                                {user.username}
+                            </button>
+
+                            <button onClick={function () {
+                                handleSelectFriendACB(uid);
+                            }}
+                            >
                                 Remove
                             </button>
                         </li>

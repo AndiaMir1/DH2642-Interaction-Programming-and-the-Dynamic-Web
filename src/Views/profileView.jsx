@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {onEnterKey} from "../utils/viewHandlers";
+
 import "./style/profileView.css";
 
 export default function ProfileView(props) {
@@ -22,14 +24,7 @@ export default function ProfileView(props) {
         }
     }
    
-    function onKeyDownACB(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            onSavedACB();
-        }
-    }
    
-
     function onSearchMusicACB() {
         if (!artistInput) return;
         if (props.onSearchMusic) {
@@ -61,7 +56,7 @@ export default function ProfileView(props) {
                     placeholder="Enter city name"
                     value={cityInput}
                     onChange={onTextChangeACB}
-                    onKeyDown={onKeyDownACB}
+                    onKeyDown={onEnterKey(onSavedACB)}
                 />
                 <button onClick={onSavedACB} disabled={props.isSaving}>
                     {props.isSaving ? "Saving..." : "Save"}

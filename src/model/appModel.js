@@ -97,7 +97,7 @@ export const rootModel = {
             this.friends = [...this.friends, friendUid];
             this.persistFriends()
         }
-    },        
+    },
 
 
     removeFriend (friendUid) {
@@ -128,11 +128,8 @@ export const rootModel = {
             const querySnapshot = await getDocs(userQuery);
 
             if (querySnapshot.empty) {
-                 console.log("vad fan");
                 return null;
-               
             }
-            
            return querySnapshot.docs[0].id;
     },
 

@@ -1,3 +1,5 @@
+import {onEnterKey} from "../utils/viewHandlers";
+
 export function AuthView(props) {
 
     function handleEmailChangeACB(e) {
@@ -24,14 +26,15 @@ export function AuthView(props) {
     <div>
       <h1></h1>
       <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
-      <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} />
-      <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} />
+      <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} onKeyDown={onEnterKey(handleSubmitACB)}/>
+      <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} onKeyDown={onEnterKey(handleSubmitACB)}/>
 
       {props.isSignUp && (
         <input type="username" 
         value={props.currentUsername}
          placeholder="username" 
-         onChange={handleUsernameChangeACB} 
+         onChange={handleUsernameChangeACB}
+         onKeyDown={onEnterKey(handleSubmitACB)} 
          />
 )}
       
