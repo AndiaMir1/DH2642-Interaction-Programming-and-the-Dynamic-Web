@@ -1,24 +1,31 @@
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 import { getTrack, getArtist } from "../apiConfig/musicSource";
 import { searchMusic } from "../apiConfig/musicSource";
+import { runInAction } from "mobx";
 
 function resolvePromise(promise, stateObject) {
+    runInAction(function initPromiseACB() {
     stateObject.promise = promise;
     stateObject.data = null;
     stateObject.error = null;
+    });
 
     promise
-        .then(function(data) {
+        .then(function promiseReolvedACB(data) {
+            runInAction(function resolvedACB() {
             if (stateObject.promise === promise) {
                 stateObject.data = data;
                 stateObject.error = null;
             }
+            });
         })
-        .catch(function(error) {
+        .catch(function promiseRejectedACB (error) {
+            runInAction(function rejectedACB() {
             if (stateObject.promise === promise) {
                 stateObject.data = null;
                 stateObject.error = error;
-            }
+                }
+            });
         });
 }
 
@@ -27,7 +34,7 @@ export const rootModel = {
     isUserLoggedIn: true,
     user: undefined,
     currentView: "main",
-    currentCity: null,
+    currentCity: undefined,
     //username: null,
     weatherPromiseState: {},
 

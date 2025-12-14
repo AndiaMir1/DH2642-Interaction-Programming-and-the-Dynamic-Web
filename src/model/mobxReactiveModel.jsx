@@ -1,12 +1,12 @@
 //reactiveModel
 
-import { observable, configure, reaction } from "mobx";
+import { makeAutoObservable, configure, reaction } from "mobx";
 import { rootModel } from "./appModel.js";
+import { connectToPersistence } from "/src/model/fireStoreModel.js";
 
-configure({ enforceActions: "never" }); // Changed to "never" since we're not using MobX actions
+configure({ enforceActions: "always" });
 
-export const reactiveModel = observable(rootModel);
-import {connectToPersistence} from "/src/model/fireStoreModel.js";
+export const reactiveModel = makeAutoObservable(rootModel, {}, { autoBind : true });
 connectToPersistence(reactiveModel, reaction);
 window.appStore = reactiveModel;
 

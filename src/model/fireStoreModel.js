@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from "../../firebaseConfig.js";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { runInAction } from "mobx";
 
 // uncomment the following lines when you have your firebaseConfig. Understand what the lines are doing!
 const app = initializeApp(firebaseConfig);
@@ -12,7 +13,7 @@ export const auth = getAuth(app);
 
 //firebase globally available for testing in console
 window.db = db;
-window.doc = doc;        
+window.doc = doc;
 window.setDoc = setDoc;
 
 export function connectToPersistence(model, watchFunction) {
@@ -22,27 +23,36 @@ export function connectToPersistence(model, watchFunction) {
     model.user = undefined;
 
     onAuthStateChanged(auth, function(user) {
-        model.user = user;
+        runInAction(function setUserACB() {
+            model.user = user;
+            model.ready=false;
+        });
 
     if(user) {
     //ref to firestore document where model is stored
     const docRef = doc(db, COLLECTION, user.uid);
-            getDoc(docRef).then(
-                function getDocACB(snapshot) {
+            getDoc(docRef)
+            .then(function getDocACB(snapshot) {
                     //default values:
                     const data = snapshot.data() || {};
+
+                    runInAction(function loadDataACB() {
                     model.currentCity = data.currentCity;
                     //model.username = data.username;
-                    model.getWeather(model.currentCity);
                     //friends list imp
                     model.friends = data.friends || [];
                     model.ready = true;
+                });
+                model.getWeather(model.currentCity);
             })
         .catch(function getDocErrorACB(err) {
             console.error("error: ", err);
-            model.ready = true;
+            runInAction(function errorReadyACB() {
+                model.ready = true;
+            });
         });
     } else {
+        runInAction(function loggedOutACB() {
         model.currentCity = null;
         //model.username = null;
         model.ready = true;
@@ -50,6 +60,7 @@ export function connectToPersistence(model, watchFunction) {
         //likedSongs =[];
         //likedArtist =[];
         //producedPlaylists = [];
+        });
     }
 }); 
 
@@ -62,14 +73,14 @@ export function connectToPersistence(model, watchFunction) {
     }
     //return properties of observed model
     function watchACB() {
-        return [model.currentCity/*,
-                model.username*/];
+        return [model.currentCity,
+                model.username];
         //favorite genre
         //liked songs
         //produced playlists
         //liked artists
     }
-    
+
     // saves model to Firestore when watcherACB results change
     function sideEffectACB() {
         //user imp
@@ -86,9 +97,7 @@ export function connectToPersistence(model, watchFunction) {
 }
     }
 
-     
     //install watcher at setup
         watchFunction(watchACB, sideEffectACB);
 
 }
-        
