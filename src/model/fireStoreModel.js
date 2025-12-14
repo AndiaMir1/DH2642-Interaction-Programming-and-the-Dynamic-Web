@@ -35,6 +35,7 @@ export function connectToPersistence(model, watchFunction) {
                     model.currentCity = data.currentCity ?? null;
                     model.currentUsername = data.username ?? null;
                     model.getWeather(model.currentCity);
+                    model.currentGenre = data.genre ?? null;
                     //friends list imp
                     model.friends = data.friends || [];
                     model.ready = true;
@@ -46,6 +47,7 @@ export function connectToPersistence(model, watchFunction) {
     } else {
         model.currentCity = null;
         model.currentUsername = null;
+        model.currentGenre = null;
         model.ready = true;
         //favoriteGenre=null;
         //likedSongs =[];
@@ -64,7 +66,9 @@ export function connectToPersistence(model, watchFunction) {
     //return properties of observed model
     function watchACB() {
         return [model.currentCity,
-                model.currentUsername];
+                model.currentUsername,
+                model.currentGenre
+            ];
         //favorite genre
         //liked songs
         //produced playlists
@@ -79,7 +83,8 @@ export function connectToPersistence(model, watchFunction) {
             //only saves if model is ready (data has been loaded)
             setDoc(docRef, {
                currentCity: model.currentCity,
-               username: model.currentUsername
+               username: model.currentUsername,
+               genre: model.currentGenre
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success

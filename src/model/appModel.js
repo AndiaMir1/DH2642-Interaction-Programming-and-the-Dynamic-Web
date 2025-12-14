@@ -44,6 +44,8 @@ export const rootModel = {
     spotifyToken: null,
     searchResultsPromiseState: {},
 
+    currentGenre: null,
+
     //friends list imp
     friends: [],
 
@@ -58,6 +60,10 @@ export const rootModel = {
     
     setUsername(name) {
        this.currentUsername = name;
+    },
+
+    setGenre(genre) {
+        this.currentGenre = genre;
     },
     
     setCurrentTrackId(trackId) {

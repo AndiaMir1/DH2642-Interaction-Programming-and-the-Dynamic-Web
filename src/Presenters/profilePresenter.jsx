@@ -11,6 +11,12 @@ export default function ProfilePresenter() {
     reactiveModel.doMusicSearch(query);
 }
 
+function handleGenreChangeACB(newGenre) {
+        if (reactiveModel.setGenre) {
+            reactiveModel.setGenre(newGenre); 
+        }
+    }
+
 
     return useObserver(function renderPresenterACB() {
         
@@ -27,6 +33,9 @@ export default function ProfilePresenter() {
                     
                     onSearchMusic={handleSearchMusicACB}
                     searchResults={reactiveModel.searchResultsPromiseState.data || []}
+
+                    currentGenre={reactiveModel.currentGenre} 
+                    onGenreChange={handleGenreChangeACB}
 
                 />
             </div>
