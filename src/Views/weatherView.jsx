@@ -1,4 +1,5 @@
 import React from "react";
+import "./style/weatherView.css";
 
 export default function WeatherView(props) {
 
