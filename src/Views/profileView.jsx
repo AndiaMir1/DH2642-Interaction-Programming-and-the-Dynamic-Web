@@ -3,10 +3,16 @@ import "./style/profileView.css";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
+    const [usernameInput, setUsernameInput] = useState("");
     const [artistInput, setArtistInput] = useState("");
+    const [showUsernameChange, setShowUsernameChange] = useState(false);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
+    }
+
+    function onUsernameChangeACB(event) {
+        setUsernameInput(event.target.value);
     }
    
 
@@ -21,11 +27,31 @@ export default function ProfileView(props) {
             setCityInput("");
         }
     }
+
+    function onUsernameKeySavedACB() {
+        var trimmedUsername = usernameInput.trim();
+        if (trimmedUsername && props.onUsernameChange) {
+            props.onUsernameChange(trimmedUsername);
+            setUsernameInput("");
+            setShowUsernameChange(false);
+        }
+    }
+
+    function onUsernameClickACB() {
+        setShowUsernameChange(true);
+    }
    
     function onKeyDownACB(event) {
         if (event.key === "Enter") {
             event.preventDefault();
             onSavedACB();
+        }
+    }
+
+    function onUsernameKeyDownACB(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            onUsernameKeySavedACB();
         }
     }
    
@@ -47,12 +73,28 @@ export default function ProfileView(props) {
                     <strong> {props.currentCity || "Not Selected"} </strong>
                 </p>
             </section>
-            <section className="current-location" >
+            <section className="current-location" onClick={onUsernameClickACB}>
                 <p>
                     Username:
                     <strong> {props.currentUsername || "Not Selected"} </strong>
                 </p>
             </section>
+
+            {showUsernameChange && (
+                <section className="change-location">
+                    <h2>Change Username</h2>
+                    <input
+                        type="text"
+                        placeholder="Enter new username"
+                        value={usernameInput}
+                        onChange={onUsernameChangeACB}
+                        onKeyDown={onUsernameKeyDownACB}
+                    />
+                    <button onClick={onUsernameKeySavedACB} disabled={props.isSaving}>
+                        {props.isSaving ? "Saving..." : "Save"}
+                    </button>
+                </section>
+            )}
 
             <section className="change-location">
                 <h2>Change City</h2>

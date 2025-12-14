@@ -33,16 +33,30 @@ export function AuthView(props) {
     <div className="auth-view">
       <h1>Here Comes the Song</h1>
       <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
-      <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} />
-      <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} />
+      <input 
+        type="email" 
+        value={props.email} 
+        placeholder="Email" 
+        onChange={handleEmailChangeACB} 
+        onKeyDown={handleKeyDownACB}
+      />
+      <input 
+        type="password" 
+        value={props.password} 
+        placeholder="Password" 
+        onChange={handlePasswordChangeACB} 
+        onKeyDown={handleKeyDownACB}
+      />
 
       {props.isSignUp && (
-        <input type="username" 
-        value={props.currentUsername}
-         placeholder="username" 
-         onChange={handleUsernameChangeACB} 
-         />
-)}
+        <input 
+          type="text" 
+          value={props.currentUsername}
+          placeholder="Username" 
+          onChange={handleUsernameChangeACB} 
+          onKeyDown={handleKeyDownACB}
+        />
+      )}
       
 
       {props.error && <div style={{ color: "purple" }}>{props.error}</div>}

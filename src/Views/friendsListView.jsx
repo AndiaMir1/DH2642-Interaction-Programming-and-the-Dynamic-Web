@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./style/friendsListView.css";
 
 export default function FriendsListView(props) {
     const [newFriend, setNewFriend] = useState("");
@@ -15,6 +16,13 @@ export default function FriendsListView(props) {
         }
     }
 
+    function handleKeyDownACB(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleAddACB();
+        }
+    }
+
     function handleRemoveACB(uid) {
         if (props.onRemoveFriend) {
             props.onRemoveFriend(uid);
@@ -27,10 +35,11 @@ export default function FriendsListView(props) {
 
             <div className="add-friend">
                 <input
-                    type="newfriend"
+                    type="text"
                     value={newFriend}
-                    input="Enter friend UID"
+                    placeholder="Enter friend UID"
                     onChange={handleInputACB}
+                    onKeyDown={handleKeyDownACB}
                 />
                 <button onClick={handleAddACB}>Add Friend</button>
             </div>
