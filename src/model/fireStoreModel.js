@@ -5,7 +5,8 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 // uncomment the following lines when you have your firebaseConfig. Understand what the lines are doing!
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
+
 const COLLECTION="USER";
 //user imp
 export const auth = getAuth(app);
@@ -31,8 +32,8 @@ export function connectToPersistence(model, watchFunction) {
                 function getDocACB(snapshot) {
                     //default values:
                     const data = snapshot.data() || {};
-                    model.currentCity = data.currentCity;
-                    //model.username = data.username;
+                    model.currentCity = data.currentCity ?? null;
+                    model.currentUsername = data.username ?? null;
                     model.getWeather(model.currentCity);
                     //friends list imp
                     model.friends = data.friends || [];
@@ -44,7 +45,7 @@ export function connectToPersistence(model, watchFunction) {
         });
     } else {
         model.currentCity = null;
-        //model.username = null;
+        model.currentUsername = null;
         model.ready = true;
         //favoriteGenre=null;
         //likedSongs =[];
@@ -62,8 +63,8 @@ export function connectToPersistence(model, watchFunction) {
     }
     //return properties of observed model
     function watchACB() {
-        return [model.currentCity/*,
-                model.username*/];
+        return [model.currentCity,
+                model.currentUsername];
         //favorite genre
         //liked songs
         //produced playlists
@@ -78,8 +79,8 @@ export function connectToPersistence(model, watchFunction) {
             //only saves if model is ready (data has been loaded)
             setDoc(docRef, {
                currentCity: model.currentCity,
-               /*username: model.username*/
-            }, {merge : true })
+               username: model.currentUsername
+            }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
             .catch(persistErrorACB); //error

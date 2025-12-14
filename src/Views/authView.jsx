@@ -9,7 +9,7 @@ export function AuthView(props) {
     }
 
     function handleUsernameChangeACB(e) {
-      props.setDisplayName(e.target.value);
+      props.setUsername(e.target.value);
     }
 
     function handleToggleACB() {
@@ -28,8 +28,8 @@ export function AuthView(props) {
       <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} />
 
       {props.isSignUp && (
-        <input type="displayName" 
-        value={props.displayName}
+        <input type="username" 
+        value={props.currentUsername}
          placeholder="username" 
          onChange={handleUsernameChangeACB} 
          />

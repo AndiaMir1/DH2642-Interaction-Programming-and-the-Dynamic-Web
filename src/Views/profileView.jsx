@@ -3,17 +3,12 @@ import "./style/profileView.css";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
-    const [input, setInput] = useState("");
     const [artistInput, setArtistInput] = useState("");
-    const [showChangeName, setShowChangeName] = useState(false);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
-
-    function textChangeACB(event) {
-        setInput(event.target.value);
-    }
+   
 
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
@@ -26,26 +21,14 @@ export default function ProfileView(props) {
             setCityInput("");
         }
     }
-
-    function onTestSavedACB() {
-        var trimmedInput = input.trim();
-        if (trimmedInput && props.onTestSaveClick) {
-             setInput("");
-            props.onTestSaveClick(trimmedInput);
-           setShowChangeName(false);
-        }
-    }
-
+   
     function onKeyDownACB(event) {
         if (event.key === "Enter") {
             event.preventDefault();
             onSavedACB();
         }
     }
-
-    function onChangeNameACB() {
-        setShowChangeName(true);
-    }
+   
 
     function onSearchMusicACB() {
         if (!artistInput) return;
@@ -58,34 +41,17 @@ export default function ProfileView(props) {
         <div className="profile-view">
             <h1>My Profile</h1>
 
-            <section className="current-location">
-                <h2>Current City</h2>
+            <section className="current-location">             
                 <p>
-                    City:
+                    Hometown:
                     <strong> {props.currentCity || "Not Selected"} </strong>
                 </p>
             </section>
-
-            <section className="current-location" onClick={onChangeNameACB}>
+            <section className="current-location" >
                 <p>
-                    User name:
-                    <strong> {props.userName || "Not Selected"} </strong>
+                    Username:
+                    <strong> {props.currentUsername || "Not Selected"} </strong>
                 </p>
-
-                {showChangeName && (
-                    <section className="change-location">
-                        <input
-                            type="text"
-                            placeholder="Change name"
-                            value={input}
-                            onChange={textChangeACB}
-                            
-                        />
-                        <button onClick={onTestSavedACB} disabled={props.isSaving}>
-                            {props.isSaving ? "Saving..." : "Save"}
-                        </button>
-                    </section>
-                )}
             </section>
 
             <section className="change-location">

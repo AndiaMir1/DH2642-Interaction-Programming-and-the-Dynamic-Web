@@ -1,3 +1,5 @@
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "./fireStoreModel.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 import { getTrack, getArtist } from "../apiConfig/musicSource";
 import { searchMusic } from "../apiConfig/musicSource";
@@ -28,8 +30,10 @@ export const rootModel = {
     user: undefined,
     currentView: "main",
     currentCity: null,
-    //username: null,
+    currentUsername: null,
     weatherPromiseState: {},
+    //friends list imp
+    selectedUserUid: null,
 
     tracks: [], 
     currentTrackId: null,
@@ -51,11 +55,11 @@ export const rootModel = {
         this.user = user;
         this.isUserLoggedIn = !!user;
     },
-
-    userName() {
-        return this.user?.displayName || "";
+    
+    setUsername(name) {
+       this.currentUsername = name;
     },
-
+    
     setCurrentTrackId(trackId) {
         this.currentTrackId = trackId;
     },
@@ -115,6 +119,23 @@ export const rootModel = {
             console.error("Error updating friends list", err);
         });
     },
+//OSÄKER!
+    async findUserUidByUsername (username) {
+        if(!username) return null;
+        
+        const userQuery = query(collection(db, "USER"), where("username", "==", username));
+
+            const querySnapshot = await getDocs(userQuery);
+
+            if (querySnapshot.empty) {
+                 console.log("vad fan");
+                return null;
+               
+            }
+            
+           return querySnapshot.docs[0].id;
+    },
+
 
     getWeather(city) {
         if (!city) {
@@ -123,8 +144,6 @@ export const rootModel = {
         }
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
     },
-
-    
 
     setSpotifyToken: function (token) {
         this.spotifyToken = token;
