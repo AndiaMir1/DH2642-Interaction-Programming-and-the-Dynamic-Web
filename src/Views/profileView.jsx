@@ -10,6 +10,12 @@ export default function ProfileView(props) {
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
+
+    function onGenreChangeACB(event) {
+        if (props.onGenreChange) {
+            props.onGenreChange(event.target.value);
+        }
+    }
    
 
     function onArtistChangeACB(event) {
@@ -61,6 +67,26 @@ export default function ProfileView(props) {
                 <button onClick={onSavedACB} disabled={props.isSaving}>
                     {props.isSaving ? "Saving..." : "Save"}
                 </button>
+            </section>
+
+            <section className="change-genre" style={{ marginTop: "20px" }}>
+                <h2>Favorite Genre</h2>
+                <p>Pick a vibe for your weather recommendations:</p>
+                <select 
+                    value={props.currentGenre || ""} 
+                    onChange={onGenreChangeACB}
+                    style={{ padding: "8px", fontSize: "1rem" }}
+                >
+                    <option value="" disabled>Select a genre...</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hip-hop">Hip Hop</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="classical">Classical</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="country">Country</option>
+                    <option value="r-n-b">R&B</option>
+                </select>
             </section>
 
             {/* 🎵 Spotify test */}
