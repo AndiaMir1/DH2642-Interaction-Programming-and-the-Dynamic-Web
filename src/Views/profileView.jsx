@@ -1,34 +1,45 @@
-import React, { useState } from "react";
-import {onEnterKey} from "../utils/viewHandlers";
-
+import React, { useState, useEffect } from "react";
+import { onEnterKey } from "../utils/viewHandlers";
 import "./style/profileView.css";
+import { searchMusic, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [usernameInput, setUsernameInput] = useState("");
     const [artistInput, setArtistInput] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
     const [showUsernameChange, setShowUsernameChange] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("spotifyToken");
+        if (token) {
+            getCurrentUser(token).then((data) => {
+                console.log("🕵️ IDENTITY CHECK:");
+                console.log("Name:", data.display_name);
+                console.log("Email:", data.email);
+                console.log("ID:", data.id);
+            }).catch(() => {});
+        }
+    }, []);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
 
     function onGenreChangeACB(event) {
-        if (props.onGenreChange) {
-            props.onGenreChange(event.target.value);
-        }
+        if (props.onGenreChange) props.onGenreChange(event.target.value);
     }
+
     function onUsernameChangeACB(event) {
         setUsernameInput(event.target.value);
     }
-   
 
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
     }
 
     function onSavedACB() {
-        var trimmedCity = cityInput.trim();
+        const trimmedCity = cityInput.trim();
         if (trimmedCity && props.onSaveClick) {
             props.onSaveClick(trimmedCity);
             setCityInput("");
@@ -36,7 +47,7 @@ export default function ProfileView(props) {
     }
 
     function onUsernameKeySavedACB() {
-        var trimmedUsername = usernameInput.trim();
+        const trimmedUsername = usernameInput.trim();
         if (trimmedUsername && props.onUsernameChange) {
             props.onUsernameChange(trimmedUsername);
             setUsernameInput("");
@@ -47,29 +58,33 @@ export default function ProfileView(props) {
     function onUsernameClickACB() {
         setShowUsernameChange(true);
     }
-   
-   
-    function onSearchMusicACB() {
+
+    async function onSearchMusicACB() {
         if (!artistInput) return;
-        if (props.onSearchMusic) {
-            props.onSearchMusic(artistInput);
+        const token = localStorage.getItem("spotifyToken");
+        if (!token) {
+            alert("You need to log in below first!");
+            return;
         }
+        const results = await searchMusic(artistInput, token);
+        setSearchResults(results || []);
     }
 
     return (
         <div className="profile-view">
             <h1>My Profile</h1>
 
-            <section className="current-location">             
+            <section className="current-location">
                 <p>
                     Hometown:
                     <strong> {props.currentCity || "Not Selected"} </strong>
                 </p>
             </section>
+
             <section className="current-location" onClick={onUsernameClickACB}>
                 <p>
                     Username:
-                    <strong> {props.currentUsername || "Not Selected"} </strong>
+                    <strong> {props.currentUsername || props.userName || "Not Selected"} </strong>
                 </p>
             </section>
 
@@ -106,11 +121,7 @@ export default function ProfileView(props) {
             <section className="change-genre" style={{ marginTop: "20px" }}>
                 <h2>Favorite Genre</h2>
                 <p>Pick a vibe for your weather recommendations:</p>
-                <select 
-                    value={props.currentGenre || ""} 
-                    onChange={onGenreChangeACB}
-                    style={{ padding: "8px", fontSize: "1rem" }}
-                >
+                <select value={props.currentGenre || ""} onChange={onGenreChangeACB} style={{ padding: "8px", fontSize: "1rem" }}>
                     <option value="" disabled>Select a genre...</option>
                     <option value="pop">Pop</option>
                     <option value="rock">Rock</option>
@@ -123,39 +134,29 @@ export default function ProfileView(props) {
                 </select>
             </section>
 
-            {/* 🎵 Spotify test */}
-            <section
-                className="music-test"
-                style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}
-            >
+            <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
                 <h2>🎵 Test Spotify API</h2>
+                <button
+                    onClick={redirectToSpotifyLogin}
+                    style={{ marginBottom: "15px", backgroundColor: "#1DB954", color: "white", border: "none", padding: "8px 15px", borderRadius: "20px", cursor: "pointer" }}
+                >
+                    Log in with Spotify
+                </button>
 
-                <input
-                    type="text"
-                    placeholder="Type an artist (e.g. Queen)"
-                    value={artistInput}
-                    onChange={onArtistChangeACB}
-                />
+                <br />
 
+                <input type="text" placeholder="Type an artist (e.g. Queen)" value={artistInput} onChange={(e) => setArtistInput(e.target.value)} />
                 <button onClick={onSearchMusicACB}>Search Songs</button>
 
                 <div style={{ marginTop: "15px", textAlign: "left" }}>
-                    {(props.searchResults || []).map(function (track) {
-                        return (
-                            <div
-                                key={track.id}
-                                style={{ padding: "8px", borderBottom: "1px solid #ddd" }}
-                            >
-                                <strong>{track.name}</strong>
-                                <span style={{ marginLeft: "10px", color: "gray" }}>
-                                    {track.artists[0].name}
-                                </span>
-                            </div>
-                        );
-                    })}
+                    {searchResults.map((track) => (
+                        <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
+                            <strong>{track.name}</strong>
+                            <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>
     );
-
 }

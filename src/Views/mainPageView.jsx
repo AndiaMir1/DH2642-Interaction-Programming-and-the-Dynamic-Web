@@ -5,6 +5,7 @@ import WeatherPresenter from "../Presenters/weatherPresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
+import CallbackView from "./CallbackView";
 import FriendsPresenter from "../Presenters/friendsPresenter";
 import HomePage from "./HomePage.jsx";
 
@@ -41,6 +42,11 @@ export function MainPage (props) {
                     <Route path="/authpage"
                         element={<AuthPage model={props.model}/>}
                         />
+
+                    <Route 
+                        path="/callback" 
+                        element={<CallbackView model={props.model} />} 
+                    />
 
                     <Route
                         path="*"

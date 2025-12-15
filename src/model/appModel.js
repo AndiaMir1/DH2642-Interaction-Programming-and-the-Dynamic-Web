@@ -35,6 +35,8 @@ export const rootModel = {
     //friends list imp
     selectedUserUid: null,
 
+    spotifyToken: null,
+
     tracks: [], 
     currentTrackId: null,
     currentArtistId: null,
@@ -60,6 +62,10 @@ export const rootModel = {
     
     setUsername(name) {
        this.currentUsername = name;
+    },
+
+    setSpotifyToken(token) {  // <--- NEW
+        this.spotifyToken = token;
     },
 
     setGenre(genre) {
@@ -160,8 +166,8 @@ export const rootModel = {
     },
 
     currentTrackEffect() {
-        if (this.currentTrackId) {
-            resolvePromise(getTrack(this.currentTrackId), this.currentTrackPromiseState);
+        if (this.currentTrackId && this.spotifyToken) { // <--- CHECK FOR TOKEN
+            resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
         } else {
             this.currentTrackPromiseState = {};
         }
