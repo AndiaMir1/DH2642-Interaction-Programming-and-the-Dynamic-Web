@@ -3,6 +3,7 @@ import { db } from "./fireStoreModel.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
 import { getTrack, getArtist } from "../apiConfig/musicSource";
 import { searchMusic } from "../apiConfig/musicSource";
+import { setDoc, doc } from "firebase/firestore";
 
 function resolvePromise(promise, stateObject) {
     stateObject.promise = promise;
@@ -63,9 +64,13 @@ export const rootModel = {
     setUsername(name) {
        this.currentUsername = name;
     },
-
+    /**ska denna vara här, finns en liknande längre ner ? */
     setSpotifyToken(token) {  // <--- NEW
         this.spotifyToken = token;
+    },
+
+    setFriends(friendsArray) {
+        this.friends = friendsArray;
     },
 
     setGenre(genre) {
@@ -99,22 +104,20 @@ export const rootModel = {
         this.searchParams.type = type;
     },
 
-    // friends list imp
-    setFriends(friendsArray) {
-        this.friends = friendsArray;
-    },
+    addFriend (friendObject) {
+        const exists = this.friends.some(function(pal) {
+            return pal.uid === friendObject.uid;
+        });
 
-    addFriend (friendUid) {
-        if (this.friends.indexOf(friendUid) === -1) {
-            this.friends = [...this.friends, friendUid];
-            this.persistFriends()
+        if(!exists) {
+            this.friends.push(friendObject);
+            this.persistFriends();
         }
     },
 
-
     removeFriend (friendUid) {
-        function shouldKeepACB(uid) {
-            return uid !== friendUid;
+        function shouldKeepACB(pal) {
+            return pal.uid !== friendUid;
         }
         this.friends = this.friends.filter(shouldKeepACB)
         this.persistFriends();
@@ -122,8 +125,13 @@ export const rootModel = {
 
     persistFriends () {
         if (!this.user) return;
+
         const docRef = doc(db, "USER", this.user.uid);
-        setDoc(docRef, {friends: this.friends}, {merge : true })
+        const friendsToPersist = this.friends.map(function(friend) {
+            return { uid: friend.uid, username: friend.username};
+        });
+
+        setDoc(docRef, {friends: friendsToPersist}, {merge : true })
         .then(function persistSuccessACB() {
             console.log("friends list updated");
         })
@@ -131,7 +139,7 @@ export const rootModel = {
             console.error("Error updating friends list", err);
         });
     },
-//OSÄKER!
+
     async findUserUidByUsername (username) {
         if(!username) return null;
         
@@ -142,7 +150,9 @@ export const rootModel = {
             if (querySnapshot.empty) {
                 return null;
             }
-           return querySnapshot.docs[0].id;
+
+           const docSnap = querySnapshot.docs[0];
+           return {uid: docSnap.id, username: docSnap.data().username };
     },
 
 
@@ -154,6 +164,7 @@ export const rootModel = {
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
     },
 
+    
     setSpotifyToken: function (token) {
         this.spotifyToken = token;
     },

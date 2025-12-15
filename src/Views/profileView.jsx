@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/profileView.css";
 import { searchMusic, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
@@ -27,13 +27,16 @@ export default function ProfileView(props) {
     }
 
     function onGenreChangeACB(event) {
-        if (props.onGenreChange) props.onGenreChange(event.target.value);
+        //if (props.onGenreChange) {
+            props.onGenreChange(event.target.value);
+        //}
     }
 
     function onUsernameChangeACB(event) {
         setUsernameInput(event.target.value);
     }
 
+   
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
     }

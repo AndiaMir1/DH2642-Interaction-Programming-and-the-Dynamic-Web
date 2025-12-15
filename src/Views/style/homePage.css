@@ -2,7 +2,7 @@
 
 .home-page {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: fit-content(100%) 1fr;
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -20,6 +20,7 @@
     overflow: hidden;
     transition: var(--transition);
     position: relative; /* Ensure normal document flow */
+    margin-left: -12rem;
 }
 
 .home-page .weather-widget:hover {
@@ -36,6 +37,7 @@
     color: var(--primary);
     font-size: 1.2rem;
     font-weight: 600;
+
 }
 
 .home-page .weather-info {

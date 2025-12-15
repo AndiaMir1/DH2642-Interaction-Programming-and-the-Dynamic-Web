@@ -49,7 +49,7 @@ export function connectToPersistence(model, watchFunction) {
         model.currentUsername = null;
         model.currentGenre = null;
         model.ready = true;
-        //favoriteGenre=null;
+        model.friends = [];
         //likedSongs =[];
         //likedArtist =[];
         //producedPlaylists = [];
@@ -67,7 +67,8 @@ export function connectToPersistence(model, watchFunction) {
     function watchACB() {
         return [model.currentCity,
                 model.currentUsername,
-                model.currentGenre
+                model.currentGenre,
+                model.friends
             ];
         //favorite genre
         //liked songs
@@ -84,7 +85,8 @@ export function connectToPersistence(model, watchFunction) {
             setDoc(docRef, {
                currentCity: model.currentCity,
                username: model.currentUsername,
-               genre: model.currentGenre
+               genre: model.currentGenre,
+               friends: model.friends
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
