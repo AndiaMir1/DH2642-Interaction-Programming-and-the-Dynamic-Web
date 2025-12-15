@@ -1,4 +1,5 @@
 import {onEnterKey} from "../utils/viewHandlers";
+import "./style/authView.css";
 
 export function AuthView(props) {
 
@@ -23,20 +24,33 @@ export function AuthView(props) {
     }
 
   return (
-    <div>
-      <h1></h1>
+    <div className="auth-view">
+      <h1>Here Comes the Song</h1>
       <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
-      <input type="email" value={props.email} placeholder="email" onChange={handleEmailChangeACB} onKeyDown={onEnterKey(handleSubmitACB)}/>
-      <input type="password" value={props.password} placeholder="password" onChange={handlePasswordChangeACB} onKeyDown={onEnterKey(handleSubmitACB)}/>
+      <input 
+        type="email" 
+        value={props.email} 
+        placeholder="Email" 
+        onChange={handleEmailChangeACB} 
+        onKeyDown={onEnterKey(handleSubmitACB)}
+      />
+      <input 
+        type="password" 
+        value={props.password} 
+        placeholder="Password" 
+        onChange={handlePasswordChangeACB} 
+        onKeyDown={onEnterKey(handleSubmitACB)}
+      />
 
       {props.isSignUp && (
-        <input type="username" 
-        value={props.currentUsername}
-         placeholder="username" 
-         onChange={handleUsernameChangeACB}
-         onKeyDown={onEnterKey(handleSubmitACB)} 
-         />
-)}
+        <input 
+          type="text" 
+          value={props.currentUsername}
+          placeholder="Username" 
+          onChange={handleUsernameChangeACB} 
+          onKeyDown={onEnterKey(handleSubmitACB)}
+        />
+      )}
       
 
       {props.error && <div style={{ color: "purple" }}>{props.error}</div>}

@@ -6,6 +6,7 @@ import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
 import FriendsPresenter from "../Presenters/friendsPresenter";
+import HomePage from "./HomePage.jsx";
 
 
 
@@ -20,7 +21,7 @@ export function MainPage (props) {
                 <Routes>
                     <Route
                         path="/"
-                        element={<h1>Welcome to Here Comes the Song</h1>}
+                        element={<HomePage />}
                     />
                     <Route
                         path="/profile"

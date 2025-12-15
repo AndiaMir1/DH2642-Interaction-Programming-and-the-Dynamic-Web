@@ -1,0 +1,66 @@
+@import './variables.css';
+
+.friends-list {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.friends-list h2 {
+    margin-bottom: 2rem;
+}
+
+.add-friend {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.add-friend input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.add-friend button {
+    white-space: nowrap;
+}
+
+.friends-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.friends-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    color: var(--primary);
+}
+
+.friends-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.friends-list li button {
+    background: #ff4757;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    min-height: 36px;
+}
+
+.friends-list li button:hover {
+    background: #ff3838;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { onEnterKey } from "../utils/viewHandlers";
+import "./style/friendsListView.css";
 
 export default function FriendsListView(props) {
     const [query, setQuery] = useState("");
@@ -40,6 +41,13 @@ export default function FriendsListView(props) {
         }
     }
 
+    function handleKeyDownACB(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleAddACB();
+        }
+    }
+
     function handleRemoveACB(uid) {
         if (props.onRemoveFriend) {
             props.onRemoveFriend(uid);
@@ -50,12 +58,14 @@ export default function FriendsListView(props) {
     return (
     <div className="friends-list">
             <h2>Friends</h2>
-            <input 
-                type="search-friend"
-                placeholder="Search"
-                value={query}
-                onChange={handleInputACB}
-                
+
+            <div className="add-friend">
+                <input
+                    type="text"
+                    value={newFriend /**query */}
+                    placeholder="Search"
+                    onChange={handleInputACB}
+                    onKeyDown={handleKeyDownACB}
                 />
                 
                 <button onClick={handleSearchACB}>Search</button>
@@ -99,5 +109,6 @@ export default function FriendsListView(props) {
                 })}
             </ul>
         </div>
+     </div>   
     );
 }

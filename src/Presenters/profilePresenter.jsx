@@ -6,6 +6,10 @@ export default function ProfilePresenter() {
         reactiveModel.setCity(newCity);
         reactiveModel.getWeather(newCity);
     }
+
+    function handleUsernameChangeACB(newUsername) {
+        reactiveModel.setUsername(newUsername);
+    }
     
     function handleSearchMusicACB(query) {
     reactiveModel.doMusicSearch(query);
@@ -30,6 +34,7 @@ function handleGenreChangeACB(newGenre) {
                     currentCity={currentCity}
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
+                    onUsernameChange={handleUsernameChangeACB}
                     
                     onSearchMusic={handleSearchMusicACB}
                     searchResults={reactiveModel.searchResultsPromiseState.data || []}

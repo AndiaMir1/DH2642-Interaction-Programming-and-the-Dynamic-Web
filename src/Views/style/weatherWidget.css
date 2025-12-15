@@ -1,0 +1,84 @@
+@import './variables.css';
+
+.weather-widget {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.weather-widget:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.weather-widget-content {
+    padding: 1.5rem;
+}
+
+.weather-widget h3 {
+    margin: 0 0 1rem 0;
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.weather-details {
+    flex: 1;
+}
+
+.city-name {
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.temperature {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.description {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--secondary);
+    text-transform: capitalize;
+}
+
+.no-weather {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .weather-widget {
+        margin-bottom: 1rem;
+    }
+    
+    .weather-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+}
