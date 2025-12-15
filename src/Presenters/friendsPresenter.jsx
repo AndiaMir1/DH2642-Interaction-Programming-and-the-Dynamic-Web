@@ -1,43 +1,42 @@
-import { useObserver } from "mobx-react-lite";
-import { reactiveModel } from "../model/mobxReactiveModel.jsx";
-import FriendsListView from "../Views/FriendsListView";
+import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
+import FriendsListView from "/src/Views/friendsListView";
+const FriendsList = observer(
+    function FriendsListRender(props){
+        const navigate = useNavigate();
+        const friends = props.model.friends;
 
-export default function FriendsPresenter() {
-    const navigate = useNavigate();
+        function handleSearchACB(username) {
+            if (!username) return Promise.resolve([]);
 
-    function handleSearchACB(username) {
-    if (!username) return Promise.resolve([]);
-
-    return reactiveModel.findUserUidByUsername(username).then(function(friendObject) {
-        if (!friendObject) return [];
-        return [friendObject];
+            return props.model.findUserUidByUsername(username).then(function(friendObject) {
+            if (!friendObject) return [];
+            return [friendObject];
             });
         }
 
-    function handleAddFriendsACB(friendObject) {
-            reactiveModel.addFriend(friendObject);
+        function handleAddFriendsACB(friendObject) {
+                props.model.addFriend(friendObject);
+            }
+
+        function handleRemoveACB(uid) {
+            props.model.removeFriend(uid);
+                }
+        
+
+        function handleSelectFriendACB(uid) {
+            props.model.selectedUserUid = uid;
+            navigate(`/friendsProfileView`);
         }
 
-    function handleRemoveACB(uid) {
-        reactiveModel.removeFriend(uid);
-            }
-    
 
-    function handleSelectFriendACB(uid) {
-        reactiveModel.selectedUserUid = uid;
-        navigate(`/friendsProfileView`);
+        return <FriendsListView friends={friends}
+                                onSearch={handleSearchACB}
+                                onAddFriend={handleAddFriendsACB}
+                                onRemoveFriend={handleRemoveACB}
+                                onSelectFriend={handleSelectFriendACB}
+        
+        />;
     }
-
-    return useObserver(function renderPresenterACB() {
-        return (
-            <FriendsListView
-                friends={reactiveModel.friends}
-                onSearch={handleSearchACB}
-                onAddFriend={handleAddFriendsACB}
-                onRemoveFriend={handleRemoveACB}
-                onSelectFriend={handleSelectFriendACB}
-            />
-        );
-    });
-}
+);
+export {FriendsList}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {onEnterKey} from "../utils/viewHandlers";
 
 import "./style/profileView.css";
@@ -14,15 +14,15 @@ export default function ProfileView(props) {
     }
 
     function onGenreChangeACB(event) {
-        if (props.onGenreChange) {
+        //if (props.onGenreChange) {
             props.onGenreChange(event.target.value);
-        }
+        //}
     }
+
     function onUsernameChangeACB(event) {
         setUsernameInput(event.target.value);
     }
    
-
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
     }
