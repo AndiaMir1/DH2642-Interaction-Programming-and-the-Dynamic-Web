@@ -1,5 +1,6 @@
 
 import { observer } from "mobx-react-lite";
+import {SuspenseView} from "/src/Views/suspenseView.jsx";
 import WeatherView from "/src/Views/weatherView.jsx";
 const Weather = observer(
     function WeatherRender(props){
