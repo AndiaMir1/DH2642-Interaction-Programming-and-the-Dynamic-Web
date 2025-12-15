@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { auth } from "../model/fireStoreModel";
 import { AuthView } from "../Views/authView";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 
 export const AuthPresenter= observer(function AuthPresenter(props) {
     const model = props.model;
@@ -11,6 +11,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     const [password, setPassword] = useState("");
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState("");
+    const [username, setUsername] = useState("");
 
     function toggleMode() {
         setIsSignUp(!isSignUp);
@@ -21,17 +22,32 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
         setError(err.message);
     }
 
-    function submit() {
+    async function submit() {
         if (isSignUp) {
+            if(!username || username.trim() === ""){
+                setError("Username is required");
+                return;
+            }
+            const existingUid = await model.findUserUidByUsername(username);
+            if(existingUid !==null){
+                setError("Username already taken");
+                return;
+            }
+            
             createUserWithEmailAndPassword(auth, email, password)
             .then(function(userCredential) {
                 model.setUser(userCredential.user);
-            })
+                model.setUsername(username);
+                
+                })
                 .catch(handleAuthError);
+                
+
         } else {
             signInWithEmailAndPassword(auth, email, password)
             .then(function(userCredential) {
                 model.setUser(userCredential.user);
+               
             })
                 .catch(handleAuthError);
         }
@@ -41,8 +57,10 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
         <AuthView
             email={email}
             password={password}
+            username={username}
             setEmail={setEmail}
             setPassword={setPassword}
+            setUsername={setUsername}
             isSignUp={isSignUp}
             toggleMode={toggleMode}
             submit={submit}

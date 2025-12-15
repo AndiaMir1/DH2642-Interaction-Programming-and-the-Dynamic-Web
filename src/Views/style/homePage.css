@@ -1,0 +1,266 @@
+@import './variables.css';
+
+.home-page {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: calc(100vh - 200px);
+    position: relative; /* Ensure normal document flow */
+}
+
+/* Weather widget styles for HomePage */
+.home-page .weather-widget {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative; /* Ensure normal document flow */
+}
+
+.home-page .weather-widget:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.home-page .weather-widget-content {
+    padding: 2rem 1.5rem;
+}
+
+.home-page .weather-widget h3 {
+    margin: 0 0 1rem 0;
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.home-page .weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.home-page .city-name {
+    margin: 0;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.home-page .temperature {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.home-page .description {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--secondary);
+    text-transform: capitalize;
+    font-style: italic;
+}
+
+.home-page .no-weather {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.home-sidebar {
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Ensure normal document flow */
+}
+
+.home-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.home-main h1 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.welcome-text {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.playlist-placeholder {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 3rem;
+    text-align: center;
+    border: 2px dashed var(--border);
+    transition: var(--transition);
+}
+
+.playlist-placeholder:hover {
+    border-color: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.placeholder-content h2 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.placeholder-content p {
+    color: var(--secondary);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .home-page {
+        grid-template-columns: 250px 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    /* Adjust weather widget for medium screens */
+    .home-page .weather-widget-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .home-page .temperature {
+        font-size: 2rem;
+    }
+    
+    .home-page .city-name {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    /* Weather widget adjustments for mobile */
+    .home-page .weather-widget {
+        margin-bottom: 1rem;
+    }
+    
+    .home-page .weather-widget-content {
+        padding: 1.5rem;
+    }
+    
+    .home-page .temperature {
+        font-size: 2.2rem;
+    }
+    
+    .home-page .city-name {
+        font-size: 1.1rem;
+    }
+    
+    .home-page .description {
+        font-size: 1rem;
+    }
+    
+    .home-main h1 {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .welcome-text {
+        text-align: center;
+    }
+    
+    .playlist-placeholder {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .home-page {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .home-page .weather-widget-content {
+        padding: 1rem;
+    }
+    
+    .home-page .weather-widget h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .home-page .temperature {
+        font-size: 1.8rem;
+    }
+    
+    .home-page .city-name {
+        font-size: 0.95rem;
+    }
+    
+    .home-page .description {
+        font-size: 0.85rem;
+    }
+    
+    .home-page .weather-info {
+        gap: 0.5rem;
+    }
+    
+    .home-main h1 {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+    }
+    
+    .playlist-placeholder {
+        padding: 1.5rem;
+    }
+    
+    .placeholder-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .placeholder-content p {
+        font-size: 1rem;
+    }
+}
+
+/* Animation for future playlist cards */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.playlist-card {
+    animation: slideInUp 0.4s ease-out;
+}

@@ -7,7 +7,6 @@ export default function SignOutPresenter(props) {
     const model = props.model;
     const navigate = useNavigate();
 
-    // Classic function instead of arrow function
     function handleSignOutACB() {
         signOut(auth)
             .then(function() {

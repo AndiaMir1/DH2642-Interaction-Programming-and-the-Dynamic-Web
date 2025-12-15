@@ -5,7 +5,8 @@ import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 // uncomment the following lines when you have your firebaseConfig. Understand what the lines are doing!
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
+
 const COLLECTION="USER";
 //user imp
 export const auth = getAuth(app);
@@ -31,10 +32,12 @@ export function connectToPersistence(model, watchFunction) {
                 function getDocACB(snapshot) {
                     //default values:
                     const data = snapshot.data() || {};
-                    model.currentCity = data.currentCity;
-                   
+                    model.currentCity = data.currentCity ?? null;
+                    model.currentUsername = data.username ?? null;
                     model.getWeather(model.currentCity);
-        
+                    model.currentGenre = data.genre ?? null;
+                    //friends list imp
+                    model.friends = data.friends || [];
                     model.ready = true;
             })
         .catch(function getDocErrorACB(err) {
@@ -42,7 +45,9 @@ export function connectToPersistence(model, watchFunction) {
             model.ready = true;
         });
     } else {
-        currentCity = null;
+        model.currentCity = null;
+        model.currentUsername = null;
+        model.currentGenre = null;
         model.ready = true;
         //favoriteGenre=null;
         //likedSongs =[];
@@ -60,7 +65,10 @@ export function connectToPersistence(model, watchFunction) {
     }
     //return properties of observed model
     function watchACB() {
-        return model.currentCity;
+        return [model.currentCity,
+                model.currentUsername,
+                model.currentGenre
+            ];
         //favorite genre
         //liked songs
         //produced playlists
@@ -74,8 +82,10 @@ export function connectToPersistence(model, watchFunction) {
             const docRef = doc(db, "USER", model.user.uid);
             //only saves if model is ready (data has been loaded)
             setDoc(docRef, {
-               currentCity: model.currentCity
-            }, {merge : true })
+               currentCity: model.currentCity,
+               username: model.currentUsername,
+               genre: model.currentGenre
+            }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
             .catch(persistErrorACB); //error

@@ -6,13 +6,13 @@ import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import AuthPage from "./authPage";
 import CallbackView from "./CallbackView";
+import FriendsPresenter from "../Presenters/friendsPresenter";
+import HomePage from "./HomePage.jsx";
 
-// 1. Test grej för Spotify API
-import { searchMusic } from "../apiConfig/musicSource";
+
 
 export function MainPage (props) {
 
-    window.searchMusic = searchMusic;
     
     return (
         <div className="main-page">
@@ -22,7 +22,7 @@ export function MainPage (props) {
                 <Routes>
                     <Route
                         path="/"
-                        element={<h1>Welcome to Here Comes the Song</h1>}
+                        element={<HomePage />}
                     />
                     <Route
                         path="/profile"
@@ -35,6 +35,9 @@ export function MainPage (props) {
                     <Route path="/logout" 
                     element={<SignOutPresenter model={props.model}/>}
                     />
+                    <Route path="/friends" element={<FriendsPresenter />} />
+
+                    
                     
                     <Route path="/authpage"
                         element={<AuthPage model={props.model}/>}
@@ -54,4 +57,6 @@ export function MainPage (props) {
             </div>
         </div>
     );
+
+
 }
