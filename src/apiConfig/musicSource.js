@@ -1,22 +1,21 @@
 import { generateCodeVerifier, generateCodeChallenge } from './authUtils';
 
-// Note: No CLIENT_SECRET needed anymore!
-const clientId = "0bf46ccccb384414b50e9761bc036e4c"
-const redirectUri = 'http://127.0.0.1:5173/callback'; // Make sure this port matches your local server
 
-// 1. Start Login: Generates security keys and sends user to Spotify
+const clientId = "0bf46ccccb384414b50e9761bc036e4c"
+const redirectUri = 'http://127.0.0.1:5173/callback';
+
+
 export async function redirectToSpotifyLogin() {
     const verifier = generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
 
-    // Save the verifier locally so we can check it when they come back
+    
     localStorage.setItem("verifier", verifier);
 
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
     params.append("redirect_uri", redirectUri);
-    // Request permissions (scopes) here!
     params.append("scope", "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -24,7 +23,7 @@ export async function redirectToSpotifyLogin() {
     document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
 }
 
-// 2. Handle Return: Takes the code from URL and trades it for a Token
+
 export async function getAccessTokenFromCode(code) {
     const verifier = localStorage.getItem("verifier");
 
@@ -45,7 +44,7 @@ export async function getAccessTokenFromCode(code) {
     return data.access_token;
 }
 
-// 3. Search/Fetch: Works exactly the same as before
+
 export async function searchMusic(query, token) {
     if (!token) {
          console.error("No token found! User must log in.");
@@ -68,18 +67,18 @@ export async function getTrack(id, token) {
 }
 
 export async function getArtist(artistId, token) {
-    // 1. Check if we have the token
+    
     if (!token) {
          console.error("No token found! User must log in.");
          return null;
     }
 
-    // 2. Call the API
+    
     const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
 
-    // 3. Return the result
+    
     return await response.json();
 }
 
