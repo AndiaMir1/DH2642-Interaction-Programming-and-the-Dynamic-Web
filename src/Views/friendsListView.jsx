@@ -18,7 +18,7 @@ export default function FriendsListView(props) {
         
         setError(null);
         const result = await props.onSearch(trimmed);
-            if (!result  || result.length ===0) {
+            if (!result  || result.length === 0) {
                 setResults([]);
                 setError("user not found");
             } else {
@@ -27,26 +27,22 @@ export default function FriendsListView(props) {
             }
         }
 
-    function handleAddFriendACB(uid) {
-        if (props.onSelectFriend) {
-            props.onSelectFriend(uid);
+    function handleAddFriendsACB(friendObject) {
+        if (props.onAddFriend) {
+            
+            props.onAddFriend(friendObject);
             setResults([]);
             setQuery("");
         }
     }
 
     function handleSelectFriendACB(uid) {
+        
         if (props.onSelectFriend) {
             props.onSelectFriend(uid);
         }
     }
 
-    function handleKeyDownACB(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            handleAddACB();
-        }
-    }
 
     function handleRemoveACB(uid) {
         if (props.onRemoveFriend) {
@@ -62,13 +58,13 @@ export default function FriendsListView(props) {
             <div className="add-friend">
                 <input
                     type="text"
-                    value={newFriend /**query */}
+                    value={query}
                     placeholder="Search"
                     onChange={handleInputACB}
-                    onKeyDown={handleKeyDownACB}
+                    onKeyDown={onEnterKey(handleSearchACB)}
                 />
                 
-                <button onClick={handleSearchACB}>Search</button>
+                <button onClick={handleSearchACB }>Search</button>
 
                 {error && <p style={{color: "red"}}>{error}</p>}
 
@@ -76,30 +72,40 @@ export default function FriendsListView(props) {
                     {results.map(function (user) {
                         return (
                             <li key ={user.uid}>
-                                <button onClick={function() {
-                                    handleAddFriendACB(user.uid);
+                                <button 
+                                onClick={function() {
+                                    handleSelectFriendACB(user.uid);
                                 }}
                                 >
                                     {user.username}
                                 </button>
 
+                                <button onClick={function () {
+                                    
+                                    handleAddFriendsACB(user);
+                                }}>
+                                    Add
+                                </button>
                             </li>
                         );
                     })}
                 </ul>
-
+             </div>   
      
             <ul>
+                
                 {props.friends.length === 0 && <li>No friends added yet.</li>}
                 {props.friends.map(function(user) {
                     return (
-                        <li key={uid}>
-                            <button onClick={function() { handleSelectFriendACB(uid); }}>
+                        <li key={user.uid}>
+                            <button onClick={function() { 
+                                handleSelectFriendACB(user.uid); 
+                                }}>
                                 {user.username}
                             </button>
 
                             <button onClick={function () {
-                                handleSelectFriendACB(uid);
+                                handleRemoveACB(user.uid);
                             }}
                             >
                                 Remove
@@ -108,7 +114,8 @@ export default function FriendsListView(props) {
                     );
                 })}
             </ul>
-        </div>
-     </div>   
+
+     </div>
+
     );
 }

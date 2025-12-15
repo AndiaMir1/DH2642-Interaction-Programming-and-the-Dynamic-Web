@@ -6,33 +6,25 @@ import { useNavigate } from "react-router-dom";
 export default function FriendsPresenter() {
     const navigate = useNavigate();
 
-    async function handleSearchACB(username) {
-        if (!username) return [];
+    function handleSearchACB(username) {
+    if (!username) return Promise.resolve([]);
 
-        const uid = await reactiveModel.findUserUidByUsername(username);
-
-        if (!uid || reactiveModel.friends.includes(uid)) return [];
-
-        return [{ username: username } ];
-    }
-
-    function handleAddFriendACB(username) {
-        reactiveModel.findUserUidByUsername(username).then(function(uid) {
-            if (uid && !reactiveModel.friends.includes(uid)) {
-                reactiveModel.addFriend(uid);
-            }
-        });
-    }
-
-
-    function handleRemoveFriendACB(username) {
-        reactiveModel.findUserUidByUsername(username).then(function(uid) {
-            if (uid) reactiveModel.removeFriend(uid);
-                reactiveModel.addFriend(uid);
+    return reactiveModel.findUserUidByUsername(username).then(function(friendObject) {
+        if (!friendObject) return [];
+        return [friendObject];
             });
-    }
+        }
 
-    function handleSelectFriendACB(username) {
+    function handleAddFriendsACB(friendObject) {
+            reactiveModel.addFriend(friendObject);
+        }
+
+    function handleRemoveACB(uid) {
+        reactiveModel.removeFriend(uid);
+            }
+    
+
+    function handleSelectFriendACB(uid) {
         reactiveModel.selectedUserUid = uid;
         navigate(`/friendsProfileView`);
     }
@@ -42,8 +34,8 @@ export default function FriendsPresenter() {
             <FriendsListView
                 friends={reactiveModel.friends}
                 onSearch={handleSearchACB}
-                onAddFriend={handleAddFriendACB}
-                onRemoveFriend={handleRemoveFriendACB}
+                onAddFriend={handleAddFriendsACB}
+                onRemoveFriend={handleRemoveACB}
                 onSelectFriend={handleSelectFriendACB}
             />
         );
