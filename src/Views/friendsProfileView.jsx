@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../model/fireStoreModel";
 import { SuspenseView } from "./suspenseView";
 
-import React, { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../model/fireStoreModel";
-const [profile, setProfile] = useState(null);
 
-export default function FriendsProfileView(props) { 
+export default function FriendsProfileView(props) {
 
-useEffect(function() {
+    const [profile, setProfile] = useState(null);
+
+    useEffect(function() {
         function fetchProfile() {
             if(!props.uid) return;
 
@@ -19,6 +17,7 @@ useEffect(function() {
                 setProfile(snapshot.data());
             });
         }
+        fetchProfile();
     }, [props.uid]);
 
     if (!profile) {

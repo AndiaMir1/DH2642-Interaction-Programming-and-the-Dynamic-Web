@@ -4,10 +4,11 @@ import {Profile} from "../Presenters/profilePresenter";
 import {Weather} from "../Presenters/weatherPresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
-import AuthPage from "./authPage";
+import {AuthPresenter} from "../Presenters/authPresenter";
 import CallbackView from "./CallbackView";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
+import FriendsProfileView from  "./friendsProfileView.jsx";
 
 export function MainPage (props) {  
     return (
@@ -36,7 +37,7 @@ export function MainPage (props) {
 
                     
                     <Route path="/authpage"
-                        element={<AuthPage model={props.model}/>}
+                        element={<AuthPresenter model={props.model}/>}
                         />
 
                     <Route 
@@ -48,6 +49,11 @@ export function MainPage (props) {
                         path="*"
                         element={<h1>404 - Page Not Found</h1>}
                     />
+                     
+                    <Route
+                        path="/friendsProfileView"
+                        element={<FriendsProfileView uid={props.model.selectedUserUid} />}
+                        />
                     
                 </Routes>
             </div>

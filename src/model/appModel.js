@@ -51,9 +51,13 @@ export const rootModel = {
 
     //friends list imp
     friends: [],
+    // feed imp
+    friendFeed: [],
 
     setCity(city) {
         this.currentCity = city;
+        //feed imp
+        this.addUserUpdate("CITY_CHANGE", {city : city});
     },
 
     setUser(user) {
@@ -75,6 +79,7 @@ export const rootModel = {
 
     setGenre(genre) {
         this.currentGenre = genre;
+        this.addUserUpdate("GENRE_CHANGE",{genre : genre});
     },
     
     setCurrentTrackId(trackId) {
@@ -153,6 +158,65 @@ export const rootModel = {
 
            const docSnap = querySnapshot.docs[0];
            return {uid: docSnap.id, username: docSnap.data().username };
+    },
+
+    //feed imp
+
+    addUserUpdate(type, payload) {
+        if(!this.user) return;
+
+        var updatesRef = collection(db, "USER", this.user.uid, "updates");
+
+        addDoc(updatesRef, {
+            type: type,
+            payload: payload,
+            timestamp: serverTimestamp()
+        })
+    },
+
+    fetchFriendFeed () {
+        var model = this;
+
+        if (!model.user || model.friends.length === 0) {
+            model.friendFeed = [];
+            return;
+        }
+        model.friendFeed = [];
+
+        var promises = model.friends.map(function(friend) {
+            var updatesRef = collecntion(db, "USER", friend.uid, "updates");
+            var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
+
+            return getDocs(q).then(function(snapshot) {
+                return snapshot.docs.map(function(docSnap) {
+                    return {
+                        id: docSnap.id,
+                        user: friend.username,
+                        uid: friend.uid,
+                        type: docSnap.data().type,
+                        payload: docSnap.data().timestamp
+                    };
+                });
+            });
+        });
+
+        Promise.all(promises)
+        .then(function(results) {
+            var merged = [];
+            results.forEach(function(arr) {
+                merged.push.apply(merged, arr);
+            });
+
+            model.friendFeed = merged;
+
+            merged.sort(function(a, b) {
+                return b.timestamp?.seconds - a.timestamp?.seconds;
+            })
+            .catch(function(err) {
+                console.error ("failed to fetch friend feed", err);
+            });
+        })
+
     },
 
 

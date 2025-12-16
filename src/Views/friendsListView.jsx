@@ -36,10 +36,10 @@ export default function FriendsListView(props) {
         }
     }
 
-    function handleSelectFriendACB(uid) {
+    function handleSelectFriendACB(user) {
         
         if (props.onSelectFriend) {
-            props.onSelectFriend(uid);
+            props.onSelectFriend(user);
         }
     }
 
