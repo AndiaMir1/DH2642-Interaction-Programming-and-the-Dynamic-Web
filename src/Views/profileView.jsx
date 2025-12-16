@@ -62,6 +62,17 @@ export default function ProfileView(props) {
         setShowUsernameChange(true);
     }
 
+    async function onRecommendSongsACB(){
+        if (!props.recommendedArtist) return;
+        const token = localStorage.getItem("spotifyToken");
+        if (!token) {
+            alert("You need to log in below first!");
+            return;
+        }
+        const results = await searchMusic(props.recommendedArtist, token);
+        setSearchResults(results || []);
+    }
+/*
     async function onSearchMusicACB() {
         if (!artistInput) return;
         const token = localStorage.getItem("spotifyToken");
@@ -72,7 +83,7 @@ export default function ProfileView(props) {
         const results = await searchMusic(artistInput, token);
         setSearchResults(results || []);
     }
-
+*/
     return (
         <div className="profile-view">
             <h1>My Profile</h1>
@@ -121,6 +132,18 @@ export default function ProfileView(props) {
                 </button>
             </section>
 
+            <section>
+    <button
+        onClick={function () {
+            props.onExportPlaylist();
+        }}
+    >
+        Export liked songs to Spotify
+    </button>
+</section>
+
+
+
             <section className="change-genre" style={{ marginTop: "20px" }}>
                 <h2>Favorite Genre</h2>
                 <p>Pick a vibe for your weather recommendations:</p>
@@ -148,12 +171,16 @@ export default function ProfileView(props) {
 
                 <br />
 
-                <input type="text" placeholder="Type an artist (e.g. Queen)" value={artistInput} onChange={(e) => setArtistInput(e.target.value)} />
-                <button onClick={onSearchMusicACB}>Search Songs</button>
+                {/*<input type="text" placeholder="Type an artist (e.g. Queen)" value={artistInput} onChange={(e) => setArtistInput(e.target.value)} />*/}
+                <button onClick={onRecommendSongsACB}>Search Songs</button>
 
                 <div style={{ marginTop: "15px", textAlign: "left" }}>
                     {searchResults.map((track) => (
                         <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
+                            <img src= {track.album.images[0]?.url}
+                                 width={"100"}
+                                 height={"100"}
+                            />
                             <strong>{track.name}</strong>
                             <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
                         </div>

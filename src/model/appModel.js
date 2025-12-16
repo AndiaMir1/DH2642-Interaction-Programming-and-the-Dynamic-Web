@@ -1,9 +1,10 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
-import { getTrack, getArtist } from "../apiConfig/musicSource";
+import { getTrack, getArtist, createSpotifyPlaylist, addTracksToPlaylist, getCurrentUser } from "../apiConfig/musicSource";
 import { searchMusic } from "../apiConfig/musicSource";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit } from "firebase/firestore";
+import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
 
 function resolvePromise(promise, stateObject) {
     stateObject.promise = promise;
@@ -36,9 +37,9 @@ export const rootModel = {
     //friends list imp
     selectedUserUid: null,
 
-    spotifyToken: null,
 
     tracks: [], 
+    likedSongs: [],
     currentTrackId: null,
     currentArtistId: null,
     searchParams: {},
@@ -54,6 +55,16 @@ export const rootModel = {
     // feed imp
     friendFeed: [],
 
+    getMusicRecommendations(weatherData){
+         const category = getWeatherCategory(weatherData.conditionId);
+         const temp = getTemperature(weatherData.temp);
+         const wind = getWind(weatherData.windSpeed);
+         
+        return (weatherMusic?.[category]?.[temp]?.[wind] || [""]
+
+        ); 
+    },
+
     setCity(city) {
         this.currentCity = city;
         //feed imp
@@ -67,10 +78,6 @@ export const rootModel = {
     
     setUsername(name) {
        this.currentUsername = name;
-    },
-    /**ska denna vara här, finns en liknande längre ner ? */
-    setSpotifyToken(token) {  // <--- NEW
-        this.spotifyToken = token;
     },
 
     setFriends(friendsArray) {
@@ -115,7 +122,7 @@ export const rootModel = {
         });
 
         if(!exists) {
-            this.friends.push(friendObject);
+            this.friends = this.friends.concat([friendObject]);
             this.persistFriends();
         }
     },
@@ -184,7 +191,7 @@ export const rootModel = {
         model.friendFeed = [];
 
         var promises = model.friends.map(function(friend) {
-            var updatesRef = collecntion(db, "USER", friend.uid, "updates");
+            var updatesRef = collection(db, "USER", friend.uid, "updates");
             var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
 
             return getDocs(q).then(function(snapshot) {
@@ -219,6 +226,60 @@ export const rootModel = {
 
     },
 
+    fetchTrackByEnergy() {
+
+    },
+
+    setLikedSong(track) {
+        const exists = this.likedSongs.some(function(song) {
+            return song.id === track.id;
+        });
+
+        if (exists) return;
+
+        this.likedSongs = this.likedSongs.concat([{
+            id: track.id,
+            uri: track.uri,
+            name: track.name,
+            artist: track.artists[0].name,
+            image: track.album.images[0]?.url
+        }]);
+    },
+
+    setRemoveSong(trackId) {
+        this.likedSongs = this.likedSongs.filter(function(song) {
+            return song.id !== trackId;
+        });
+    },
+
+    async exportLikedSongsToSpotify () {
+        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
+
+        if (!token) {
+            throw new Error("Spotify login required");
+        }
+
+        if (this.likedSongs.length === 0) {
+            throw new Error ("no liked songs to export");
+        }
+
+        var user = await getCurrentUser(token);
+        var playlist = await createSpotifyPlaylist (
+            user.id,
+            "playlist",
+            "songs liked from HCTS",
+            true,
+            token
+        );
+
+        var uris = this.likedSongs.map(function(song) {
+            return song.uri;
+        });
+
+        await addTracksToPlaylist(playlist.id, uris, token);
+        return playlist;
+    },
+
 
     getWeather(city) {
         if (!city) {
@@ -235,7 +296,7 @@ export const rootModel = {
 
     doMusicSearch: function (query) {
         resolvePromise(
-            searchMusic(query),
+            searchMusic(query, this.spotifyToken),
             this.searchResultsPromiseState
         );
     },
@@ -255,4 +316,5 @@ export const rootModel = {
             this.currentArtistPromiseState = {};
         }
     }
+
 };

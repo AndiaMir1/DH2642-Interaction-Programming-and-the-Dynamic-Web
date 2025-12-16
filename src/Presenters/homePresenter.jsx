@@ -8,4 +8,5 @@ const Home = observer(
         />;
     }
 );
+
 export {Home}

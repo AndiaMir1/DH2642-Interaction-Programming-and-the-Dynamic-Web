@@ -104,7 +104,8 @@ export default function FriendsListView(props) {
                                 {user.username}
                             </button>
 
-                            <button onClick={function () {
+                            <button 
+                            onClick={function () {
                                 handleRemoveACB(user.uid);
                             }}
                             >

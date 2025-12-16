@@ -1,5 +1,4 @@
 //reactiveModel
-
 import { observable, configure, reaction } from "mobx";
 import { rootModel } from "./appModel.js";
 

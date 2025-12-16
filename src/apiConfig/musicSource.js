@@ -1,10 +1,5 @@
-import { generateCodeVerifier, generateCodeChallenge } from './authUtils';
-
-
-const clientId = "0bf46ccccb384414b50e9761bc036e4c"
-const redirectUri = 'http://127.0.0.1:5173/callback';
-
-
+import { generateCodeVerifier, generateCodeChallenge } from '/src/utils/authUtils';
+import { clientId, redirectUri } from "./musicConfig";
 export async function redirectToSpotifyLogin() {
     const verifier = generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
@@ -66,6 +61,10 @@ export async function getTrack(id, token) {
     return await response.json();
 }
 
+export async function getEnergy() {
+    
+}
+
 export async function getArtist(artistId, token) {
     
     if (!token) {
@@ -88,6 +87,46 @@ export async function getCurrentUser(token) {
     const response = await fetch("https://api.spotify.com/v1/me", {
         headers: { Authorization: `Bearer ${token}` }
     });
+
+    return await response.json();
+}
+
+export async function createSpotifyPlaylist(userId, name, description, isPublic, token) {
+    const response = await fetch (`https://api.spotify.com/v1/me/playlists`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify({
+            name,
+            description,
+            public: isPublic
+        })
+    }
+    );
+
+    if(!response.ok) {
+        throw new Error("failed to create playlist");
+    }
+    return await response.json();
+}
+
+export async function addTracksToPlaylist(playlistId, trackUris, token) {
+    var response = await fetch(
+        "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks",
+        {
+            method: "POST",
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                uris: trackUris
+            })
+
+        }
+    );
 
     return await response.json();
 }
