@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/friendsListView.css";
 
@@ -7,9 +8,15 @@ export default function FriendsListView(props) {
     const [results, setResults] =  useState([]);
     const [error, setError] = useState(null);
 
+    var nav = useNavigate();
+
     function handleInputACB(event) {
         setQuery(event.target.value);
         setError(null);
+    }
+
+    function goBackToFeed() {
+        nav("/feed");
     }
 
     async function handleSearchACB() {
@@ -55,6 +62,8 @@ export default function FriendsListView(props) {
     <div className="friends-list">
             <h2>Friends</h2>
 
+            <button onClick={goBackToFeed}>Back to Feed</button>
+
             <div className="add-friend">
                 <input
                     type="text"
@@ -73,6 +82,7 @@ export default function FriendsListView(props) {
                         return (
                             <li key ={user.uid}>
                                 <button 
+                                className="profile-button"
                                 onClick={function() {
                                     handleSelectFriendACB(user.uid);
                                 }}
@@ -105,6 +115,7 @@ export default function FriendsListView(props) {
                             </button>
 
                             <button 
+                            className="remove-button"
                             onClick={function () {
                                 handleRemoveACB(user.uid);
                             }}

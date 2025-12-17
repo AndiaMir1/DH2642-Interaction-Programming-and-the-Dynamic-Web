@@ -53,14 +53,20 @@
     box-shadow: var(--shadow-hover);
 }
 
-.friends-list li button {
-    background: #39a064;
+.friends-list li .remove-button:hover {
+    background: #ff3838;
     color: white;
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
     min-height: 36px;
 }
 
-.friends-list li button:hover {
-    background: #ff3838;
+.friends-list li .profile-button:hover {
+    background: #2d8150;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    min-height: 36px;
+    cursor: pointer;
 }
+

@@ -13,22 +13,22 @@ export default function NavigationBar({activePath}) {
                 <Link to="/" className={`nav-button ${activePath ==="/" ? "active" : ""}`}>
                     Home
                 </Link>
+                <Link to="/feed" className={`nav-button ${activePath ==="/feed" ? "active" : ""}`}>
+                    Feed
+                </Link>
                 <Link to="/weather" className={`nav-button ${activePath ==="/weather" ? "active" : ""}`}>
                     Weather
                 </Link>
-                <Link to="/friends" className={`nav-button ${activePath ==="/friends" ? "active" : ""}`}>
+                {/*<Link to="/friends" className={`nav-button ${activePath ==="/friends" ? "active" : ""}`}>
                     Friends
-                </Link>
+                </Link>*/}
                 <Link to="/profile" className={`nav-button ${activePath ==="/profile" ? "active" : ""}`}>
                     Profile
                 </Link>
                 <Link to="/about"className={`nav-button ${activePath ==="/about" ? "active" : ""}`}>
                     About us
                 </Link>
-                <Link to="/feed" className={`nav-button ${activePath ==="/feed" ? "active" : ""}`}>
-                    Feed
-                </Link>
-                
+            
                 <Link 
                     to="/logout" 
                     state={{ from: activePath }}
