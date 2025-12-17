@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation} from "react-router-dom";
 import NavigationBar from "./navigationBarView";
 import {Profile} from "../Presenters/profilePresenter";
 import {Weather} from "../Presenters/weatherPresenter";
@@ -11,10 +11,12 @@ import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
 
 export function MainPage (props) {  
+    const location = useLocation();
+
     return (
         <div className="main-page">
-            <NavigationBar />
-
+            <NavigationBar activePath={location.pathname}/>
+ 
             <div className="content">
                 <Routes>
                     <Route

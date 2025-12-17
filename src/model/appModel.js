@@ -1,8 +1,10 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource";
-import { getTrack, getArtist, createSpotifyPlaylist, addTracksToPlaylist, getCurrentUser } from "../apiConfig/musicSource";
-import { searchMusic } from "../apiConfig/musicSource";
+import { getTrack, getArtist, createSpotifyPlaylist, 
+    addTracksToPlaylist, getCurrentUser,searchMusic, 
+    getRecommendedSongsByAudioFeature
+ } from "../apiConfig/musicSource";
 import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit } from "firebase/firestore";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
 
@@ -50,6 +52,9 @@ export const rootModel = {
 
     currentGenre: null,
 
+    // song imp
+    //playedTrackIds: [],
+
     //friends list imp
     friends: [],
     // feed imp
@@ -59,11 +64,29 @@ export const rootModel = {
          const category = getWeatherCategory(weatherData.conditionId);
          const temp = getTemperature(weatherData.temp);
          const wind = getWind(weatherData.windSpeed);
-         
-        return (weatherMusic?.[category]?.[temp]?.[wind] || [""]
 
-        ); 
+         const features = weatherMusic?.[category]?.[temp]?.[wind];
+         
+        return features || { energy: 0.5, tempo: 100}; 
+
     },
+
+        /*
+
+        var category = getWeatherCategory(weatherData.condition.Id);
+        var temp = getTemperature(weatherData.temp);
+        var wind = getWind(weatherData.windSpeed);
+
+        if (
+            weatherMusic[category] &&
+            weatherMusic[category][temp] &&
+            weatherMusic[category][temp][wind]
+        ) {
+            return weatherMusic[category][temp][wind];
+        }
+        //defaults
+        return { energ7: 0.5, tempo: 100};
+        */
 
     setCity(city) {
         this.currentCity = city;
@@ -181,6 +204,26 @@ export const rootModel = {
         })
     },
 
+    async fetchRecommendedSongs() {
+        if(!this.spotifyToken) {
+            console.warn("Spotify token missing");
+            return;
+        }
+
+        const audioFeatures = this.getMusicRecommendations({
+            conditionId: this.weatherPromiseState.data?.weather?.[0].id, 
+            temp: this.weatherPromiseState.data?.main?.temp,
+            windSpeed: this.weatherPromiseState.data?.wind?.speed
+        });
+
+        try {
+            const tracks = await getRecommendedSongsByAudioFeature(this.spotifyToken, audioFeatures)
+            this.tracks = tracks;
+        } catch (err) {
+            console.error("failed", err);
+        }
+    },
+
     fetchFriendFeed () {
         var model = this;
 
@@ -226,9 +269,21 @@ export const rootModel = {
 
     },
 
-    fetchTrackByEnergy() {
+
+    // song imp
+    storePlayedTracks (tracks) {
+        var model = this;
+
+        tracks.forEach(function (track) {
+            if (track && track.id) {
+                if(model.playedTrackIds.indexOf(track.id) === -1) {
+                    model.playedTrackIds.push(track.id);
+                }
+            }
+        });
 
     },
+
 
     setLikedSong(track) {
         const exists = this.likedSongs.some(function(song) {
@@ -287,6 +342,7 @@ export const rootModel = {
             return;
         }
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
+    
     },
 
     

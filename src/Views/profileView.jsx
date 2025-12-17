@@ -1,35 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/profileView.css";
-import { searchMusic, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [usernameInput, setUsernameInput] = useState("");
-    const [artistInput, setArtistInput] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
     const [showUsernameChange, setShowUsernameChange] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem("spotifyToken");
-        if (token) {
-            getCurrentUser(token).then((data) => {
-                console.log("🕵️ IDENTITY CHECK:");
-                console.log("Name:", data.display_name);
-                console.log("Email:", data.email);
-                console.log("ID:", data.id);
-            }).catch(() => {});
-        }
-    }, []);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
 
     function onGenreChangeACB(event) {
-        //if (props.onGenreChange) {
-            props.onGenreChange(event.target.value);
-        //}
+            props.onGenreChange(event.target.value); 
     }
 
     function onUsernameChangeACB(event) {
@@ -62,28 +46,6 @@ export default function ProfileView(props) {
         setShowUsernameChange(true);
     }
 
-    async function onRecommendSongsACB(){
-        if (!props.recommendedArtist) return;
-        const token = localStorage.getItem("spotifyToken");
-        if (!token) {
-            alert("You need to log in below first!");
-            return;
-        }
-        const results = await searchMusic(props.recommendedArtist, token);
-        setSearchResults(results || []);
-    }
-/*
-    async function onSearchMusicACB() {
-        if (!artistInput) return;
-        const token = localStorage.getItem("spotifyToken");
-        if (!token) {
-            alert("You need to log in below first!");
-            return;
-        }
-        const results = await searchMusic(artistInput, token);
-        setSearchResults(results || []);
-    }
-*/
     return (
         <div className="profile-view">
             <h1>My Profile</h1>
@@ -159,34 +121,7 @@ export default function ProfileView(props) {
                     <option value="r-n-b">R&B</option>
                 </select>
             </section>
-
-            <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
-                <h2>🎵 Test Spotify API</h2>
-                <button
-                    onClick={redirectToSpotifyLogin}
-                    style={{ marginBottom: "15px", backgroundColor: "#1DB954", color: "white", border: "none", padding: "8px 15px", borderRadius: "20px", cursor: "pointer" }}
-                >
-                    Log in with Spotify
-                </button>
-
-                <br />
-
-                {/*<input type="text" placeholder="Type an artist (e.g. Queen)" value={artistInput} onChange={(e) => setArtistInput(e.target.value)} />*/}
-                <button onClick={onRecommendSongsACB}>Search Songs</button>
-
-                <div style={{ marginTop: "15px", textAlign: "left" }}>
-                    {searchResults.map((track) => (
-                        <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                            <img src= {track.album.images[0]?.url}
-                                 width={"100"}
-                                 height={"100"}
-                            />
-                            <strong>{track.name}</strong>
-                            <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
-                        </div>
-                    ))}
-                </div>
-            </section>
+             
         </div>
     );
 }

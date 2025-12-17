@@ -1,4 +1,42 @@
-/*export function RecommendedSongsView (props) {  
+import { useState, useEffect } from "react";
+import "./style/profileView.css";
+import { getRecommendedSongsByAudioFeature, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
+
+export function RecommendedSongsView (props) {
+    const [searchResults, setSearchResults] = useState([]);
+    
+    useEffect(() => {
+        const token = localStorage.getItem("spotifyToken");
+        if (token) {
+            getCurrentUser(token).then((data) => {
+                console.log("🕵️ IDENTITY CHECK:");
+                console.log("Name:", data.display_name);
+                console.log("Email:", data.email);
+                console.log("ID:", data.id);
+            }).catch(() => {});
+        }
+    
+    }, []);
+    async function onRecommendSongsACB(){
+        if (!props.recommendedAudioFeatures) return;
+        const token = localStorage.getItem("spotifyToken");
+        if (!token) {
+            alert("You need to log in below first!");
+            return;
+        }
+        /*
+        const result = await searchMusic(props.recommendedArtist, token);
+        setSearchResults(result || []);
+        */
+
+        const result = await getRecommendedSongsByAudioFeature(
+            token,
+            props.recommendedAudioFeatures,
+            props.playedTrackIds
+        );
+        setSearchResults(result || []);
+    }
+
     return (<div>
                 <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
                                 <h2>🎵 Test Spotify API</h2>
@@ -12,7 +50,7 @@
                                 <br />
                 
                                 
-                                <button onClick={onSearchMusicACB}>Get Songs</button>
+                                <button onClick={onRecommendSongsACB}>Get Songs</button>
                 
                                 <div style={{ marginTop: "15px", textAlign: "left" }}>
                                     {searchResults.map((track) => (
@@ -31,4 +69,4 @@
             </div>
     
     );
-}*/
+}

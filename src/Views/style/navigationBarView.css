@@ -43,6 +43,12 @@
     transform: translateY(0);
 }
 
+.nav-button.active {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: var(--accent);
+    font-weight: 600;
+}
+
 @media (max-width: 768px) {
     .navigation-bar {
         flex-direction: column;

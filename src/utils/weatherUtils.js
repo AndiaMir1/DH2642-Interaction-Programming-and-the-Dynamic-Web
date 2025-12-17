@@ -19,27 +19,27 @@ export function getTemperature(temp) {
 
 export function getWind(wind) {
     if (wind >= 20.7) return "highWind";
-    if (wind > 7.9 && wind < 20,7) return "midWind";
+    if (wind > 7.9 && wind < 20.7) return "midWind";
     if (wind <= 7.9) return "lowWind";
 }
 
 export const weatherMusic = {
     clear:{
         highTemp:{
-            highWind:["Ariana Grande"],
-            midWind:["Sting"],
-            lowWind: ["Kent"],
+            highWind:{energy: 0.85, tempo: 135},
+            midWind:{energy: 0.85, tempo: 135},
+            lowWind: {energy: 0.1, tempo: 100},
 
         },
         midTemp: {
-            highWind: ["Adele"],
+            highWind: {energy: 0.1, tempo: 100},
             midWind: ["Adele"],
             lowWind: ["Adele"],
         },
         lowTemp: {
-            highWind: ["Beyonce"],
-            midWind: ["Beyonce"],
-            lowWind: ["Beyonce"],
+            highWind: {energy: 0.9, tempo: 160},
+            midWind: {energy: 0.1, tempo: 100},
+            lowWind: {energy: 0.2, tempo: 140},
         }
 
     },
@@ -135,20 +135,20 @@ export const weatherMusic = {
     },
     cloud: {
         highTemp:{
-            highWind:["Nectar Woode"],
-            midWind:["Nectar Woode"],
-            lowWind: ["Sting"],
+            highWind:{energy: 0.85, tempo: 135},
+            midWind:{energy: 0.85, tempo: 135},
+            lowWind: {energy: 0.85, tempo: 135},
 
         },
         midTemp: {
-            highWind: ["RAYE"],
-            midWind: ["RAYE"],
-            lowWind: ["RAYE"],
+            highWind: {energy: 0.85, tempo: 135},
+            midWind: {energy: 0.85, tempo: 135},
+            lowWind: {energy: 0.85, tempo: 135},
         },
         lowTemp: {
-            highWind: ["Ariana Grande"],
-            midWind: ["Ariana Grande"],
-            lowWind: ["Ariana Grande"],
+            highWind: {energy: 0.85, tempo: 135},
+            midWind: {energy: 0.85, tempo: 135},
+            lowWind: {energy: 0.85, tempo: 135},
         }
 
     }

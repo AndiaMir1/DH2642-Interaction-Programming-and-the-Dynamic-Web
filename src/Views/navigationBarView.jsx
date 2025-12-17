@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import "./style/navigationBarView.css";
 
-export default function NavigationBar(props) {
+export default function NavigationBar({activePath}) {
     return (
         <nav className='navigation-bar'>
             <div className='nav-title'>
@@ -10,24 +10,25 @@ export default function NavigationBar(props) {
             </div>
 
             <div className='nav-links'>
-                <Link to="/" className="nav-button">
+                <Link to="/" className={`nav-button ${activePath ==="/" ? "active" : ""}`}>
                     Home
                 </Link>
-                <Link to="/weather" className="nav-button">
+                <Link to="/weather" className={`nav-button ${activePath ==="/weather" ? "active" : ""}`}>
                     Weather
                 </Link>
-                <Link to="/friends" className="nav-button">
-                Friends
+                <Link to="/friends" className={`nav-button ${activePath ==="/friends" ? "active" : ""}`}>
+                    Friends
                 </Link>
-                <Link to="/profile" className="nav-button">
+                <Link to="/profile" className={`nav-button ${activePath ==="/profile" ? "active" : ""}`}>
                     Profile
                 </Link>
-                <Link to="/about"className="nav-button">
+                <Link to="/about"className={`nav-button ${activePath ==="/about" ? "active" : ""}`}>
                     About us
                 </Link>
-                <Link to="/logout" className="nav-button">Sign Out
+                <Link to="/logout" className={`nav-button ${activePath ==="/logout" ? "active" : ""}`}>
+                    Sign Out
                 </Link>
-                
+                 
             </div>
         </nav>
 
