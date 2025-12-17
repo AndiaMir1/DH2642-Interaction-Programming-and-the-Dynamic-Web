@@ -21,7 +21,7 @@ export default function CallbackView(props) {
                     localStorage.setItem("spotifyToken", token);
                     
                     setMessage("Success! Redirecting...");
-                    setTimeout(() => navigate("/profile"), 1000);
+                    setTimeout(() => navigate("/"), 1000);
                 })
                 .catch(err => {
                     console.error(err);
