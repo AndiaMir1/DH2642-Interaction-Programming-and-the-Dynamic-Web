@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router-dom";
+import "./style/feed.css";
 export default function FeedView(props) {
-    if (!props.feed || props.feed.length === 0) {
-        return <p>Add some friends to see updates</p>;
+    var nav = useNavigate();
+
+    function goToFriends() {
+        nav("/friends");
     }
 
     function renderUpdateText(update) {
@@ -34,8 +38,17 @@ export default function FeedView(props) {
 
     return (
         <div className="feed">
-            <h2>Friends Feed</h2>
+            <div className="feed-header">
+                <h2>Friends Feed</h2>
+                <button
+                className="manage-friends-button"
+                onClick={goToFriends}
+                >Manage Friends</button>
+            </div>
 
+            {(!props.feed || props.feed.length === 0) && (
+                <p>Add some friends to see updates</p>
+    )}
             <ul className="feed-list">
                 {props.feed.map(function (item) {
                     return (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/friendsListView.css";
 
@@ -7,9 +8,15 @@ export default function FriendsListView(props) {
     const [results, setResults] =  useState([]);
     const [error, setError] = useState(null);
 
+    var nav = useNavigate();
+
     function handleInputACB(event) {
         setQuery(event.target.value);
         setError(null);
+    }
+
+    function goBackToFeed() {
+        nav("/feed");
     }
 
     async function handleSearchACB() {
@@ -54,6 +61,7 @@ export default function FriendsListView(props) {
     return (
     <div className="friends-list">
             <h2>Friends</h2>
+            <button onClick={goBackToFeed}>Back to Feed</button>
 
             <div className="add-friend">
                 <input
@@ -65,46 +73,56 @@ export default function FriendsListView(props) {
                 />
                 
                 <button onClick={handleSearchACB }>Search</button>
-
+            </div>
                 {error && <p style={{color: "red"}}>{error}</p>}
 
+                <div className="search-results">
+                    <h3>Results</h3>
                 <ul>
                     {results.map(function (user) {
                         return (
                             <li key ={user.uid}>
                                 <button 
+                                className="profile-button"
                                 onClick={function() {
                                     handleSelectFriendACB(user.uid);
                                 }}
                                 >
                                     {user.username}
                                 </button>
-
-                                <button onClick={function () {
+                                <button 
+                                className="add-button"
+                                onClick={function () {
                                     
                                     handleAddFriendsACB(user);
                                 }}>
-                                    Add
+                                    Add Friend
                                 </button>
                             </li>
                         );
                     })}
                 </ul>
              </div>   
-     
+             <hr />
+
+             <div className="current-friends">
+                 <h3>Your Friends</h3>
             <ul>
                 
                 {props.friends.length === 0 && <li>No friends added yet.</li>}
                 {props.friends.map(function(user) {
                     return (
                         <li key={user.uid}>
-                            <button onClick={function() { 
+                            <button 
+                            className="profile-button"
+                            onClick={function() { 
                                 handleSelectFriendACB(user.uid); 
                                 }}>
                                 {user.username}
                             </button>
 
                             <button 
+                            className="remove-button"
                             onClick={function () {
                                 handleRemoveACB(user.uid);
                             }}
@@ -115,7 +133,7 @@ export default function FriendsListView(props) {
                     );
                 })}
             </ul>
-
+            </div>
      </div>
 
     );
