@@ -1,20 +1,43 @@
 
 import { observer } from "mobx-react-lite";
 import {SuspenseView} from "/src/Views/suspenseView.jsx";
+import {RecommendedSongsView} from "/src/Views/RecommendedSongsView.jsx";
 import WeatherView from "/src/Views/weatherView.jsx";
 const Weather = observer(
     function WeatherRender(props){
+        const searchResults = props.model.searchResultsPromiseState.data || [];
         const weatherPromiseState = props.model.weatherPromiseState;
         const currentCity = props.model.currentCity;
 
         const weatherData = props.model.weatherPromiseState.data;
-        
+        let recommendedArtist = {};
+
+        if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
+            recommendedArtist = props.model.getMusicRecommendations({
+                conditionId: weatherData.weather[0].id,
+                temp: weatherData.main.temp,
+                windSpeed: weatherData.wind.speed
+            });
+        }
+
+        function handleSearchMusicACB(query) {
+            props.model.doMusicSearch(query);
+        }
+
         if (!currentCity) {
             return <h2>Please choose a city in your Profile</h2>;
         }
 
         else if(weatherData){
-            return <WeatherView weatherData = {weatherData} />;
+            return (<div>
+                    <WeatherView weatherData = {weatherData}
+                              
+                    />
+                    <RecommendedSongsView recommendedArtist={recommendedArtist}
+                                          onSearchMusic={handleSearchMusicACB}
+                                          searchResults={searchResults}
+                    />
+                </div>);
         }
         return <SuspenseView promise={weatherPromiseState.promise}
                                 error={weatherPromiseState.error} />;
