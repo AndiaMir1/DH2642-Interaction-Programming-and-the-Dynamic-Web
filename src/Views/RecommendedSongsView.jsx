@@ -67,10 +67,13 @@ export function RecommendedSongsView (props) {
                                             <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
                                             
                                              <div>
-                                        {track.preview_url && (
+                                        {track.preview_url ? (
                                             <audio controls style={{ height: "30px", marginLeft: "auto" }}>
                                             <source src={track.preview_url} type="audio/mpeg" />
                                             </audio>
+                                        ) : (
+                                            <span style={{ color: "red", fontSize: "12px" }}>No Preview Available 🔇</span>
+
                                         )} </div>
                                         
                                        
