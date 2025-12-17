@@ -58,25 +58,37 @@ export function RecommendedSongsView (props) {
                 
                                 <div style={{ marginTop: "15px", textAlign: "left" }}>
                                     {searchResults.map((track) => (
-                                        <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                                            <img src= {track.album.images[0]?.url}
-                                                 width={"100"}
-                                                 height={"100"}
+                                        <div key={track.id} style={{ padding: "8px", borderBottom: "1px solid #ddd", display: 'flex', gap: 12, alignItems: 'center' }}>
+                                            <img
+                                                src={track.album?.images?.[0]?.url || ''}
+                                                alt={track.name}
+                                                width={100}
+                                                height={100}
                                             />
-                                            <strong>{track.name}</strong>
-                                            <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
-                                            
-                                             <div>
-                                        {track.preview_url ? (
-                                            <audio controls style={{ height: "30px", marginLeft: "auto" }}>
-                                            <source src={track.preview_url} type="audio/mpeg" />
-                                            </audio>
-                                        ) : (
-                                            <span style={{ color: "red", fontSize: "12px" }}>No Preview Available 🔇</span>
+                                            <div style={{ flex: 1 }}>
+                                                <div>
+                                                    <strong>{track.name}</strong>
+                                                    <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists?.[0]?.name}</span>
+                                                </div>
 
-                                        )} </div>
-                                        
-                                       
+                                                <div style={{ marginTop: 8 }}>
+                                                    {track.preview_url && (
+                                                        <audio controls src={track.preview_url} style={{ display: 'block' }} />
+                                                    )}
+                                                </div>
+
+                                                <div style={{ marginTop: 8 }}>
+                                                    <iframe
+                                                        title={`spotify-${track.id}`}
+                                                        src={`https://open.spotify.com/embed/track/${track.id}`}
+                                                        width="600"
+                                                        height="80"
+                                                        frameBorder="0"
+                                                        allow="encrypted-media"
+                                                        style={{ borderRadius: "10px" }}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
