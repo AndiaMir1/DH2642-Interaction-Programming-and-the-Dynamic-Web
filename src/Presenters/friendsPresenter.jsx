@@ -4,7 +4,7 @@ import FriendsListView from "/src/Views/friendsListView";
 const FriendsList = observer(
     function FriendsListRender(props){
         const navigate = useNavigate();
-        const friends = props.model.friends;
+        var friends = props.model.friends;
 
         function handleSearchACB(username) {
             if (!username) return Promise.resolve([]);

@@ -4,8 +4,9 @@ import { getTrack, getArtist, createSpotifyPlaylist,
     addTracksToPlaylist, getCurrentUser,searchMusic
  } from "../apiConfig/musicSource";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
-import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit } from "firebase/firestore";
+import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
+import { runInAction } from "mobx";
 
 function resolvePromise(promise, stateObject) {
     stateObject.promise = promise;
@@ -70,8 +71,10 @@ export const rootModel = {
             
             const shuffled = [...features].sort (() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 3);
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const randomChar= alphabet.charAt(Math.floor(Math.random() * alphabet.length));
 
-            return selected.join(" OR ");
+            return "(" + selected.join(" OR ") + ")" + randomChar;
         }
 
         return features || ""; 
@@ -234,39 +237,45 @@ export const rootModel = {
         }
     },
 
-    fetchFriendFeed () {
-        var model = this;
+    fetchFriendFeed() {
+    var model = this;
 
-        if (!model.user || model.friends.length === 0) {
+    if (!model.user || model.friends.length === 0) {
+        runInAction(function() {  
             model.friendFeed = [];
-            return;
-        }
+        });
+        return;
+    }
 
-        model.friends.map(async function(friend) {
-            var updatesRef = collection(db, "USER", friend.uid, "updates");
-            var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
-            onSnapshot(q, function(snapshot) {
-                var updates = snapshot.docs.map(function (docSnap) {
-                    return {
-                        id: docSnap.id,
-                        user: friend.username,
-                        uid: friend.uid,
-                        type: docSnap.data().type,
-                        payload: docSnap.data().payload,
-                        timestamp: docSnap.data().timestamp
-                    };
-                });
+    model.friends.forEach(function(friend) {
+        var updatesRef = collection(db, "USER", friend.uid, "updates");
+        var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
 
-                var otherUpdates = model.friendFeed.filter(function(u) {
-                    return u.uid !== friend.uid;
-                });
+        onSnapshot(q, function(snapshot) {
+            var updates = snapshot.docs.map(function(docSnap) {
+                return {
+                    id: docSnap.id,
+                    user: friend.username || friend.username,
+                    uid: friend.uid,
+                    type: docSnap.data().type,
+                    payload: docSnap.data().payload,
+                    timestamp: docSnap.data().timestamp,
+                };
+                console.log("Fetched updates for", friend.username, updates)
+
+
+            });
+            runInAction(function() { 
+            var otherUpdates = model.friendFeed.filter(function(u) {
+                return u.uid !== friend.uid;
+            });
 
                 model.friendFeed = otherUpdates.concat(updates);
                 model.friendFeed.sort(function(a,b) {
-                return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
+                    return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
                 });
+            });
         });
-
     });
 },
 

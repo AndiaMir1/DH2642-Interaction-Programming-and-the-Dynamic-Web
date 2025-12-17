@@ -27,6 +27,8 @@ export default function FriendsProfileView(props) {
     return (
         <div>
             <h2>{profile.username}</h2>
+            <p><strong>Current City: </strong> {profile.currentCity || "Not set"}</p>
+            <p><strong> Favorite genre: </strong> {profile.genre || "Not set"}</p>
         </div>
     );
 }

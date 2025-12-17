@@ -26,119 +26,119 @@ export function getWind(wind) {
 export const weatherMusic = {
     clear: {
         highTemp: {
-            highWind: ["Top Hits", "Party Bangers", "Summer Hits 2024", "Mainstage", "Pop Remix"],
-            midWind: ["Hot Hits", "Summer Air", "Chart Toppers", "Radio 1", "Pop Sunshine"],
-            lowWind: ["Summer Chill", "Acoustic Pop Hits", "Feel Good Hits", "Tropical Pop", "Sunset Chill"]
+            highWind: ["Dance Pop", "Summer Anthems", "Upbeat Hits", "Mainstage", "Party Mix"],
+            midWind: ["Feel Good Pop", "Summer Vibes", "Tropical House", "Top 40", "Sunshine"],
+            lowWind: ["Acoustic Pop", "Chill Hits", "Summer Lounge", "Soft Pop", "Lazy Day"],
         },
         midTemp: {
-            highWind: ["Running Hits", "Workout Pop", "Energy Hits", "Modern Rock Classics"],
-            midWind: ["Spring Hits", "Happy Pop", "Today's Top Tracks", "Soft Pop Radio"],
-            lowWind: ["Afternoon Acoustic", "Coffee Shop Hits", "Easy Hits", "Peaceful Pop"]
+            highWind: ["Workout Energy", "Power Pop", "Modern Rock", "Fast Pop", "Upbeat Indie"],
+            midWind: ["Happy Hits", "Spring Pop", "Morning Radio", "Bright Pop", "Feel Good"],
+            lowWind: ["Easy Listening", "Coffee Shop", "Acoustic Hits", "Mellow Pop", "Piano"],
         },
         lowTemp: {
-            highWind: ["Winter Workout", "Upbeat Classics", "Fast Pop", "High Energy Pop"],
-            midWind: ["Crisp Pop", "Winter Radio", "Bright Hits", "Clean Pop"],
-            lowWind: ["Winter Cozy", "Warm Pop Hits", "Acoustic Hits", "Fireside Pop"]
+            highWind: ["Crisp Pop", "High Energy Classics", "Winter Workout", "Electro Pop"],
+            midWind: ["Winter Radio", "Bright Hits", "Fresh Pop", "Clean Radio"],
+            lowWind: ["Cozy Acoustic", "Winter Chillout", "Warm Vocals", "Soft Hits"],
         }
     },
     thunderstorm: {
         highTemp: {
-            highWind: ["Rock Anthems", "Stadium Rock", "Heavy Hits", "Imagine Dragons Style", "Power Pop"],
-            midWind: ["Alternative Hits", "Dark Pop Bangers", "Electronic Rock", "Night Pop"],
-            lowWind: ["Mood Hits", "Sultry Pop", "Dark R&B Hits", "Late Night Hits"]
+            highWind: ["Alternative Rock", "Electric Energy", "Hard Rock", "Power Anthems", "Intense Pop"],
+            midWind: ["Dark Pop", "Moody Beats", "Electronic Rock", "Night Drive"],
+            lowWind: ["Sultry R&B", "Heavy Bass", "Late Night Pop", "Atmospheric Hits"],
         },
         midTemp: {
-            highWind: ["Classic Rock Hits", "Hard Rock Radio", "Grunge Classics", "Heavy Rotation"],
-            midWind: ["Dramatic Pop", "Stormy Rock", "Cinematic Hits", "Moody Anthems"],
-            lowWind: ["Dark Piano Hits", "Deep Dark Pop", "Atmospheric Rock", "Slow Rock"]
+            highWind: ["Classic Rock", "Stadium Rock", "Rock Anthems", "Heavy Hits"],
+            midWind: ["Cinematic Pop", "Dark Moody", "Tension", "Alternative Radio"],
+            lowWind: ["Dark Piano", "Deep Melancholy", "Slow Rock", "Ominous Beats"],
         },
         lowTemp: {
-            highWind: ["Metal Classics", "Industrial Hits", "Aggressive Rock", "Hardcore Hits"],
-            midWind: ["Dark Wave Hits", "Gothic Rock Classics", "Heavy Moody", "Nightmare Pop"],
-            lowWind: ["Dark Ambient Hits", "Moody Instrumental", "Empty Hits", "Ethereal Pop"]
+            highWind: ["Metal Hits", "Hardcore Rock", "Industrial", "Aggressive"],
+            midWind: ["Dark Wave", "Gothic Pop", "Heavy Rock", "Grim Beats"],
+            lowWind: ["Dark Ambient", "Doom Pop", "Silent Dark", "Deep Empty"],
         }
     },
     drizzle: {
         highTemp: {
-            highWind: ["Tropical House Hits", "Liquid Pop", "Summer Rain Radio", "Fresh Pop"],
-            midWind: ["Lo-Fi Pop", "Soft Hits", "Chill Pop", "Rainy Day Radio", "Mellow Hits"],
-            lowWind: ["Chillout Classics", "Bedtime Pop", "Relaxing Hits", "Rainy Piano"]
+            highWind: ["Liquid DnB", "Tropical Beats", "Fresh House", "Summer Rain"],
+            midWind: ["Lo-Fi Pop", "Chillout", "Soft Beats", "Mellow Hits", "Quiet Pop"],
+            lowWind: ["Ambient Chill", "Zen Pop", "Nature Sounds", "Peaceful"],
         },
         midTemp: {
-            highWind: ["Indie Pop Hits", "Alternative Radio", "Rainy Day Classics", "Soft Rock Hits"],
-            midWind: ["Sad Pop Hits", "Melancholy Hits", "Rainy Day Pop", "Acoustic Radio"],
-            lowWind: ["Lo-Fi Beats", "Chill Study Hits", "Relaxing Pop Hits", "Quiet Hits"]
+            highWind: ["Indie Hits", "Rainy Day Radio", "Soft Rock", "Modern Folk"],
+            midWind: ["Sad Pop", "Melancholy Hits", "Rainy Day Pop", "Acoustic Radio"],
+            lowWind: ["Chill Study", "Lo-Fi Beats", "Coffee House", "Muted Pop"],
         },
         lowTemp: {
-            highWind: ["Gloomy Pop Hits", "Cold Grey Pop", "Moody Radio", "Slow Hits"],
-            midWind: ["Sad Acoustic Hits", "Heartbreak Pop", "Lonely Hits", "Grey Radio"],
-            lowWind: ["Deeply Sad Pop", "Slow Piano Hits", "Minimalist Pop", "Crying Hits"]
+            highWind: ["Gloomy Hits", "Cold Pop", "Moody Radio", "Grey Beats"],
+            midWind: ["Sad Acoustic", "Lonely Hits", "Heartbreak Pop", "Chilly"],
+            lowWind: ["Slow Piano", "Minimalist Pop", "Deep Sadness", "Empty"],
         }
     },
     rain: {
         highTemp: {
-            highWind: ["Summer Storm Hits", "Drum and Bass Hits", "Hyperpop", "High Energy Rain"],
-            midWind: ["Warm Rain Pop", "Organic Pop", "Steamy R&B Hits", "Nature Pop"],
-            lowWind: ["Fresh Morning Hits", "Soft Rain Acoustic", "Garden Pop", "Chill Hits"]
+            highWind: ["Tropical Storm", "Drum & Bass", "Jungle Beats", "Electric Rain"],
+            midWind: ["Warm R&B", "Steam", "Nature Hits", "Fluid Pop"],
+            lowWind: ["Fresh Morning", "Soft Rain Acoustic", "Garden Vibes", "Afternoon"],
         },
         midTemp: {
-            highWind: ["Powerful Ballads", "Rock Ballads", "Emotional Anthems", "Driving Hits"],
-            midWind: ["Rainy Day Hits", "Sad Songs Pop", "Coffee House Pop", "Billboard Hot 100 Sad"],
-            lowWind: ["Cozy Pop", "Reading Chill Hits", "Home Pop Radio", "Indoor Acoustic"]
+            highWind: ["Power Ballads", "Emotional Rock", "Driving Hits", "Epic Pop"],
+            midWind: ["Rainy Hits", "Sad Songs Pop", "Coffee House Pop", "Rainy Jazz"],
+            lowWind: ["Cozy Pop", "Reading Chill", "Home Radio", "Indoor Acoustic"],
         },
         lowTemp: {
-            highWind: ["Cold Rock Anthems", "Winter Rain Hits", "Hard Rock Classics", "Epic Hits"],
-            midWind: ["Sad Winter Pop", "Freezing Hits", "Grey Sky Hits", "Lonely Radio"],
-            lowWind: ["Depressing Pop Hits", "Slow Sad Classics", "Abyssal Pop", "Dark Piano"]
+            highWind: ["Cold Rock", "Epic Anthems", "Hard Rock Classics", "Winter Storm"],
+            midWind: ["Sad Winter", "Grey Sky Hits", "Lonely Radio", "Freezing"],
+            lowWind: ["Slow Sadness", "Dark Piano", "Abyssal", "Cold Empty"],
         }
     },
     snow: {
         midTemp: {
-            highWind: ["Christmas Hits", "Winter Anthems", "Holiday Party", "Epic Winter Rock"],
-            midWind: ["Winter Wonderland", "Holiday Classics", "Snowy Pop", "Disney Hits"],
-            lowWind: ["Silent Night Pop", "Peaceful Holiday", "Winter Acoustic Hits", "Snowy Chill"]
+            highWind: ["Christmas Party", "Holiday Hits", "Winter Anthems", "Epic Winter"],
+            midWind: ["Winter Wonderland", "Holiday Classics", "Snowy Pop", "Bright Winter"],
+            lowWind: ["Silent Night", "Peaceful Holiday", "Winter Acoustic", "Soft Snow"],
         },
         lowTemp: {
-            highWind: ["Extreme Energy", "Power Metal Hits", "Glacier Rock", "Arctic Hits"],
-            midWind: ["Frozen Pop", "Northern Lights Chill", "Icy Hits", "Winter Beauty Pop"],
-            lowWind: ["Deep Winter Chill", "Hibernate Pop", "Silent Snow Piano", "Winter Sleep"]
+            highWind: ["Power Metal", "Extreme Energy", "Arctic Hits", "Ice Rock"],
+            midWind: ["Icy Pop", "Frosty Radio", "Northern Lights", "Deep Winter"],
+            lowWind: ["Hibernation", "Deep Freeze", "Silent Piano", "Winter Sleep"],
         }
     },
     Atmosphere: {
         highTemp: {
-            highWind: ["Vaporwave Hits", "Summer Haze Radio", "Psych Rock Hits", "Dreamy Pop"],
-            midWind: ["Ethereal Pop Hits", "Dream Pop Classics", "Floating Pop", "Hazy Hits"],
-            lowWind: ["Ambient Pop Hits", "Lounge Classics", "Sun Drenched Pop", "Slow Mo"]
+            highWind: ["Vaporwave", "Summer Haze", "Psych Rock", "Dreamy Pop"],
+            midWind: ["Ethereal Hits", "Dream Pop", "Floating", "Hazy Pop"],
+            lowWind: ["Ambient Lounge", "Sun Drenched", "Slow Mo", "Lush Pop"],
         },
         midTemp: {
-            highWind: ["Mysterious Pop", "Noir Hits", "Cinematic Pop", "Shadow Hits"],
-            midWind: ["Foggy Day Pop", "Alternative Hits", "Mist Radio", "Moody Pop Classics"],
-            lowWind: ["Soft Mist Piano", "Ethereal Acoustic", "Dreamy Chill Hits", "Floating"]
+            highWind: ["Mysterious Pop", "Noir Beats", "Cinematic", "Ghostly"],
+            midWind: ["Foggy Day", "Alternative Hits", "Mist Radio", "Moody Pop"],
+            lowWind: ["Soft Mist", "Dreamy Acoustic", "Floating", "Peaceful"],
         },
         lowTemp: {
-            highWind: ["Eerie Pop", "Ghostly Hits", "Void Pop", "Cold Atmospheric"],
-            midWind: ["Dark Atmosphere Hits", "Deep Fog Radio", "Cinematic Dark Pop", "Unknown Hits"],
-            lowWind: ["Isolation Pop", "Silent Hits", "Ambient Piano Classics", "Cold Void"]
+            highWind: ["Eerie Pop", "Cold Atmospheric", "Void", "Whiteout"],
+            midWind: ["Dark Atmosphere", "Deep Fog", "Cinematic Dark", "Unknown"],
+            lowWind: ["Isolation", "Silent Cold", "Ambient Piano", "Grey Silence"],
         }
     },
     cloud: {
         highTemp: {
-            highWind: ["Overcast Pop", "Muffled Energy", "Summer Grey Hits", "Static Pop"],
-            midWind: ["Mellow Pop Hits", "Soft Summer Radio", "Cloudy Day Hits", "Silver Pop"],
-            lowWind: ["Lazy Day Pop", "Daydream Hits", "Warm Grey Acoustic", "Floating Pop"]
+            highWind: ["Overcast Pop", "Muffled Energy", "Summer Grey", "Static"],
+            midWind: ["Mellow Summer", "Cloudy Vibes", "Soft Light", "Silver Pop"],
+            lowWind: ["Lazy Day", "Warm Grey", "Daydream", "Floating Pop"],
         },
         midTemp: {
-            highWind: ["Indie Rock Hits", "Alternative Anthems", "Modern Rock Radio", "Urban Hits"],
-            midWind: ["Daily Mix Pop", "Radio Hits", "Neutral Pop", "Easy Listening Hits"],
-            lowWind: ["Afternoon Chill Pop", "Soft Pop Hits", "Silver Sky Acoustic", "Mellow Radio"]
+            highWind: ["Indie Rock", "Alternative Anthems", "Modern Rock", "Urban Hits"],
+            midWind: ["Daily Mix Pop", "Radio Hits", "Neutral Pop", "Easy Listening"],
+            lowWind: ["Afternoon Chill", "Soft Pop Hits", "Silver Sky", "Mellow Radio"],
         },
         lowTemp: {
-            highWind: ["Gloomy Rock", "Winter Grey Hits", "Cold Anthems", "Heavy Moody Pop"],
-            midWind: ["Sad Radio Hits", "Somber Pop", "Grey Winter Classics", "Empty Hits"],
-            lowWind: ["Cozy Grey Hits", "Sleepy Pop", "Soft & Sad Hits", "Silver Lining"]
+            highWind: ["Gloomy Rock", "Winter Grey", "Cold Anthems", "Heavy Moody"],
+            midWind: ["Sad Radio", "Somber Pop", "Grey Winter", "Dull Hits"],
+            lowWind: ["Cozy Grey", "Sleepy Pop", "Soft & Sad", "Silver Lining"],
         }
     }
-}
+};
 
 
 /*2XX thunderstorm

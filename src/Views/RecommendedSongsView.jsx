@@ -26,6 +26,7 @@ export function RecommendedSongsView (props) {
         }
         
         const result = await searchMusic(props.recommendedArtist, token);
+        
         setSearchResults(result || []);
         
         /*
@@ -64,8 +65,8 @@ export function RecommendedSongsView (props) {
                                                  height={"100"}
                                             />
                                             <strong>{track.name}</strong>
-                                            <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
                                             
+                                            <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
                                              <div>
                                         {track.preview_url ? (
                                             <audio controls style={{ height: "30px", marginLeft: "auto" }}>

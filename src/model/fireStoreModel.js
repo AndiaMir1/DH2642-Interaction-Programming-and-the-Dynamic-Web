@@ -33,13 +33,15 @@ export function connectToPersistence(model, watchFunction) {
                     //default values:
                     const data = snapshot.data() || {};
                     model.currentCity = data.currentCity ?? null;
-                    model.currentUsername = data.username ?? null;
+                    model.currentUsername = data.username ?? user.displayName ?? "unknown user";
                     model.getWeather(model.currentCity);
                     model.currentGenre = data.genre ?? null;
                     //friends list imp
                     model.friends = data.friends || [];
                     model.likedSongs = data.likedSongs || [];
                     model.ready = true;
+
+                    model.fetchFriendFeed();
             })
         .catch(function getDocErrorACB(err) {
             console.error("error: ", err);

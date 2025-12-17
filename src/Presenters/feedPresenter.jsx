@@ -5,6 +5,7 @@ const Feed = observer(function FeedRender(props) {
 function filterFriendFeed (feed, friends) {
 if(!feed || !friends) return [];
 return feed.filter(function (update) {
+    if(!update || !update.uid) return false;
     return friends.some(function(friend) {
         return friend.uid === update.uid;
     });
@@ -13,6 +14,7 @@ return feed.filter(function (update) {
 
 var visibleFeed = filterFriendFeed(props.model.friendFeed, props.model.friends);
     return <FeedView feed ={visibleFeed} />;
+
 });
 
 

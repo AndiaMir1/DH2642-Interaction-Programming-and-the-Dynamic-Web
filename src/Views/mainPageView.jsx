@@ -9,7 +9,7 @@ import CallbackView from "./CallbackView";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
-import Feed from "./feedView.jsx";
+import { Feed } from "../Presenters/feedPresenter.jsx";
 
 export function MainPage (props) {  
     const location = useLocation();
