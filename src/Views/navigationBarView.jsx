@@ -28,7 +28,11 @@ export default function NavigationBar({activePath}) {
                 <Link to="/feed" className={`nav-button ${activePath ==="/feed" ? "active" : ""}`}>
                     Feed
                 </Link>
-                <Link to="/logout" className={`nav-button ${activePath ==="/logout" ? "active" : ""}`}>
+                
+                <Link 
+                    to="/logout" 
+                    state={{ from: activePath }}
+                    className={`nav-button ${activePath ==="/logout" ? "active" : ""}`}>
                     Sign Out
                 </Link>
                  

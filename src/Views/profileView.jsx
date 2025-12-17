@@ -6,7 +6,7 @@ export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [usernameInput, setUsernameInput] = useState("");
     const [showUsernameChange, setShowUsernameChange] = useState(false);
-
+    const [showCityChange, setShowCityChange] = useState(false);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
@@ -19,7 +19,7 @@ export default function ProfileView(props) {
     function onUsernameChangeACB(event) {
         setUsernameInput(event.target.value);
     }
-
+ 
    
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
@@ -30,6 +30,7 @@ export default function ProfileView(props) {
         if (trimmedCity && props.onSaveClick) {
             props.onSaveClick(trimmedCity);
             setCityInput("");
+            setShowCityChange(false);
         }
     }
 
@@ -42,8 +43,22 @@ export default function ProfileView(props) {
         }
     }
 
-    function onUsernameClickACB() {
+    function onChangeUsernameClickACB() {
         setShowUsernameChange(true);
+    }
+
+    function onChangeCityClickACB() {
+        setShowCityChange(true);
+    }
+
+    function onCloseUsernameACB() {
+        setShowUsernameChange(false);
+        setUsernameInput("");
+    }
+
+    function onCloseCityACB(){
+        setShowCityChange(false);
+        setCityInput("");
     }
 
     return (
@@ -55,18 +70,38 @@ export default function ProfileView(props) {
                     Hometown:
                     <strong> {props.currentCity || "Not Selected"} </strong>
                 </p>
+                <button onClick={onChangeCityClickACB}>Edit</button>
             </section>
 
-            <section className="current-location" onClick={onUsernameClickACB}>
+            {showCityChange && (
+                <section className="change-location">
+                    <h2>Change City</h2>
+                    <button className="close-btn" onClick={onCloseCityACB}>Close</button>
+                    <input
+                        type="text"
+                        placeholder="Enter city name"
+                        value={cityInput}
+                        onChange={onTextChangeACB}
+                        onKeyDown={onEnterKey(onSavedACB)}
+                    />
+                    <button onClick={onSavedACB} disabled={props.isSaving}>
+                        {props.isSaving ? "Saving..." : "Save"}
+                    </button>
+                </section> 
+            )}
+
+            <section className="current-location">
                 <p>
                     Username:
                     <strong> {props.currentUsername || props.userName || "Not Selected"} </strong>
                 </p>
+                <button onClick={onChangeUsernameClickACB}>Edit</button>
             </section>
 
             {showUsernameChange && (
                 <section className="change-location">
                     <h2>Change Username</h2>
+                    <button className="close-btn" onClick={onCloseUsernameACB}>Close</button>
                     <input
                         type="text"
                         placeholder="Enter new username"
@@ -79,20 +114,6 @@ export default function ProfileView(props) {
                     </button>
                 </section>
             )}
-
-            <section className="change-location">
-                <h2>Change City</h2>
-                <input
-                    type="text"
-                    placeholder="Enter city name"
-                    value={cityInput}
-                    onChange={onTextChangeACB}
-                    onKeyDown={onEnterKey(onSavedACB)}
-                />
-                <button onClick={onSavedACB} disabled={props.isSaving}>
-                    {props.isSaving ? "Saving..." : "Save"}
-                </button>
-            </section>
 
             <section>
     <button
