@@ -1,5 +1,6 @@
 import {onEnterKey} from "../utils/viewHandlers";
 import "./style/authView.css";
+import { eyeImage } from "../images/images";
 
 export function AuthView(props) {
 
@@ -34,13 +35,22 @@ export function AuthView(props) {
         onChange={handleEmailChangeACB} 
         onKeyDown={onEnterKey(handleSubmitACB)}
       />
+      <div className="password-wrapper">
       <input 
-        type="password" 
+        type={props.showPassword ? "text" : "password"} 
         value={props.password} 
         placeholder="Password" 
         onChange={handlePasswordChangeACB} 
         onKeyDown={onEnterKey(handleSubmitACB)}
       />
+      <button
+      type="button"
+      className="show-password-btn"
+      onClick={props.togglePasswordVisibility}
+      >
+        {eyeImage}
+      </button>
+      </div>
 
       {props.isSignUp && (
         <input 

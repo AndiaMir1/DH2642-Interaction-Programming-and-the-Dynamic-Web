@@ -6,16 +6,21 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "fir
 
 export const AuthPresenter= observer(function AuthPresenter(props) {
     const model = props.model;
- 
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState("");
     const [username, setUsername] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     function toggleMode() {
         setIsSignUp(!isSignUp);
         setError("");
+    }
+
+    function togglePasswordVisibility() {
+        setShowPassword(!showPassword);
     }
 
     function handleAuthError(err) {
@@ -65,6 +70,8 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
             toggleMode={toggleMode}
             submit={submit}
             error={error}
+            togglePasswordVisibility={togglePasswordVisibility}
+            showPassword={showPassword}
         />
     );
 });

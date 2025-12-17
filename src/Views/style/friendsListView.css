@@ -53,20 +53,32 @@
     box-shadow: var(--shadow-hover);
 }
 
-.friends-list li .remove-button:hover {
-    background: #ff3838;
+/* Normal state for Remove button */
+.friends-list li .remove-button {
+    background: #ff4d4d; /* A lighter red for the base state */
     color: white;
+    width: auto; /* Overrides the 100% width from your global styles */
     padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    min-height: 36px;
 }
 
-.friends-list li .profile-button:hover {
-    background: #2d8150;
+/* Hover state for Remove button */
+.friends-list li .remove-button:hover {
+    background: #ff3838; /* The darker red you wanted */
     color: white;
+    transform: scale(1.05);
+}
+
+/* Normal state for Profile/Username button */
+.friends-list li .profile-button {
+    background: #4caf50; /* A base green */
+    color: white;
+    width: auto;
     padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    min-height: 36px;
+}
+
+/* Hover state for Profile button */
+.friends-list li .profile-button:hover {
+    background: #2d8150; /* The darker green you wanted */
+    color: white;
     cursor: pointer;
 }
-
