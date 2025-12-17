@@ -1,0 +1,155 @@
+@import './variables.css';
+
+/* Music test section */
+.music-test {
+    margin-top: 40px;
+    border-top: 2px dashed #aaa;
+    padding-top: 20px;
+}
+
+/* Spotify login button */
+.spotify-login-btn {
+    margin-bottom: 15px;
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.spotify-login-btn:hover {
+    background-color: #1ed760;
+}
+
+/* Get songs button */
+.get-songs-btn {
+    padding: 8px 16px;
+    background-color: var(--primary, #333);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.get-songs-btn:hover {
+    background-color: var(--primary-dark, #555);
+}
+
+/* Songs container */
+.songs-container {
+    margin-top: 15px;
+    text-align: left;
+}
+
+/* Individual track item */
+.track-item {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: var(--white, white);
+    margin-bottom: 8px;
+    border-radius: var(--radius, 8px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Track image */
+.track-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* Track content */
+.track-content {
+    flex: 1;
+}
+
+/* Track header with title, artist and like button */
+.track-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.track-header strong {
+    color: var(--primary, #333);
+}
+
+/* Artist name */
+.artist-name {
+    color: gray;
+    font-style: italic;
+}
+
+/* Like button */
+.like-btn {
+    margin-left: auto;
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.like-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
+    transform: translateY(-1px);
+}
+
+/* Audio container */
+.audio-container {
+    margin-top: 8px;
+}
+
+/* Audio player */
+.audio-player {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Iframe container */
+.iframe-container {
+    margin-top: 8px;
+}
+
+/* Spotify embed */
+.spotify-embed {
+    width: 600px;
+    height: 80px;
+    border-radius: 10px;
+    max-width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .track-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .track-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .track-header {
+        flex-wrap: wrap;
+    }
+    
+    .spotify-embed {
+        width: 100%;
+        min-width: 300px;
+    }
+}
