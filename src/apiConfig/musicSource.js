@@ -42,17 +42,10 @@ export async function getAccessTokenFromCode(code) {
 
 export async function searchMusic(query, token) {
     if (!token) {
-         console.error("No token found!");
+         console.error("No token found! User must log in.");
          return [];
     }
-
-    // 1. Define the URL
-    const url = `https://api.spotify.com/v1/search?q=${query}&type=track&limit=10&market=US`;
-    
-    // 2. PRINT IT (This is the important part!)
-    console.log("🔗 FETCHING URL:", url);
-
-    const response = await fetch(url, {
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10&market=SE`, {
         headers: { Authorization: `Bearer ${token}` }
     });
 
