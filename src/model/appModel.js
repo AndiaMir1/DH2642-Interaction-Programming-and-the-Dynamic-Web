@@ -1,10 +1,9 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
-import { fetchWeatherData } from "../apiConfig/weatherSource";
 import { getTrack, getArtist, createSpotifyPlaylist, 
-    addTracksToPlaylist, getCurrentUser,searchMusic, 
-    getRecommendedSongsByAudioFeature
+    addTracksToPlaylist, getCurrentUser,searchMusic
  } from "../apiConfig/musicSource";
+import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit } from "firebase/firestore";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
 
@@ -61,13 +60,21 @@ export const rootModel = {
     friendFeed: [],
 
     getMusicRecommendations(weatherData){
-         const category = getWeatherCategory(weatherData.conditionId);
-         const temp = getTemperature(weatherData.temp);
-         const wind = getWind(weatherData.windSpeed);
+        const category = getWeatherCategory(weatherData.conditionId);
+        const temp = getTemperature(weatherData.temp);
+        const wind = getWind(weatherData.windSpeed);
 
-         const features = weatherMusic?.[category]?.[temp]?.[wind];
-         
-        return features || { energy: 0.5, tempo: 100}; 
+        const features = weatherMusic?.[category]?.[temp]?.[wind];
+        
+        if (Array.isArray(features) && features.length > 0) {
+            
+            const shuffled = [...features].sort (() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+
+            return selected.join(" OR ");
+        }
+
+        return features || ""; 
 
     },
 
@@ -92,6 +99,7 @@ export const rootModel = {
         this.currentCity = city;
         //feed imp
         this.addUserUpdate("CITY_CHANGE", {city : city});
+        this.fetchFriendFeed();
     },
 
     setUser(user) {
@@ -200,8 +208,10 @@ export const rootModel = {
         addDoc(updatesRef, {
             type: type,
             payload: payload,
+            username: this.currentUsername,
+            uid: this.user.uid,
             timestamp: serverTimestamp()
-        })
+        });
     },
 
     async fetchRecommendedSongs() {
@@ -231,44 +241,34 @@ export const rootModel = {
             model.friendFeed = [];
             return;
         }
-        model.friendFeed = [];
 
-        var promises = model.friends.map(function(friend) {
+        model.friends.map(async function(friend) {
             var updatesRef = collection(db, "USER", friend.uid, "updates");
             var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
-
-            return getDocs(q).then(function(snapshot) {
-                return snapshot.docs.map(function(docSnap) {
+            onSnapshot(q, function(snapshot) {
+                var updates = snapshot.docs.map(function (docSnap) {
                     return {
                         id: docSnap.id,
                         user: friend.username,
                         uid: friend.uid,
                         type: docSnap.data().type,
-                        payload: docSnap.data().timestamp
+                        payload: docSnap.data().payload,
+                        timestamp: docSnap.data().timestamp
                     };
                 });
-            });
+
+                var otherUpdates = model.friendFeed.filter(function(u) {
+                    return u.uid !== friend.uid;
+                });
+
+                model.friendFeed = otherUpdates.concat(updates);
+                model.friendFeed.sort(function(a,b) {
+                return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
+                });
         });
 
-        Promise.all(promises)
-        .then(function(results) {
-            var merged = [];
-            results.forEach(function(arr) {
-                merged.push.apply(merged, arr);
-            });
-
-            model.friendFeed = merged;
-
-            merged.sort(function(a, b) {
-                return b.timestamp?.seconds - a.timestamp?.seconds;
-            })
-            .catch(function(err) {
-                console.error ("failed to fetch friend feed", err);
-            });
-        })
-
-    },
-
+    });
+},
 
     // song imp
     storePlayedTracks (tracks) {
@@ -342,7 +342,6 @@ export const rootModel = {
             return;
         }
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
-    
     },
 
     

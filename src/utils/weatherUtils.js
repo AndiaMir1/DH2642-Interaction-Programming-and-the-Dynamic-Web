@@ -24,136 +24,120 @@ export function getWind(wind) {
 }
 
 export const weatherMusic = {
-    clear:{
-        highTemp:{
-            highWind:{energy: 0.85, tempo: 135},
-            midWind:{energy: 0.85, tempo: 135},
-            lowWind: {energy: 0.1, tempo: 100},
-
+    clear: {
+        highTemp: {
+            highWind: ["Summer Party", "Poolside Disco", "Uptempo Pop", "Tropical Dance", "Festival Anthems", "Ibiza Energy", "Sunlight", "Fast Summer"],
+            midWind: ["Sunny Vibes", "Beach Day", "Good Times", "Feel Good Summer", "Roadtrip", "Sunshine Pop", "Island", "Bright"],
+            lowWind: ["Summer Chill", "Sunset Lounge", "Acoustic Summer", "Golden Hour", "Relaxing Summer", "Soft Sunlight", "Lazy Afternoon", "Balearic"]
         },
         midTemp: {
-            highWind: {energy: 0.1, tempo: 100},
-            midWind: ["Adele"],
-            lowWind: ["Adele"],
+            highWind: ["Running", "Fresh Energy", "Bright Day", "Cycling", "Upbeat Indie", "Windy Morning", "Adventure", "Spring Energy"],
+            midWind: ["Morning Walk", "Positive", "Spring Vibes", "Daylight", "Outdoor", "Acoustic Pop", "Happy", "Clear Sky"],
+            lowWind: ["Easy Going", "Peaceful", "Picnic", "Garden", "Afternoon Tea", "Soft Acoustic", "Mellow", "Quiet Joy"]
         },
         lowTemp: {
-            highWind: {energy: 0.9, tempo: 160},
-            midWind: {energy: 0.1, tempo: 100},
-            lowWind: {energy: 0.2, tempo: 140},
+            highWind: ["Crisp Air", "Fast Winter", "Bright Cold", "Skiing", "Arctic Wind", "Energizing Cold", "Ice", "Winter Running"],
+            midWind: ["Winter Sun", "Clear Sky", "Walking in Snow", "Frosty", "Blue Sky Winter", "Cold Bright", "Snowy Peaks", "Winter Walk"],
+            lowWind: ["Cozy Morning", "Hot Coffee", "Winter Acoustic", "Soft Light", "Fireside", "Cabin Vibes", "Warm Blankets", "Hyggeligt"]
         }
-
     },
     thunderstorm: {
-        highTemp:{
-            highWind:["Beyonce"],
-            midWind:["Beyonce"],
-            lowWind: ["Beyonce"],
-
+        highTemp: {
+            highWind: ["Electric Storm", "Aggressive", "Thunder & Bass", "Power", "Industrial", "Hard Trap", "Storm Surge", "Extreme"],
+            midWind: ["Tropical Storm", "Heavy Rain Beats", "Intense", "Dark Jungle", "Humid Thunder", "Drum and Bass", "Flash Flood", "Voltage"],
+            lowWind: ["Humid", "Heatwave Storm", "Sultry Dark", "Pressure", "Dark R&B", "Heavy Atmosphere", "Ominous", "Waiting for Rain"]
         },
         midTemp: {
-            highWind: ["Lorde"],
-            midWind: ["Lorde"],
-            lowWind: ["Lorde"],
+            highWind: ["Rolling Thunder", "Hard Rock", "Stormy Night", "Metal", "Crashing", "Lightning Strike", "Dark Energy", "Rumble"],
+            midWind: ["Thunder", "Rain & Thunder", "Dark Moody", "Cinematic Storm", "Gothic", "Tension", "Electric Sky", "Heavy Clouds"],
+            lowWind: ["Shadows", "Distortion", "Thunder Echoes", "Ominous", "Dark Piano", "Eerie", "Deep Rumble", "Slow Storm"]
         },
         lowTemp: {
-            highWind: ["Beyonce"],
-            midWind: ["Beyonce"],
-            lowWind: ["Kent"],
+            highWind: ["Icy Storm", "Black Metal", "Chaos", "Winter Dark", "Harsh", "Frozen Thunder", "Nightmare", "Blizzard Metal"],
+            midWind: ["Cold Thunder", "Gothic", "Heavy Industrial", "Nightmare", "Dark Wave", "Sleet Storm", "Desolation", "Grim"],
+            lowWind: ["Dark Ambient", "Doom", "Cold Empty", "Static", "Drone", "Abyss", "Deep Dark", "Isolation"]
         }
-
     },
     drizzle: {
-        highTemp:{
-            highWind:["Elyanna"],
-            midWind:["Elyanna"],
-            lowWind: ["Elyanna"],
-
+        highTemp: {
+            highWind: ["Tropical Rain", "Warm Mist", "Fluid", "Summer Rain", "Rainforest", "Soft Electronic", "Liquid DnB", "Moving Mist"],
+            midWind: ["Soft Shower", "Lo-fi Rain", "Light Rain", "Gentle", "Warm Drizzle", "Morning Mist", "Floating", "Hazy Rain"],
+            lowWind: ["Misty Morning", "Dew", "Calm Rain", "Quiet", "Meditation Rain", "Soft Sleep", "Zen", "Minimalist Rain"]
         },
         midTemp: {
-            highWind: ["Elyanna"],
-            midWind: ["Elyanna"],
-            lowWind: ["Elyanna"],
+            highWind: ["Grey Day", "Windy Rain", "Walking in Rain", "Street Lights", "Rainy Indie", "Soggy Streets", "Moving Grey", "Urban Rain"],
+            midWind: ["Rainy Day", "Soft Pop", "Drizzle Chill", "Floating", "Melancholy", "Dreamy Rain", "Overcast", "Acoustic Rain"],
+            lowWind: ["Chill Lo-fi", "Rainy Window", "Relaxing Rain", "Study Rain", "Cozy Lo-fi", "Rainy Jazz", "Slow Drizzle", "Muted"]
         },
         lowTemp: {
-            highWind: ["Elyanna"],
-            midWind: ["Elyanna"],
-            lowWind: ["Elyanna"],
+            highWind: ["Cold Drizzle", "Sleet", "Freezing Mist", "Bitter", "Sharp Rain", "Icy Drizzle", "Gloomy Wind", "Harsh Grey"],
+            midWind: ["Cold Rain", "Melancholy", "Grey", "Lonely", "Depressing Rain", "Sad Acoustic", "Empty Streets", "Chilly"],
+            lowWind: ["Sad Rain", "Depressing", "Empty", "Slow Drizzle", "Tears", "Minimalist", "Ghostly Rain", "Winter Drizzle"]
         }
-
     },
-
     rain: {
-        highTemp:{
-            highWind:["Lill-Babs"],
-            midWind:["Lill-Babs"],
-            lowWind: ["Lill-Babs"],
-
+        highTemp: {
+            highWind: ["Jungle Rain", "Monsoon", "Drum & Rain", "Heavy Tropical", "Rainy Jungle", "Stormy Summer", "Electric Rain", "Pouring"],
+            midWind: ["Warm Rain", "Rainforest", "Steam", "Steady Rain", "Liquid Gold", "Rainy Afternoon", "Nature Sounds", "Deep Rain"],
+            lowWind: ["Summer Shower", "Afternoon Rain", "Rainy Garden", "Peaceful Rain", "Soft Rain", "Green Nature", "Humid Rain", "Fresh"]
         },
         midTemp: {
-            highWind: ["Lill-Babs"],
-            midWind: ["Lill-Babs"],
-            lowWind: ["Lill-Babs"],
+            highWind: ["Stormy", "Rainy Roadtrip", "Crying in Rain", "Powerful Rain", "Hard Rain", "Driving Rain", "Ocean Storm", "Wash Away"],
+            midWind: ["Rainy Day", "Melancholic", "Tears", "Coffee & Rain", "Sad Songs", "Rainy Jazz", "Raindrops", "Piano Rain"],
+            lowWind: ["Cozy Rain", "Reading Rain", "Soft Piano Rain", "Indoor", "Blanket Day", "Library Vibes", "Home", "Safe from Rain"]
         },
         lowTemp: {
-            highWind: ["Lill-Babs"],
-            midWind: ["Lill-Babs"],
-            lowWind: ["Lill-Babs"],
+            highWind: ["Freezing Rain", "Cold Wind", "Harsh Rain", "Brutal", "Winter Storm", "Sharp Cold", "Icy Rain", "Shattered"],
+            midWind: ["Sleet", "Grey Sky", "Winter Rain", "Dark & Cold", "Cold Morning", "Lonely", "Desolate", "Freezing"],
+            lowWind: ["Slow & Sad", "Lonely Rain", "Cold Piano", "Abyssal", "Dark Rain", "Silent", "Grief", "Cold Empty"]
         }
-
     },
     snow: {
         midTemp: {
-            highWind: ["Lill-Babs"],
-            midWind: ["Lill-Babs"],
-            lowWind: ["Lill-Babs"],
+            highWind: ["Blizzard", "Whiteout", "Snowstorm", "Arctic Blast", "Ice Wind", "Fast Snow", "Winter Power", "Mountain"],
+            midWind: ["Snowy Day", "Winter Wonderland", "Christmas", "Frozen", "Sleigh Ride", "Bright Winter", "Snowfall", "Fluffy Snow"],
+            lowWind: ["Soft Snow", "First Snow", "Silent Night", "Peaceful Winter", "Winter Calm", "Falling Snow", "White Silence", "Pure"]
         },
         lowTemp: {
-            highWind: ["Lill-Babs"],
-            midWind: ["Lill-Babs"],
-            lowWind: ["Lill-Babs"],
+            highWind: ["Ice Storm", "North Pole", "Extreme Cold", "Glacier", "Arctic Survival", "Freezing Hell", "Absolute Zero", "Frostbite"],
+            midWind: ["Frosty", "Icy Blue", "Winter Woods", "Northern Lights", "Aurora", "Deep Winter", "Cold Beauty", "Frozen Lake"],
+            lowWind: ["Hibernation", "Deep Freeze", "Silent Snow", "Winter Sleep", "Deep Sleep", "Cold Ambient", "Frozen Time", "Ice Cave"]
         }
-
     },
     Atmosphere: {
-        highTemp:{
-            highWind:["Metallica"],
-            midWind:["Metallica"],
-            lowWind: ["Metallica"],
-
+        highTemp: {
+            highWind: ["Hazy Summer", "Heat Blur", "Static", "Dusty", "Desert Mist", "Mirage", "Warm Haze", "Distorted Summer"],
+            midWind: ["Dreamy", "Floating", "Ethereal Summer", "Blurred", "Daydream", "Vaporwave", "Soft Focus", "Summer Haze"],
+            lowWind: ["Haze", "Lazy Day", "Sun-drenched", "Ambient Summer", "Drowsy", "Golden Haze", "Afternoon Heat", "Slow"]
         },
         midTemp: {
-            highWind: ["Metallica"],
-            midWind: ["Metallica"],
-            lowWind: ["Metallica"],
+            highWind: ["Mist & Wind", "Foggy Road", "Lost", "Ghostly", "Windy Mist", "Ominous Fog", "Mystic Wind", "Blurred Vision"],
+            midWind: ["Foggy Day", "Mysterious", "Hidden", "Atmospheric", "Noir", "Cinematic", "The Unknown", "Shadows in Fog"],
+            lowWind: ["Mist", "Silent Fog", "Dreamy Piano", "Peaceful Mist", "Ethereal", "Floating", "Soft Fog", "Morning Mist"]
         },
         lowTemp: {
-            highWind: ["Metallica"],
-            midWind: ["Metallica"],
-            lowWind: ["Metallica"],
+            highWind: ["Arctic Mist", "Frozen Fog", "Whiteout", "Eerie", "Haunted", "Ghostly White", "Icy Haze", "Void"],
+            midWind: ["Cold Mist", "Unknown", "Deep Fog", "Cinematic Dark", "Isolation", "Dark Atmosphere", "Distant", "Grim Fog"],
+            lowWind: ["Isolation", "Void", "Silent Cold", "Ambient Fog", "Grey Silence", "Frozen Mist", "Abyss", "Desolation"]
         }
-
     },
     cloud: {
-        highTemp:{
-            highWind:{energy: 0.85, tempo: 135},
-            midWind:{energy: 0.85, tempo: 135},
-            lowWind: {energy: 0.85, tempo: 135},
-
+        highTemp: {
+            highWind: ["Overcast Party", "Humid Clouds", "Shadow Dance", "Muffled", "Grey Energy", "Tropical Overcast", "Static", "Heavy Air"],
+            midWind: ["Grey Summer", "Cloudy Vibes", "Soft Light", "Mellow Summer", "Silver Sky", "Flat Light", "Calm Grey", "Muted Summer"],
+            lowWind: ["Lazy Clouds", "Warm Grey", "Daydream", "Floating", "Summer Cloud", "Cloud Watching", "Soft Clouds", "Afternoon Drift"]
         },
         midTemp: {
-            highWind: {energy: 0.85, tempo: 135},
-            midWind: {energy: 0.85, tempo: 135},
-            lowWind: {energy: 0.85, tempo: 135},
+            highWind: ["Windy Clouds", "Grey Sky", "Uptempo Indie", "Fast Grey", "Storm Clouds", "Moving Clouds", "Urban Grey", "Active Overcast"],
+            midWind: ["Cloudy Day", "Neutral", "Moody", "Ordinary Day", "Daily Routine", "Grey Pop", "Street Vibes", "Modern Life"],
+            lowWind: ["Calm Clouds", "Soft Pop", "Afternoon Chill", "Silver Sky", "Mellow", "Quiet Day", "Overcast Chill", "Thinking"]
         },
         lowTemp: {
-            highWind: {energy: 0.85, tempo: 135},
-            midWind: {energy: 0.85, tempo: 135},
-            lowWind: {energy: 0.85, tempo: 135},
+            highWind: ["Winter Clouds", "Grey Wind", "Heavy Sky", "Gloomy", "Brutal Grey", "Cold Overcast", "Storm Coming", "Harsh Sky"],
+            midWind: ["Cold Grey", "Winter Light", "Somber", "Empty Sky", "Lonely Day", "Grey Winter", "Dull", "Monochrome"],
+            lowWind: ["Cozy Grey", "Winter Sleep", "Soft & Sad", "Silent Clouds", "Sleepy", "Melancholy Winter", "Grey Piano", "Fade"]
         }
-
     }
-    
-
 }
 
 

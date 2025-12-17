@@ -25,6 +25,9 @@ export default function NavigationBar({activePath}) {
                 <Link to="/about"className={`nav-button ${activePath ==="/about" ? "active" : ""}`}>
                     About us
                 </Link>
+                <Link to="/feed" className={`nav-button ${activePath ==="/feed" ? "active" : ""}`}>
+                    Feed
+                </Link>
                 <Link to="/logout" className={`nav-button ${activePath ==="/logout" ? "active" : ""}`}>
                     Sign Out
                 </Link>

@@ -48,6 +48,7 @@ export async function searchMusic(query, token) {
     const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10`, {
         headers: { Authorization: `Bearer ${token}` }
     });
+
     const data = await response.json();
     return data.tracks.items;
 }
@@ -58,6 +59,10 @@ export async function getTrack(id, token) {
     const response = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
+    if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null; 
+            }
     return await response.json();
 }
 
@@ -77,7 +82,7 @@ export async function getArtist(artistId, token) {
     return await response.json();
 }
 // song imp
-
+/*
 export async function getAudioFeatures(trackIds, token) {
     if(!token) {
         return null;
@@ -90,6 +95,11 @@ export async function getAudioFeatures(trackIds, token) {
         {
             headers: { Authorization: `Bearer ${token}`}
         });
+
+        if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null; 
+            }
         return await response.json();
 
     }
@@ -98,11 +108,13 @@ export async function getRecommendedSongsByAudioFeature(token, audioFeatures) {
     if (!token) {
         return [];
     }
-    const url = new URL("https://api.spotify.com/v1/recommendations");
+    const url = new URL(`https://api.spotify.com/v1/recommendations`);
+  
 
-    const seedTrackId = "3n3Ppam7vgaVa1iaRUc9Lp";
-    url.searchParams.append("seed_tracks", seedTrackId);
-    url.searchParams.append("limit", 5);
+    //const seedTrackId = "3n3Ppam7vgaVa1iaRUc9Lp";
+    const seedGenre = audioFeatures.genre || "pop";
+    url.searchParams.append("seed_genres", seedGenre);
+    //url.searchParams.append("limit", 5);
 
     if(audioFeatures.energy !== undefined) {
         url.searchParams.append("target_energy", audioFeatures.energy);
@@ -115,10 +127,14 @@ export async function getRecommendedSongsByAudioFeature(token, audioFeatures) {
         headers: { Authorization: `Bearer ${token}` }
     });
 
+    if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null; 
+            }
     const data = await response.json();
     return data.tracks || [];
-}
-/*
+}  
+
 export async function searchMusic(query, token) {
     if (!token) {
          console.error("No token found! User must log in.");
@@ -129,14 +145,18 @@ export async function searchMusic(query, token) {
     });
     const data = await response.json();
     return data.tracks.items;
-}*/
-
+}
+*/
 export async function getCurrentUser(token) {
     if (!token) return null;
 
     const response = await fetch("https://api.spotify.com/v1/me", {
         headers: { Authorization: `Bearer ${token}` }
     });
+    if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null; 
+            }
 
     return await response.json();
 }
@@ -177,6 +197,10 @@ export async function addTracksToPlaylist(playlistId, trackUris, token) {
 
         }
     );
+    if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null; 
+            }
 
     return await response.json();
 }

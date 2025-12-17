@@ -7,9 +7,9 @@ const Home = observer(
         const weatherData = props.model.weatherPromiseState.data;
         //const playedTrackIds = props.model.playedTrackIds;
         
-        var audioFeatures = {};
+        let recommendedArtist = {};
         if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
-            audioFeatures = props.model.getMusicRecommendations({
+            recommendedArtist = props.model.getMusicRecommendations({
                 conditionId: weatherData.weather[0].id,
                 temp: weatherData.main.temp,
                 windSpeed: weatherData.wind.speed
@@ -24,7 +24,7 @@ const Home = observer(
                     <HomeView weatherData = {weatherData}
                               
                     />
-                    <RecommendedSongsView recommendedAudioFeatures={audioFeatures}
+                    <RecommendedSongsView recommendedArtist={recommendedArtist}
                                           onSearchMusic={handleSearchMusicACB}
                                           searchResults={searchResults}
 

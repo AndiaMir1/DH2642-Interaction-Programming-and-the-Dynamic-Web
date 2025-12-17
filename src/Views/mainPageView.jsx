@@ -9,6 +9,7 @@ import CallbackView from "./CallbackView";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
+import Feed from "./feedView.jsx";
 
 export function MainPage (props) {  
     const location = useLocation();
@@ -51,7 +52,11 @@ export function MainPage (props) {
                         path="*"
                         element={<h1>404 - Page Not Found</h1>}
                     />
-                     
+
+                    <Route
+                        path="/feed"
+                        element={<Feed model ={props.model} />}
+                     />
                     <Route
                         path="/friendsProfileView"
                         element={<FriendsProfileView uid={props.model.selectedUserUid} />}

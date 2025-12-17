@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./style/profileView.css";
-import { getRecommendedSongsByAudioFeature, redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
+import { searchMusic,/*getRecommendedSongsByAudioFeature,*/ redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
 
 export function RecommendedSongsView (props) {
     const [searchResults, setSearchResults] = useState([]);
@@ -18,23 +18,27 @@ export function RecommendedSongsView (props) {
     
     }, []);
     async function onRecommendSongsACB(){
-        if (!props.recommendedAudioFeatures) return;
+        if (!props.recommendedArtist) return;
         const token = localStorage.getItem("spotifyToken");
         if (!token) {
             alert("You need to log in below first!");
             return;
         }
-        /*
+        
         const result = await searchMusic(props.recommendedArtist, token);
         setSearchResults(result || []);
-        */
-
+        
+        /*
         const result = await getRecommendedSongsByAudioFeature(
             token,
             props.recommendedAudioFeatures,
             props.playedTrackIds
         );
-        setSearchResults(result || []);
+        setSearchResults(result || []);*/
+    }
+
+    function onLikeSongACB(){
+        
     }
 
     return (<div>
@@ -61,6 +65,15 @@ export function RecommendedSongsView (props) {
                                             />
                                             <strong>{track.name}</strong>
                                             <span style={{ color: "gray", marginLeft: "10px" }}>{track.artists[0].name}</span>
+                                            
+                                             <div>
+                                        {track.preview_url && (
+                                            <audio controls style={{ height: "30px", marginLeft: "auto" }}>
+                                            <source src={track.preview_url} type="audio/mpeg" />
+                                            </audio>
+                                        )} </div>
+                                        
+                                       
                                         </div>
                                     ))}
                                 </div>

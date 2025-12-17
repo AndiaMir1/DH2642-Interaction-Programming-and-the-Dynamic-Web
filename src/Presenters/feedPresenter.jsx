@@ -1,9 +1,19 @@
-import { Observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
+import FeedView from "../Views/feedView";
 
-var Feed = observer( function FeedRender(props) {
-    var feed = props.model.friendFeed;
-
-    return FeedView ({ feed :feed});
+const Feed = observer(function FeedRender(props) {
+function filterFriendFeed (feed, friends) {
+if(!feed || !friends) return [];
+return feed.filter(function (update) {
+    return friends.some(function(friend) {
+        return friend.uid === update.uid;
+    });
 });
+}
+
+var visibleFeed = filterFriendFeed(props.model.friendFeed, props.model.friends);
+    return <FeedView feed ={visibleFeed} />;
+});
+
 
 export { Feed };
