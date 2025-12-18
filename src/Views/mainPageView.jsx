@@ -50,7 +50,7 @@ export function MainPage (props) {
 
                     <Route
                         path="*"
-                        element={<h1>404 - Page Not Found</h1>}
+                        element={<h1>HEJ!</h1>}
                     />
 
                     <Route
