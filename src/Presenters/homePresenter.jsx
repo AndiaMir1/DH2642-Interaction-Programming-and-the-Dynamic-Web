@@ -21,13 +21,13 @@ const Home = observer(
         }
 
         return (<div>
-                    <HomeView weatherData = {weatherData}
-                              
-                    />
+                    <HomeView weatherData = {weatherData}/> 
                     <RecommendedSongsView recommendedArtist={recommendedArtist}
-                                          onSearchMusic={handleSearchMusicACB}
-                                          searchResults={searchResults}
-
+                        onSearchMusic={handleSearchMusicACB}
+                        searchResults={searchResults}
+                        likedSongs={props.model.likedSongs}
+                        onLikeSong={function(track) { props.model.setLikedSong(track); }}
+                        onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
                     />
                 </div>);
     }

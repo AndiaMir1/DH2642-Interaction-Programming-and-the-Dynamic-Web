@@ -7,14 +7,11 @@ export default defineConfig({
   root: '.',
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      input: {
-        react: resolve(__dirname, 'react.html'),
-      }
-    }
+  
   },
   server: {
     port: 5173, 
-    host: "127.0.0.1", // <--- ADD THIS LINE!
+    host: 'https://herecomesthesong-972a6.web.app/react.html',
+    open: true
   },
 })
