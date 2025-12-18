@@ -1,41 +1,39 @@
 import { useState, useEffect } from "react";
 import "./style/recommendedSongsView.css";
 import "./style/weatherView.css";
-import { searchMusic,/*getRecommendedSongsByAudioFeature,*/ redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
+import { searchMusic, /*getRecommendedSongsByAudioFeature,*/ redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
 
-export function RecommendedSongsView (props) {
+export function RecommendedSongsView(props) {
     const [searchResults, setSearchResults] = useState([]);
 
     function isLikedACB(trackId) {
-        return props.likedSongs && props.likedSongs.some(function(song) {
-            return song.id === trackId;
-        });
+        return props.likedSongs && props.likedSongs.some((song) => song.id === trackId);
     }
-    
+
     useEffect(() => {
         const token = localStorage.getItem("spotifyToken");
         if (token) {
-            getCurrentUser(token).then((data) => {
-                console.log("🕵️ IDENTITY CHECK:");
-                console.log("Name:", data.display_name);
-                console.log("Email:", data.email);
-                console.log("ID:", data.id);
-            }).catch(() => {});
+            getCurrentUser(token)
+                .then((data) => {
+                    console.log("🕵️ IDENTITY CHECK:");
+                    console.log("Name:", data.display_name);
+                    console.log("Email:", data.email);
+                    console.log("ID:", data.id);
+                })
+                .catch(() => {});
         }
-    
     }, []);
-    async function onRecommendSongsACB(){
+
+    async function onRecommendSongsACB() {
         if (!props.recommendedArtist) return;
         const token = localStorage.getItem("spotifyToken");
         if (!token) {
             alert("You need to log in below first!");
             return;
         }
-        
+
         const result = await searchMusic(props.recommendedArtist, token);
-        
         setSearchResults(result || []);
-        
     }
 
     function onLikeSongACB(track) {
@@ -45,79 +43,69 @@ export function RecommendedSongsView (props) {
             props.onLikeSong(track);
         }
     }
-    
 
     return (
+        <div>
+            <div className="music-left">
+                <h1>Liked songs</h1>
+                <div className="playlist-placeholder">
+                    <div className="placeholder-content">
+                        <h2>🎵 Your liked songs </h2>
+                        {props.likedSongs && props.likedSongs.length > 0 ? (
+                            props.likedSongs.map((track) => (
+                                <div key={track.id} className="track-item">
+                                    <img
+                                        src={track.image || track.album?.images?.[0]?.url || ''}
+                                        className="track-image"
+                                        alt={track.name}
+                                    />
+                                    <div className="track-content">
+                                        <div className="track-header">
+                                            <strong>{track.name}</strong>
+                                            <span className="artist-name">{track.artist || track.artists?.[0]?.name}</span>
 
-                <div>
-                    <div className="music-left">
-                        <h1>Liked songs</h1>
-                            <div className="playlist-placeholder">
-                                <div className="placeholder-content">
-                                    <h2>🎵 Your liked songs </h2>
-                                    {props.likedSongs && props.likedSongs.length > 0 ? (
-                                    props.likedSongs.map(track) => (
-                                                <div key={track.id} className="track-item">
-                                                    <img 
-                                                    src={track.image || ''}
-                                                    className="track-image"
-                                                    alt={track.name}
-                                                    />
-                                                    </div>
-                                                    
-                                                    <div className="track-content">
-                                                        <div className="track-header">
-                                                            <strong>{track.name}</strong>
-                                                            <span className="artist-name">{song.artist}</span>
+                                            <button
+                                                onClick={() => props.onRemoveLikedSong(track.id)}
+                                                className="like-btn"
+                                            >
+                                                Unlike
+                                            </button>
+                                        </div>
 
-                                                            <button
-                                                            onClick={() => props.onRemoveSong(song.id)}
-                                                            className="like-btn"
-                                                            >
-                                                                Unlike
-                                                            </button>
-                                                    </div>
-
-                                                    <div className="iframe-container">
-                                                        <iframe
-                                                            title={`spotify-${track.id}`}
-                                                            src={`https://open.spotify.com/embed/track/${track.id}`}
-                                                            className="spotify-embed"
-                                                            frameBorder="0"
-                                                            allow="encrypted-media"
-                                                        ></iframe>
-                                                    </div>
-                                                </div>
-                                            <div className="playlist-placeholder">
-                                                <div className="placeholder-content">
-                                                    <h2>🎵 No songs yet</h2>
-                                                    <p>Like some songs to fill up your playlist!</p>
-                                                    </div>
-                                            
-                                                 
-
-                                                
-                                                />
-                                            )
-
-                                        )
-                                        )}
+                                        <div className="iframe-container">
+                                            <iframe
+                                                title={`spotify-${track.id}`}
+                                                src={`https://open.spotify.com/embed/track/${track.id}`}
+                                                className="spotify-embed"
+                                                frameBorder="0"
+                                                allow="encrypted-media"
+                                            ></iframe>
+                                        </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className="playlist-placeholder">
+                                <div className="placeholder-content">
+                                    <h2>🎵 No songs yet</h2>
+                                    <p>Like some songs to fill up your playlist!</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-
-
 
             <section className="music-test">
                 <h2>🎵 Test Spotify API</h2>
                 <button onClick={redirectToSpotifyLogin} className="spotify-login-btn">
                     Log in with Spotify
                 </button>
-                
+
                 <br />
-                
+
                 <button onClick={onRecommendSongsACB} className="get-songs-btn">Get Songs</button>
-                
+
                 <div className="songs-container">
                     {searchResults.map((track) => (
                         <div key={track.id} className="track-item">
@@ -130,7 +118,7 @@ export function RecommendedSongsView (props) {
                                 <div className="track-header">
                                     <strong>{track.name}</strong>
                                     <span className="artist-name">{track.artists?.[0]?.name}</span>
-                                    <button onClick={function() { onLikeSongACB(track); }} className="like-btn">
+                                    <button onClick={() => onLikeSongACB(track)} className="like-btn">
                                         {isLikedACB(track.id) ? 'Unlike' : 'Like Song'}
                                     </button>
                                 </div>
@@ -148,7 +136,7 @@ export function RecommendedSongsView (props) {
                                         className="spotify-embed"
                                         frameBorder="0"
                                         allow="encrypted-media"
-                                    />
+                                    ></iframe>
                                 </div>
                             </div>
                         </div>
