@@ -44,7 +44,7 @@ export function RecommendedSongsView (props) {
 
     return (<div>
                 <section className="music-test" style={{ marginTop: "40px", borderTop: "2px dashed #aaa", paddingTop: "20px" }}>
-                                <h2>🎵 Test Spotify API</h2>
+                                <h2>🎵 Log in to spotify and press Get Songs</h2>
                                 <button
                                     onClick={redirectToSpotifyLogin}
                                     style={{ marginBottom: "15px", backgroundColor: "#1DB954", color: "white", border: "none", padding: "8px 15px", borderRadius: "20px", cursor: "pointer" }}
@@ -83,10 +83,10 @@ export function RecommendedSongsView (props) {
                                                         title={`spotify-${track.id}`}
                                                         src={`https://open.spotify.com/embed/track/${track.id}`}
                                                         width="600"
-                                                        height="80"
-                                                        frameBorder="0"
+                                                        height="83"
+                                                        
                                                         allow="encrypted-media"
-                                                        style={{ borderRadius: "10px" }}
+                                                        style= {{ boarder: 2 ,borderRadius: "15px" } }
                                                     />
                                                 </div>
                                             </div>
