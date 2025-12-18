@@ -6,10 +6,3 @@ export function onEnterKey(action){
         }
     };
 }
-/*
-export function onTextChange(action){
-    return function(event){
-        event.preventDefault();
-            action()
-    }
-}*/

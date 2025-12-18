@@ -39,7 +39,7 @@ export default function FeedView(props) {
     return (
         <div className="feed">
             <div className="feed-header">
-                <h2>Friends Feed</h2>
+                <h2>Following</h2>
                 <button
                 className="manage-friends-button"
                 onClick={goToFriends}

@@ -70,7 +70,7 @@
 
 /* Normal state for Profile/Username button */
 .friends-list li .profile-button {
-    background: #4caf50; /* A base green */
+    background: #994b91; /* A base green */
     color: white;
     width: auto;
     padding: 0.5rem 1rem;
@@ -78,7 +78,7 @@
 
 /* Hover state for Profile button */
 .friends-list li .profile-button:hover {
-    background: #2d8150; /* The darker green you wanted */
+    background: #994b91; /* The darker green you wanted */
     color: white;
     cursor: pointer;
 }

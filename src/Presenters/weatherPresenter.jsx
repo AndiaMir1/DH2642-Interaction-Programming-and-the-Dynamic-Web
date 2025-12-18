@@ -24,13 +24,12 @@ const Weather = observer(
             props.model.doMusicSearch(query);
         }
 
-        if (!currentCity) {
-            return <h2>Please choose a city in your Profile</h2>;
-        }
+        
 
-        else if(weatherData){
+         if(weatherData){
             return (<div>
                     <WeatherView weatherData = {weatherData}
+                                 currentCity = {currentCity}
                               
                     />
                     <RecommendedSongsView recommendedArtist={recommendedArtist}

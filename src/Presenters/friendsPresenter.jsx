@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import FriendsListView from "/src/Views/friendsListView";
+
 const FriendsList = observer(
     function FriendsListRender(props){
         const navigate = useNavigate();
@@ -21,7 +22,7 @@ const FriendsList = observer(
 
         function handleRemoveACB(uid) {
             props.model.removeFriend(uid);
-                }
+        }
         
 
         function handleSelectFriendACB(uid) {

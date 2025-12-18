@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { onEnterKey } from "../utils/viewHandlers";
-import "./style/friendsListView.css";
+import './style/friendsListView.css';
 
 export default function FriendsListView(props) {
     const [query, setQuery] = useState("");

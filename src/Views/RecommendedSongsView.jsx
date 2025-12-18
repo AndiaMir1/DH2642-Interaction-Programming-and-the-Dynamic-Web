@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./style/recommendedSongsView.css";
+import "./style/weatherView.css";
 import { searchMusic,/*getRecommendedSongsByAudioFeature,*/ redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
 
 export function RecommendedSongsView (props) {
@@ -34,13 +35,7 @@ export function RecommendedSongsView (props) {
         const result = await searchMusic(props.recommendedArtist, token);
         
         setSearchResults(result || []);
-        /*
-        const result = await getRecommendedSongsByAudioFeature(
-            token,
-            props.recommendedAudioFeatures,
-            props.playedTrackIds
-        );
-        setSearchResults(result || []);*/
+        
     }
 
     function onLikeSongACB(track) {
@@ -50,9 +45,69 @@ export function RecommendedSongsView (props) {
             props.onLikeSong(track);
         }
     }
+    
 
     return (
-        <div>
+
+                <div>
+                    <div className="music-left">
+                        <h1>Liked songs</h1>
+                            <div className="playlist-placeholder">
+                                <div className="placeholder-content">
+                                    <h2>🎵 Your liked songs </h2>
+                                    {props.likedSongs && props.likedSongs.length > 0 ? (
+                                    props.likedSongs.map(track) => (
+                                                <div key={track.id} className="track-item">
+                                                    <img 
+                                                    src={track.image || ''}
+                                                    className="track-image"
+                                                    alt={track.name}
+                                                    />
+                                                    </div>
+                                                    
+                                                    <div className="track-content">
+                                                        <div className="track-header">
+                                                            <strong>{track.name}</strong>
+                                                            <span className="artist-name">{song.artist}</span>
+
+                                                            <button
+                                                            onClick={() => props.onRemoveSong(song.id)}
+                                                            className="like-btn"
+                                                            >
+                                                                Unlike
+                                                            </button>
+                                                    </div>
+
+                                                    <div className="iframe-container">
+                                                        <iframe
+                                                            title={`spotify-${track.id}`}
+                                                            src={`https://open.spotify.com/embed/track/${track.id}`}
+                                                            className="spotify-embed"
+                                                            frameBorder="0"
+                                                            allow="encrypted-media"
+                                                        ></iframe>
+                                                    </div>
+                                                </div>
+                                            <div className="playlist-placeholder">
+                                                <div className="placeholder-content">
+                                                    <h2>🎵 No songs yet</h2>
+                                                    <p>Like some songs to fill up your playlist!</p>
+                                                    </div>
+                                            
+                                                 
+
+                                                
+                                                />
+                                            )
+
+                                        )
+                                        )}
+                                    </div>
+                                </div>
+            </div>
+
+
+
             <section className="music-test">
                 <h2>🎵 Test Spotify API</h2>
                 <button onClick={redirectToSpotifyLogin} className="spotify-login-btn">

@@ -19,9 +19,9 @@ export default function NavigationBar({activePath}) {
                 <Link to="/weather" className={`nav-button ${activePath ==="/weather" ? "active" : ""}`}>
                     Weather
                 </Link>
-                {/*<Link to="/friends" className={`nav-button ${activePath ==="/friends" ? "active" : ""}`}>
-                    Friends
-                </Link>*/}
+                <Link to="/dashboard" className={`nav-button ${activePath ==="/dashboard" ? "active" : ""}`}>
+                    Dashboard
+                </Link>
                 <Link to="/profile" className={`nav-button ${activePath ==="/profile" ? "active" : ""}`}>
                     Profile
                 </Link>

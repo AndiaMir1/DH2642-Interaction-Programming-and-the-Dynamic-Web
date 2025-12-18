@@ -1,0 +1,49 @@
+.friends-profile {
+    background: var(--grey);         
+    border-radius: var(--radius);    
+    padding: 2rem;                    
+    max-width: 500px;              
+    margin: 2rem auto;            
+    box-shadow: var(--shadow);   
+    transition: transform 0.25s ease, box-shadow 0.25s ease; 
+}
+
+.friends-profile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.friends-profile h2 {
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-align: center;
+}
+
+.friends-profile p {
+    font-size: 1.1rem;
+    color: var(--secondary);
+    margin: 0.5rem 0;
+}
+
+.friends-profile p strong {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .friends-profile {
+        padding: 1.5rem;
+        margin: 1rem;
+        text-align: center;
+    }
+
+    .friends-profile h2 {
+        font-size: 1.5rem;
+    }
+
+    .friends-profile p {
+        font-size: 1rem;
+    }
+}

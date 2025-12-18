@@ -27,7 +27,7 @@ export const weatherMusic = {
     clear: {
         highTemp: {
             highWind: ["Dance Pop", "Summer Anthems", "Upbeat Hits", "Mainstage", "Party Mix"],
-            midWind: ["Feel Good Pop", "Summer Vibes", "Tropical House", "Top 40", "Sunshine"],
+            midWind: ["Feel Good Pop", "Summer Vibes", "Tropical House", "Top 40", "Sunshine", "Nectar Woode"],
             lowWind: ["Acoustic Pop", "Chill Hits", "Summer Lounge", "Soft Pop", "Lazy Day"],
         },
         midTemp: {
@@ -36,7 +36,7 @@ export const weatherMusic = {
             lowWind: ["Easy Listening", "Coffee Shop", "Acoustic Hits", "Mellow Pop", "Piano"],
         },
         lowTemp: {
-            highWind: ["Crisp Pop", "High Energy Classics", "Winter Workout", "Electro Pop"],
+            highWind: ["Crisp Pop", "High Energy Classics", "Winter Workout", "Electro Pop", "Autumn", "Late Night"],
             midWind: ["Winter Radio", "Bright Hits", "Fresh Pop", "Clean Radio"],
             lowWind: ["Cozy Acoustic", "Winter Chillout", "Warm Vocals", "Soft Hits"],
         }
@@ -45,7 +45,7 @@ export const weatherMusic = {
         highTemp: {
             highWind: ["Alternative Rock", "Electric Energy", "Hard Rock", "Power Anthems", "Intense Pop"],
             midWind: ["Dark Pop", "Moody Beats", "Electronic Rock", "Night Drive"],
-            lowWind: ["Sultry R&B", "Heavy Bass", "Late Night Pop", "Atmospheric Hits"],
+            lowWind: ["Sultry R&B", "Heavy Bass", "Late Night Pop", "Atmospheric Hits", "Metal", "Thunder", "Coming", "Storm", "Scared", "Cold"],
         },
         midTemp: {
             highWind: ["Classic Rock", "Stadium Rock", "Rock Anthems", "Heavy Hits"],
@@ -83,7 +83,7 @@ export const weatherMusic = {
         },
         midTemp: {
             highWind: ["Power Ballads", "Emotional Rock", "Driving Hits", "Epic Pop"],
-            midWind: ["Rainy Hits", "Sad Songs Pop", "Coffee House Pop", "Rainy Jazz"],
+            midWind: ["Rainy Hits", "Sad Songs Pop", "Coffee House Pop", "Rainy Jazz", "Jazz", "Joy Crookes"],
             lowWind: ["Cozy Pop", "Reading Chill", "Home Radio", "Indoor Acoustic"],
         },
         lowTemp: {

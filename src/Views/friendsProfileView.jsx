@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../model/fireStoreModel";
 import { SuspenseView } from "./suspenseView";
-
-
+import './style/friendsProfile.css';
 export default function FriendsProfileView(props) {
 
     const [profile, setProfile] = useState(null);
@@ -25,7 +24,7 @@ export default function FriendsProfileView(props) {
     }
 
     return (
-        <div>
+        <div className="friends-profile">  
             <h2>{profile.username}</h2>
             <p><strong>Current City: </strong> {profile.currentCity || "Not set"}</p>
             <p><strong> Favorite genre: </strong> {profile.genre || "Not set"}</p>

@@ -81,23 +81,6 @@ export const rootModel = {
 
     },
 
-        /*
-
-        var category = getWeatherCategory(weatherData.condition.Id);
-        var temp = getTemperature(weatherData.temp);
-        var wind = getWind(weatherData.windSpeed);
-
-        if (
-            weatherMusic[category] &&
-            weatherMusic[category][temp] &&
-            weatherMusic[category][temp][wind]
-        ) {
-            return weatherMusic[category][temp][wind];
-        }
-        //defaults
-        return { energ7: 0.5, tempo: 100};
-        */
-
     setCity(city) {
         this.currentCity = city;
         //feed imp
@@ -236,7 +219,7 @@ export const rootModel = {
             console.error("failed", err);
         }
     },
-
+//no snapshot - flytta 
     fetchFriendFeed() {
     var model = this;
 
@@ -261,7 +244,6 @@ export const rootModel = {
                     payload: docSnap.data().payload,
                     timestamp: docSnap.data().timestamp,
                 };
-                console.log("Fetched updates for", friend.username, updates)
 
 
             });
@@ -292,7 +274,6 @@ export const rootModel = {
         });
 
     },
-
 
     setLikedSong(track) {
         const exists = this.likedSongs.some(function(song) {
@@ -366,7 +347,7 @@ export const rootModel = {
     },
 
     currentTrackEffect() {
-        if (this.currentTrackId && this.spotifyToken) { // <--- CHECK FOR TOKEN
+        if (this.currentTrackId && this.spotifyToken) { 
             resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
         } else {
             this.currentTrackPromiseState = {};

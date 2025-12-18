@@ -3,7 +3,7 @@ import "./style/weatherView.css";
 
 export default function WeatherView(props) {
 
-    if (!props.weatherData) {
+    if (!props.weatherData || !props.currentCity) {
         return <h2>Choose a city in your profile</h2>;
     }
 
@@ -19,7 +19,7 @@ export default function WeatherView(props) {
 
     return (
         <div className="weather-view">
-
+            <div className= "weather-left">
             <h1>Weather in {city}</h1>
 
             <div className="weather-details">
@@ -33,7 +33,17 @@ export default function WeatherView(props) {
                 <p className="humidity">Humidity: {humidity} %</p>
                 <p className="pressure">Pressure: {pressure} hPa</p>
             </div>
-
-        </div>
+            </div>
+            <div className="music-left">
+                <h1>Generate playlist</h1>
+            <div className="playlist-placeholder">
+                            <div className="placeholder-content">
+                                <h2>🎵 Weather-Based Playlists</h2>
+                                <p>Coming soon! We'll generate playlists based on your local weather.</p>
+                            </div>
+                        </div>
+            </div>
+            </div>
+        
     );
 }
