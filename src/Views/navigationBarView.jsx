@@ -39,7 +39,7 @@ export default function NavigationBar({activePath}) {
                  
             </div>
         </nav>
-
+/*hej */
     );
     
 } 
