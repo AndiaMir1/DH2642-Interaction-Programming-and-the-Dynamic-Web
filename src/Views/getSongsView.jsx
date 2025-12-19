@@ -1,19 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./style/recommendedSongsView.css";
 import "./style/weatherView.css";
-import { searchMusic, /*getRecommendedSongsByAudioFeature,*/ redirectToSpotifyLogin, getCurrentUser } from "../apiConfig/musicSource";
+import { getCurrentUser } from "../apiConfig/musicSource";
 
 export function GetSongsView(props) {
-    const [searchResults, setSearchResults] = useState([]);
-
-    function isLikedACB(trackId) {
-        return props.likedSongs && props.likedSongs.some((song) => song.id === trackId);
-    }
-
+    /************kan tas bort sen****************/
     useEffect(() => {
-        const token = localStorage.getItem("spotifyToken");
-        if (token) {
-            getCurrentUser(token)
+        //const token = localStorage.getItem("spotifyToken");
+        if (props.spotifyToken) {
+            getCurrentUser(props.spotifyToken)
                 .then((data) => {
                     console.log("🕵️ IDENTITY CHECK:");
                     console.log("Name:", data.display_name);
@@ -24,18 +19,10 @@ export function GetSongsView(props) {
         }
     }, []);
 
-    async function onRecommendSongsACB() {
-        if (!props.recommendedArtist) return;
-        const token = localStorage.getItem("spotifyToken");
-        if (!token) {
-            alert("You need to log in below first!");
-            return;
-        }
-
-        const result = await searchMusic(props.recommendedArtist, token);
-        setSearchResults(result || []);
+    function isLikedACB(trackId) {
+        return props.likedSongs && props.likedSongs.some((song) => song.id === trackId);
     }
-
+    
     function onLikeSongACB(track) {
         if (isLikedACB(track.id)) {
             props.onRemoveLikedSong(track.id);
@@ -44,19 +31,30 @@ export function GetSongsView(props) {
         }
     }
 
+    function spotifyLoginACB(){
+        props.onSpotifyLogin();
+    }
+    
+    function recommendSongsACB(){
+        props.onRecommendSongs();
+    }
+
     return(
         <section className="centered-below">
             <h2>🎵 Test Spotify API</h2>
-            <button onClick={redirectToSpotifyLogin} className="spotify-login-btn">
+            <button onClick={spotifyLoginACB} className="spotify-login-btn">
                         Log in with Spotify
             </button>
 
             <br />
 
-            <button onClick={onRecommendSongsACB} className="get-songs-btn">Get Songs</button>ok
+            <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button>
+            {props.searchError && (
+                <p>Logga in igen</p>
+            )}
 
             <div className="songs-container">
-                {searchResults.map((track) => (
+                {props.searchResults.map((track) => (
                     <div key={track.id} className="track-item">
                         <img
                             src={track.album?.images?.[0]?.url || ''}
@@ -94,3 +92,19 @@ export function GetSongsView(props) {
         </section>
     );
 }
+
+/*
+    
+
+    
+    async function onRecommendSongsACB() {
+        if (!props.searchWord) return;
+        const token = localStorage.getItem("spotifyToken");
+        if (!token) {
+            alert("You need to log in below first!");
+            return;
+        }
+
+        const result = await searchMusic(props.searchWord, token);
+        setSearchResults(result || []);
+    }*/

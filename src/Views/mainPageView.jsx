@@ -10,7 +10,7 @@ import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
 import { Feed } from "../Presenters/feedPresenter.jsx";
 import DashboardPresenter from "../Presenters/dashboardPresenter.jsx";
-
+import AboutUsView from "./aboutUsView";
 export function MainPage (props) {  
     const location = useLocation();
 
@@ -45,8 +45,8 @@ export function MainPage (props) {
                     />
 
                     <Route
-                        path="*"
-                        element={<h1>HEJ!</h1>}
+                        path="/about"
+                        element={<AboutUsView model={props.model} />}
                     />
 
                     <Route

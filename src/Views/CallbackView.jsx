@@ -14,11 +14,9 @@ export default function CallbackView(props) {
             getAccessTokenFromCode(code)
                 .then(token => {
                     console.log("Got Token:", token);
-                    // SAVE THE TOKEN to your Model here!
-                    // Example: props.model.setToken(token);
-                    
-                    // For now, let's just save it to localStorage so it persists
+                    //TA BORT SEN
                     localStorage.setItem("spotifyToken", token);
+                    props.model.setSpotifyToken(token);
                     
                     setMessage("Success! Redirecting...");
                     setTimeout(() => navigate("/"), 1000);

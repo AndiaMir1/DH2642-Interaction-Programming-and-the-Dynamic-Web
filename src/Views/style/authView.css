@@ -10,6 +10,7 @@
     text-align: center;
 }
 
+
 .auth-view h1 {
     color: var(--accent);
     margin-bottom: 2rem;
@@ -21,7 +22,7 @@
 }
 
 .auth-view input {
-    margin-bottom: 1rem;
+    margin-bottom: rem;
 }
 
 .auth-view input[type="email"],
@@ -130,4 +131,33 @@
 .show-password-btn img {
     width: 24px;
     height: 24px;
+}
+
+.auth-page-full {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 75%;
+    overflow: hidden;
+    justify-content: center; 
+    align-items: center;
+
+    gap: 80px;
+}
+
+
+.auth-description, .auth-view {
+    position: relative;
+    z-index: 2;
+}
+
+.auth-description {
+    flex: 1;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    background: transparent;
 }
