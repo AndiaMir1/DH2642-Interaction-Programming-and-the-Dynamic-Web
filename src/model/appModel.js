@@ -1,7 +1,7 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
 import { getTrack, getArtist, createSpotifyPlaylist, 
-    addTracksToPlaylist, getCurrentUser,searchMusic
+    addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin
  } from "../apiConfig/musicSource";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
@@ -13,21 +13,23 @@ export const rootModel = {
 
     isUserLoggedIn: true,
     user: undefined,
-    currentCity: null,
+    selectedUserUid: null,
     currentUsername: null,
     currentBio: null,
+
+    currentCity: null,
     weatherPromiseState: {},
     //friends list imp
-    selectedUserUid: null,
+    
     playlistName: null,
     exportedPlaylists: [],
-
-
     tracks: [], 
     likedSongs: [],
     currentTrackId: null,
     currentArtistId: null,
+
     searchParams: {},
+    spotifyLoginPromiseState: {},
     currentTrackPromiseState: {},
     currentArtistPromiseState: {},
     spotifyToken: null,
@@ -48,6 +50,9 @@ export const rootModel = {
     },
 
     /**************************MUSIC*************************************/
+    spotifyLogin(){
+        resolvePromise(redirectToSpotifyLogin(), this.spotifyLoginPromiseState);
+    },
     getMusicRecommendations(weatherData){
         const category = getWeatherCategory(weatherData.conditionId);
         const temp = getTemperature(weatherData.temp);
@@ -149,7 +154,18 @@ export const rootModel = {
     },
 
 
-    setLikedSong(track) {
+    setLikedSong(track){
+        function sameSongCB(song){
+            return song.id === track.id
+            }
+            if (!this.likedSongs.some(sameSongCB)){
+            this.likedSongs= [...this.likedSongs, track]
+            this.addUserUpdate("LIKED_SONG",{track : track.name});
+            }
+        },
+    
+
+    /*setLikedSong(track) {
         const exists = this.likedSongs.some(function(song) {
             return song.id === track.id;
         });
@@ -164,18 +180,19 @@ export const rootModel = {
             image: track.album.images[0]?.url
         }]);
         this.addUserUpdate("LIKED_SONG",{track : track.name});
-    },
+    },*/
 
     setRemoveSong(trackId) {
         this.likedSongs = this.likedSongs.filter(function(song) {
             return song.id !== trackId;
         });
     },
-    setSpotifyToken: function (token) {
+
+    setSpotifyToken(token) {
         this.spotifyToken = token;
     },
 
-    doMusicSearch: function (query) {
+    doMusicSearch(query) {
         resolvePromise(
             searchMusic(query, this.spotifyToken),
             this.searchResultsPromiseState

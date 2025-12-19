@@ -34,15 +34,15 @@ export function connectToPersistence(model, watchFunction) {
                     const data = snapshot.data() || {};
                     model.currentCity = data.currentCity ?? null;
                     model.currentUsername = data.username ?? user.displayName ?? "unknown user";
-                    model.getWeather(model.currentCity);
                     model.currentGenre = data.genre ?? null;
+                    model.spotifyToken = data.spotifyToken ?? null;
                     //friends list imp
                     model.friends = data.friends || [];
                     model.likedSongs = data.likedSongs || [];
                     model.ready = true;
                     model.exportedPlaylists = data.exportedPlaylists || [];
                     model.currentBio = data.bio ?? null;
-
+                    model.getWeather(model.currentCity);
                     model.fetchFriendFeed();
             })
         .catch(function getDocErrorACB(err) {
@@ -50,14 +50,15 @@ export function connectToPersistence(model, watchFunction) {
             model.ready = true;
         });
     } else {
+        model.spotifyToken = null;
         model.currentCity = null;
         model.currentUsername = null;
         model.currentGenre = null;
-        model.ready = true;
         model.friends = [];
         model.likedSongs =[];
         model.exportedPlaylists =[];
         model.currentBio = null;
+        model.ready = true;
         //likedArtist =[];
         //producedPlaylists = [];
     }
@@ -79,6 +80,7 @@ export function connectToPersistence(model, watchFunction) {
                 model.likedSongs,
                 model.exportedPlaylists,
                 model.currentBio,
+                model.spotifyToken,
             ];
 
         //produced playlists
@@ -98,7 +100,8 @@ export function connectToPersistence(model, watchFunction) {
                friends: model.friends,
                likedSongs: model.likedSongs,
                exportedPlaylists: model.exportedPlaylists,
-               bio: model.currentBio
+               bio: model.currentBio,
+               spotifyToken: model.spotifyToken
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success

@@ -25,8 +25,18 @@ export function AuthView(props) {
     }
 
   return (
+    <div className ="auth-page-full">
+      <div className="auth-description">
+      
+      <h2>Here Comes the Song !</h2>
+        <p>
+      Create playlists based on the current weather in your location and export it directly to Spotify! No matter the weather Here Comes the Song is equipped to produce playlists that describes the mood perfectly. Add friends and see what they're up to, whether they have traveled to another city, updated their profile or created a new playlist! The new social media for music sharing among music lovers!
+      Create an account and join four KTH students.
+              </p>
+          </div>
     <div className="auth-view">
-      <h1>Here Comes the Song</h1>
+
+      <h1>Welcome !</h1>
       <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
       <input 
         type="email" 
@@ -69,6 +79,7 @@ export function AuthView(props) {
         {props.isSignUp ? "Already have an account?" : "Don't have an account?"} 
         <button onClick={handleToggleACB}>{props.isSignUp ? "Sign In" : "Sign Up"}</button>
       </p>
+    </div>
     </div>
   );
 }
