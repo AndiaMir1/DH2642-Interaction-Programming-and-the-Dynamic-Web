@@ -28,10 +28,23 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     }
 
     async function submit() {
+
+        setError("")
+
+        if (!email.includes("@")) {
+        setError("Invalid email format.");
+        return;
+            }
+
+
         if (isSignUp) {
             if(!username || username.trim() === ""){
                 setError("Username is required");
                 return;
+            }
+            if (password.length < 6) {
+            setError("Password must be at least 6 characters.");
+            return;
             }
             const existingUid = await model.findUserUidByUsername(username);
             if(existingUid !==null){
@@ -56,6 +69,27 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
             })
                 .catch(handleAuthError);
         }
+    }
+
+    function handleAuthError(err) {
+        var errorCode = err.code;
+
+        if(errorCode === "auth/invalid-email") {
+            setError("Please enter a valid email address.");
+        } else if (errorCode === "auth/user-not-found" || errorCode === "auth/wrong-password"
+            || errorCode === "auth/invalid-credential") {
+                setError("Incorrect email and/or password.")
+        } else if (errorCode === "auth/email-already-in-use") {
+            setError("This email is already linked to an account")
+        } else if (errorCode === "auth/weak-password") {
+            setError("Password has to 6 or more characters")
+        } else if (errorCode === "auth/missing-password") {
+            setError("Please enter a password");
+        } else {
+            setError("An unexpected error occured. Please try again.");
+        }
+        
+
     }
 
     return (

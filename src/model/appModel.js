@@ -38,6 +38,7 @@ export const rootModel = {
     weatherPromiseState: {},
     //friends list imp
     selectedUserUid: null,
+    playlistName: null,
 
 
     tracks: [], 
@@ -96,8 +97,12 @@ export const rootModel = {
     setUsername(name) {
        this.currentUsername = name;
     },
+    
+    setPlaylistName(listName) {
+        this.playlistName = listName;
+    },
 
-    setFriends(friendsArray) {
+    setFriends(friendsArray) {
         this.friends = friendsArray;
     },
 
@@ -275,6 +280,35 @@ export const rootModel = {
 
     },
 
+    async exportLikedSongsToSpotify (playlistName) {
+        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
+
+        if (!token) {
+            throw new Error("Spotify login required");
+        }
+
+        if (this.likedSongs.length === 0) {
+            throw new Error ("no liked songs to export");
+        }
+
+        var user = await getCurrentUser(token);
+        var playlist = await createSpotifyPlaylist (
+            user.id,
+            playlistName,
+            "songs liked from HCTS",
+            true,
+            token
+        );
+
+        var uris = this.likedSongs.map(function(song) {
+            return song.uri;
+        });
+
+        await addTracksToPlaylist(playlist.id, uris, token);
+        return playlist;
+    },
+
+
     setLikedSong(track) {
         const exists = this.likedSongs.some(function(song) {
             return song.id === track.id;
@@ -295,34 +329,6 @@ export const rootModel = {
         this.likedSongs = this.likedSongs.filter(function(song) {
             return song.id !== trackId;
         });
-    },
-
-    async exportLikedSongsToSpotify () {
-        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
-
-        if (!token) {
-            throw new Error("Spotify login required");
-        }
-
-        if (this.likedSongs.length === 0) {
-            throw new Error ("no liked songs to export");
-        }
-
-        var user = await getCurrentUser(token);
-        var playlist = await createSpotifyPlaylist (
-            user.id,
-            "playlist",
-            "songs liked from HCTS",
-            true,
-            token
-        );
-
-        var uris = this.likedSongs.map(function(song) {
-            return song.uri;
-        });
-
-        await addTracksToPlaylist(playlist.id, uris, token);
-        return playlist;
     },
 
 

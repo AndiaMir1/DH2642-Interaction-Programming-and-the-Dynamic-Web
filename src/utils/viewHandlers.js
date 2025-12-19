@@ -6,3 +6,8 @@ export function onEnterKey(action){
         }
     };
 }
+
+export function showPop(newC) {
+    var elem = document.getElementById('bg-modal');
+    elem.style.display = newC;
+}

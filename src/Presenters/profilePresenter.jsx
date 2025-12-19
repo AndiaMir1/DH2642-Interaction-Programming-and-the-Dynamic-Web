@@ -7,6 +7,7 @@ const Profile = observer(
         const isLoading = props.model.weatherPromiseState.promise && !props.model.weatherPromiseState.data && !props.model.weatherPromiseState.error;
         const currentGenre = props.model.currentGenre;
         const weatherPromiseState = props.model.weatherPromiseState;
+        const weatherError = weatherPromiseState.error;
         
         function handleSavedACB(newCity) {
             props.model.setCity(newCity);
@@ -17,17 +18,17 @@ const Profile = observer(
             props.model.setUsername(newUsername);
         }
     
-       
-
         function handleGenreChangeACB(newGenre) {
         
             props.model.setGenre(newGenre); 
         
         }
 
-        function handleExportPlaylistACB() {
-            props.model.exportLikedSongsToSpotify();
+        function handleExportPlaylistACB(playlistName) {
+            props.model.exportLikedSongsToSpotify(playlistName);
+            
         }
+
 
         const weatherData = weatherPromiseState.data;
 
@@ -47,7 +48,7 @@ const Profile = observer(
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
                     onUsernameChange={handleUsernameChangeACB}
-                   
+                    weatherError={weatherError}
                     onExportPlaylist={handleExportPlaylistACB}
 
                     currentGenre={currentGenre} 

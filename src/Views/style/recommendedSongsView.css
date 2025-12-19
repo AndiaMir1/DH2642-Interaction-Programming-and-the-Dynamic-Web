@@ -7,6 +7,20 @@
     padding-top: 20px;
 }
 
+.centered-below{
+    margin-top: 4rem;
+    align-self: center;
+    width: 80%;
+    border-top: 2px dashed #aaa;
+    padding-top: 20px;
+}
+.recommend-right{
+    width: 100%;
+}
+.recommended-root{
+    display: flex;
+    flex-direction: column;
+}
 /* Spotify login button */
 .spotify-login-btn {
     margin-bottom: 15px;
@@ -21,6 +35,23 @@
 
 .spotify-login-btn:hover {
     background-color: #1ed760;
+}
+
+.playlist-placeholder{
+    
+    align-items: center;
+    gap: 2rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    
+    
+    height: 300px;
+    overflow: scroll;
+  
 }
 
 /* Get songs button */

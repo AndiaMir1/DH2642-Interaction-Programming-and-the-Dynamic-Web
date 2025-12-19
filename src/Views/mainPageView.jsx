@@ -1,7 +1,6 @@
 import { Routes, Route, useLocation} from "react-router-dom";
 import NavigationBar from "./navigationBarView";
 import {Profile} from "../Presenters/profilePresenter";
-import {Weather} from "../Presenters/weatherPresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import {AuthPresenter} from "../Presenters/authPresenter";
@@ -29,10 +28,6 @@ export function MainPage (props) {
                         path="/profile"
                         element={<Profile model={props.model} />}
                     />
-                    <Route path="/weather" 
-                        element={<Weather model={props.model} />}
-                    />
-
                     <Route path="/logout" 
                     element={<SignOutPresenter model={props.model}/>}
                     />

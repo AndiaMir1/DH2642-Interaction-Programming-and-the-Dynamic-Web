@@ -7,6 +7,13 @@ export default function FeedView(props) {
         nav("/friends");
     }
 
+    function goToFriendsProfile(uid) {
+        if (uid) {
+            props.onUserClick(uid);
+            nav("/friendsProfileView");
+        }
+    }
+
     function renderUpdateText(update) {
         if (!update.payload) {
             return "did something";
@@ -54,7 +61,11 @@ export default function FeedView(props) {
                     return (
                         <li key={item.id} className="feed-item">
                             <div>
-                                <strong>{item.user}</strong>{" "}
+                                <strong
+                                className="clickable-username"
+                                onClick={function () { goToFriendsProfile(item.uid);}}
+                                style={{ cursor: "pointer"}}
+                                >{item.user}</strong>{" "}
                                 {renderUpdateText(item)}
                             </div>
 

@@ -9,6 +9,7 @@ export default function SignOutPresenter(props) {
     const location = useLocation();
     const [showConfirmation, setShowConfirmation] = useState(true);
 
+
     function handleSignOutACB() {
         signOut(auth)
             .then(function() {

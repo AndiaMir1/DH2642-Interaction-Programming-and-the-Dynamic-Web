@@ -1,12 +1,15 @@
 //buttons and css, go between 
 import { Link } from 'react-router-dom';
 import "./style/navigationBarView.css";
+import SignOutPresenter from '../Presenters/signOutPresenter';
 
 export default function NavigationBar({activePath}) {
     return (
         <nav className='navigation-bar'>
             <div className='nav-title'>
-                <h1>Here Comes The Song</h1>
+                <Link to="/" className="title-link" >
+                Here Comes The Song
+                </Link>
             </div>
 
             <div className='nav-links'>
@@ -16,9 +19,7 @@ export default function NavigationBar({activePath}) {
                 <Link to="/feed" className={`nav-button ${activePath ==="/feed" ? "active" : ""}`}>
                     Feed
                 </Link>
-                <Link to="/weather" className={`nav-button ${activePath ==="/weather" ? "active" : ""}`}>
-                    Weather
-                </Link>
+               
                 <Link to="/dashboard" className={`nav-button ${activePath ==="/dashboard" ? "active" : ""}`}>
                     Dashboard
                 </Link>

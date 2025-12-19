@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/profileView.css";
+import "./style/popUp.css";
 
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [usernameInput, setUsernameInput] = useState("");
     const [showUsernameChange, setShowUsernameChange] = useState(false);
     const [showCityChange, setShowCityChange] = useState(false);
+    const [showPlaylistPopUp, setShowPlaylistPopUp] = useState(false);
+    const [playlistName, setPlaylistName] = useState ("");
+    const [statusMessage, setStatusMessage] = useState(null);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
@@ -23,6 +27,46 @@ export default function ProfileView(props) {
    
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
+    }
+
+    function openPlaylistPopup() {
+        setShowPlaylistPopUp(true);
+    }
+
+    function closePlaylistPopup() {
+        setShowPlaylistPopUp(false);
+        setPlaylistName("");
+    }
+
+    function onPlayListNameChangeACB(event) {
+        setPlaylistName(event.target.value);
+    }
+
+//export flytta till home
+    async function onHandleExportPlaylist() {
+        if (!playlistName.trim()) {
+            setStatusMessage("Please enter a playlist name!");
+            setTimeout(function () {
+                setStatusMessage(null);
+            }, 2000);
+            closePlaylistPopup();
+            return;
+        }
+        try {
+            await props.onExportPlaylist(playlistName.trim());
+            setStatusMessage("Playlist exported successfully!");
+
+            setTimeout(function () {
+                setStatusMessage(null);
+            }, 2000);
+            closePlaylistPopup();
+    } catch (err) {
+            console.error(err);
+            setStatusMessage("Error exporting playlist. Make sure you're logged in to Spotify.");
+            setTimeout(function () {
+                setStatusMessage(null);
+            }, 2000);
+        }
     }
 
     function onSavedACB() {
@@ -61,10 +105,24 @@ export default function ProfileView(props) {
         setCityInput("");
     }
 
+    /*function onExportPlaylistACB() {
+        if(!playlistName.trim()) {
+            alert("please enter a playlist name!");
+            return ;
+        }
+    }*/
+
+    
+
     return (
         <div className="profile-view">
             <h1>My Profile</h1>
-
+            {/* flytta till home */}
+            {statusMessage && (
+               <div className="status-banner">
+                {statusMessage}
+                </div>
+            )}
             <section className="current-location">
                 <p>
                     Hometown:
@@ -114,16 +172,34 @@ export default function ProfileView(props) {
                     </button>
                 </section>
             )}
-
+{/* flytta till home */}
             <section>
-    <button
-        onClick={function () {
-            props.onExportPlaylist();
-        }}
-    >
+    <button className="buttonpopup"
+        onClick={openPlaylistPopup}
+        >
         Export liked songs to Spotify
     </button>
-</section>
+    </section>
+
+    {showPlaylistPopUp && (
+        <div   id="bg-modal">
+            <div className="modal-contact">
+                <span className="close" 
+                onClick={closePlaylistPopup}>&times;</span>
+                <h2>Name your playlist</h2>
+                <input type="text"
+                placeholder="playlist name"
+                value={playlistName} 
+                onChange={onPlayListNameChangeACB}
+                />
+                <button className="buttonpopup"
+                onClick={onHandleExportPlaylist}
+                onKeyDown={onEnterKey(onHandleExportPlaylist)}>
+                    Export
+                </button>
+            </div>
+         </div>
+    )}
 
 
 

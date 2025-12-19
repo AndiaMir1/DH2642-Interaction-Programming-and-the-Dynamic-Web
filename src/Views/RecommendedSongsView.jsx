@@ -45,8 +45,9 @@ export function RecommendedSongsView(props) {
     }
 
     return (
-        <div>
-            <div className="music-left">
+        <div className= "recommended-root">
+
+            <div className="recommend-right">
                 <h1>Liked songs</h1>
                 <div className="playlist-placeholder">
                     <div className="placeholder-content">
@@ -96,7 +97,9 @@ export function RecommendedSongsView(props) {
                 </div>
             </div>
 
-            <section className="music-test">
+
+            
+            <section className="centered-below">
                 <h2>🎵 Test Spotify API</h2>
                 <button onClick={redirectToSpotifyLogin} className="spotify-login-btn">
                     Log in with Spotify
