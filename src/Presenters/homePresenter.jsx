@@ -3,6 +3,8 @@ import { observer } from "mobx-react-lite";
 import {SuspenseView} from "/src/Views/suspenseView.jsx";
 import {RecommendedSongsView} from "/src/Views/RecommendedSongsView.jsx";
 import WeatherView from "/src/Views/weatherView.jsx";
+import { GetSongsView } from "/src/Views/getSongsView.jsx"
+
 const Home = observer(
     function HomeRender(props){
         const searchResults = props.model.searchResultsPromiseState.data || [];
@@ -29,21 +31,27 @@ const Home = observer(
          if(weatherData){
             return (<TestLayout
                     weather={
-                    <WeatherView weatherData = {weatherData}
-                                 currentCity = {currentCity}
-                              
+                        <WeatherView weatherData = {weatherData}
+                                    currentCity = {currentCity}
+                                
                     />}
                     recommended={
-                    <RecommendedSongsView 
-                        recommendedArtist={recommendedArtist}
-                        onSearchMusic={handleSearchMusicACB}
-                        searchResults={searchResults}
-                        likedSongs={props.model.likedSongs}
-                        onLikeSong={function(track) { props.model.setLikedSong(track); }}
-                        onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
-                    />}
-                    
+                        <RecommendedSongsView 
+                            likedSongs={props.model.likedSongs}
+                            onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
+                        />}
+                    getSong={
+                        <GetSongsView
+                            recommendedArtist={recommendedArtist}
+                            onSearchMusic={handleSearchMusicACB}
+                            searchResults={searchResults}
+                            likedSongs={props.model.likedSongs}
+                            onLikeSong={function(track) { props.model.setLikedSong(track); }}
+                            onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
+                        />
+                    }
                 />);
+
         }
         return <SuspenseView promise={weatherPromiseState.promise}
                                 error={weatherPromiseState.error} />;

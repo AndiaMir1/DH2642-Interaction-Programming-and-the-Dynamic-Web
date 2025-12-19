@@ -6,14 +6,23 @@ import "./style/popUp.css";
 export default function ProfileView(props) {
     const [cityInput, setCityInput] = useState("");
     const [usernameInput, setUsernameInput] = useState("");
+    //desc imp
+    const [bioInput, setBioInput] = useState("");
     const [showUsernameChange, setShowUsernameChange] = useState(false);
     const [showCityChange, setShowCityChange] = useState(false);
+        //desc imp
+    const [showBioChange, setShowBioChange] = useState(false);
     const [showPlaylistPopUp, setShowPlaylistPopUp] = useState(false);
     const [playlistName, setPlaylistName] = useState ("");
     const [statusMessage, setStatusMessage] = useState(null);
 
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
+    }
+
+    function onBioChangeACB(event) {
+        setBioInput(event.target.value);
+
     }
 
     function onGenreChangeACB(event) {
@@ -23,12 +32,23 @@ export default function ProfileView(props) {
     function onUsernameChangeACB(event) {
         setUsernameInput(event.target.value);
     }
+//desc imp
+    function onBioSaveACB() {
+        if (props.onBioChange) {
+            props.onBioChange(bioInput);
+            setShowBioChange(false);
+        }
+    }
+
+    function onCloseBioACB() {
+        setShowBioChange(false);
+    }
  
-   
+   /*
     function onArtistChangeACB(event) {
         setArtistInput(event.target.value);
     }
-
+*/
     function openPlaylistPopup() {
         setShowPlaylistPopUp(true);
     }
@@ -61,11 +81,15 @@ export default function ProfileView(props) {
             }, 2000);
             closePlaylistPopup();
     } catch (err) {
-            console.error(err);
+            if(err === "LOGIN_REQUIRED") {
+                redirectToSpotifyLogin();
+            
             setStatusMessage("Error exporting playlist. Make sure you're logged in to Spotify.");
             setTimeout(function () {
                 setStatusMessage(null);
-            }, 2000);
+            }, 3000);}
+            closePlaylistPopup();
+                
         }
     }
 
@@ -73,6 +97,14 @@ export default function ProfileView(props) {
         const trimmedCity = cityInput.trim();
         if (trimmedCity && props.onSaveClick) {
             props.onSaveClick(trimmedCity);
+            if(!props.invalidCityError){
+                setStatusMessage("Invalid city name !");
+
+            setTimeout(function () {
+                setStatusMessage(null);
+            }, 3000);
+            closePlaylistPopup();
+            }
             setCityInput("");
             setShowCityChange(false);
         }
@@ -105,15 +137,6 @@ export default function ProfileView(props) {
         setCityInput("");
     }
 
-    /*function onExportPlaylistACB() {
-        if(!playlistName.trim()) {
-            alert("please enter a playlist name!");
-            return ;
-        }
-    }*/
-
-    
-
     return (
         <div className="profile-view">
             <h1>My Profile</h1>
@@ -123,6 +146,30 @@ export default function ProfileView(props) {
                 {statusMessage}
                 </div>
             )}
+            <section className="current-location">
+                <p>
+                    Bio: <strong>{props.currentBio || "No bio added yet..."}</strong>
+                </p>
+                <button onClick={function() { 
+                    setBioInput(props.currentBio || ""); 
+                    setShowBioChange(true); 
+                }}>Edit</button>
+            </section>
+            {showBioChange && (
+            <section className="change-location">
+                <h2>Edit Bio</h2>
+                <button className="close-btn" onClick={onCloseBioACB}>Close</button>
+                <input
+                    type="text"
+                    placeholder="Tell us about yourself!"
+                    value={bioInput}
+                    onChange={onBioChangeACB}
+                    onKeyDown={onEnterKey(onBioSaveACB)}
+                />
+                <button onClick={onBioSaveACB}>Save</button>
+            </section> )}
+
+
             <section className="current-location">
                 <p>
                     Hometown:
@@ -142,8 +189,8 @@ export default function ProfileView(props) {
                         onChange={onTextChangeACB}
                         onKeyDown={onEnterKey(onSavedACB)}
                     />
-                    <button onClick={onSavedACB} disabled={props.isSaving}>
-                        {props.isSaving ? "Saving..." : "Save"}
+                    <button onClick={onSavedACB} >
+                        Save
                     </button>
                 </section> 
             )}
@@ -172,6 +219,9 @@ export default function ProfileView(props) {
                     </button>
                 </section>
             )}
+            
+
+
 {/* flytta till home */}
             <section>
     <button className="buttonpopup"
@@ -200,6 +250,50 @@ export default function ProfileView(props) {
             </div>
          </div>
     )}
+
+    {/***********************************/}
+    <section className="exported-playlists">
+    <h2>Created Playlists</h2>
+
+    {(!props.exportedPlaylists || props.exportedPlaylists.length === 0) && (
+        <p>No playlists exported yet.</p>
+    )}
+
+    {props.exportedPlaylists && props.exportedPlaylists.length > 0 && (
+        <ul className="playlist-list">
+            {props.exportedPlaylists.map(function (playlist) {
+                return (
+                    <li key={playlist.playlistId} className="playlist-item">
+                        {playlist.image && (
+                            <img
+                                src={playlist.image}
+                                alt={playlist.name}
+                                className="playlist-image"
+                            />
+                        )}
+
+                        <div className="playlist-info">
+                            <strong>{playlist.name}</strong>
+
+                            {playlist.spotifyUrl && (
+                                <div>
+                                    <a
+                                        href={playlist.spotifyUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Open in Spotify
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </li>
+                );
+            })}
+        </ul>
+    )}
+</section>
+
 
 
 

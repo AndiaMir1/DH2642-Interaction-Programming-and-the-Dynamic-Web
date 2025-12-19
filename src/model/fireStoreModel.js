@@ -40,6 +40,8 @@ export function connectToPersistence(model, watchFunction) {
                     model.friends = data.friends || [];
                     model.likedSongs = data.likedSongs || [];
                     model.ready = true;
+                    model.exportedPlaylists = data.exportedPlaylists || [];
+                    model.currentBio = data.bio ?? null;
 
                     model.fetchFriendFeed();
             })
@@ -54,6 +56,8 @@ export function connectToPersistence(model, watchFunction) {
         model.ready = true;
         model.friends = [];
         model.likedSongs =[];
+        model.exportedPlaylists =[];
+        model.currentBio = null;
         //likedArtist =[];
         //producedPlaylists = [];
     }
@@ -72,7 +76,9 @@ export function connectToPersistence(model, watchFunction) {
                 model.currentUsername,
                 model.currentGenre,
                 model.friends,
-                model.likedSongs
+                model.likedSongs,
+                model.exportedPlaylists,
+                model.currentBio,
             ];
 
         //produced playlists
@@ -90,7 +96,9 @@ export function connectToPersistence(model, watchFunction) {
                username: model.currentUsername,
                genre: model.currentGenre,
                friends: model.friends,
-               likedSongs: model.likedSongs
+               likedSongs: model.likedSongs,
+               exportedPlaylists: model.exportedPlaylists,
+               bio: model.currentBio
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
