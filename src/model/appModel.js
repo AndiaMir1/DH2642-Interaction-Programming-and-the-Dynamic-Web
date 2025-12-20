@@ -251,13 +251,19 @@ export const rootModel = {
     },
 
     addFriend (friendObject) {
+        if(!this.user) return;
+        if (friendObject.uid === this.user.uid) {
+            return {ok: false, reason: "SELF"};
+        }
         const exists = this.friends.some(function(pal) {
             return pal.uid === friendObject.uid;
         });
 
-        if(!exists) {
-            this.friends = this.friends.concat([friendObject]);
+        if(exists) {
+            return {ok: false, reason: "EXISTS"};
         }
+        this.friends = this.friends.concat([friendObject]);
+        return {ok: true};  
     },
 
     removeFriend (friendUid) {
