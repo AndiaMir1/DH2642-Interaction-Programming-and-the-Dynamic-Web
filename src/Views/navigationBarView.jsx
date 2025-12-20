@@ -1,7 +1,6 @@
 //buttons and css, go between 
 import { Link } from 'react-router-dom';
 import "./style/navigationBarView.css";
-import SignOutPresenter from '../Presenters/signOutPresenter';
 
 export default function NavigationBar({activePath}) {
     return (

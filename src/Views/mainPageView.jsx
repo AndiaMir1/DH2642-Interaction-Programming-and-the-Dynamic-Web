@@ -9,7 +9,6 @@ import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
 import  FriendsProfilePresenter  from "../Presenters/friendsProfilePresenter.jsx";
 import { Feed } from "../Presenters/feedPresenter.jsx";
-//import DashboardPresenter from "../Presenters/dashboardPresenter.jsx";
 import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
 import CompareFriendsPlaylistsPresenter from "../Presenters/comparePlaylistsPresenter.jsx";
 export function MainPage (props) {  
@@ -63,11 +62,6 @@ export function MainPage (props) {
                         path="/compare-friend-playlists"
                         element={<CompareFriendsPlaylistsPresenter model={props.model} />}
                         />
-                    {/**
-                    <Route
-                    path="/dashboard"
-                    element={<DashboardPresenter model ={props.model} />}
-                    /> */}
                     
                 </Routes>
             </div>
