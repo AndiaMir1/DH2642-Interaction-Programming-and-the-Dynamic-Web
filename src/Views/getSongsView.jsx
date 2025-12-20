@@ -65,7 +65,7 @@ export function GetSongsView(props) {
                                 <strong>{track.name}</strong>
                                 <span className="artist-name">{track.artists?.[0]?.name}</span>
                                 <button onClick={() => likeSongACB(track)} className="like-btn">
-                                    {isLikedACB(track.id) ? "Unlike" : "Like Song"}
+                                    {isLikedACB(track.id) ? "Unlike" : "❤"}
                                 </button>
                             </div>
 

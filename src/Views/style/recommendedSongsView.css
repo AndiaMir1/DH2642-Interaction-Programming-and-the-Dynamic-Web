@@ -118,8 +118,8 @@
 
 .like-btn {
     margin-left: auto;
-    background-color: #f0f0f0;
-    color: #666;
+    background-color: var(-accent, #f0f0f0);
+    color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 0.3rem 0.6rem;
@@ -129,7 +129,7 @@
 }
 
 .like-btn:hover {
-    background-color: #e0e0e0;
+    background-color: var(--accent-light);
     color: #333;
     transform: translateY(-1px);
 }
