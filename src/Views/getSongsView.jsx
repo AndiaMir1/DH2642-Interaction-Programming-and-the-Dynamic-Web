@@ -1,22 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./style/recommendedSongsView.css";
 import "./style/weatherView.css";
 import { getCurrentUser } from "../apiConfig/musicSource";
 
 export function GetSongsView(props) {
+    const [isTokenValid, setIsTokenValid] = useState(false);
 
     useEffect(() => {
-        if (props.spotifyToken) {
-            getCurrentUser(props.spotifyToken)
-                .then((data) => {
-                    console.log("🕵️ IDENTITY CHECK:");
-                    console.log("Name:", data.display_name);
-                    console.log("Email:", data.email);
-                    console.log("ID:", data.id);
-                })
-                .catch(() => {});
+        async function validateToken() {
+            if (props.spotifyToken) {
+                try {
+                    const data = await getCurrentUser(props.spotifyToken);
+                    if (data) {
+                        setIsTokenValid(true);
+                    } else {
+                        setIsTokenValid(false);
+                        if (props.onTokenInvalid) {
+                            props.onTokenInvalid();
+                        }
+                    }
+                } catch (error) {
+                    setIsTokenValid(false);
+                    if (props.onTokenInvalid) {
+                        props.onTokenInvalid();
+                    }
+                }
+            } else {
+                setIsTokenValid(false);
+            }
         }
-    }, []);
+        
+        validateToken();
+    }, [props.spotifyToken]);
 
     function isLikedACB(trackId) {
         function sameSongCB(song) {
@@ -41,10 +56,10 @@ export function GetSongsView(props) {
         <section className="get-songs-section">
             <div className="get-songs-container">
                 <div className="get-songs-header">
-                    <h2>{!props.spotifyToken ? "🎵 Test Spotify API" : " Get Music Recommendations"}</h2>
+                    <h2>{!props.spotifyToken || !isTokenValid ? "Log in with Spotifiy to get started!" : "Get Music Recommendations"}</h2>
                 </div>
                 <div className="get-songs-content">
-                    {!props.spotifyToken ? (
+                    {!props.spotifyToken || !isTokenValid ? (
                         <>
                             <p>Log in with Spotify to get started!</p>
                             <button onClick={spotifyLoginACB} className="spotify-login-btn">
@@ -89,19 +104,3 @@ export function GetSongsView(props) {
         </section>
     );
 }
-
-/*
-    
-
-    
-    async function onRecommendSongsACB() {
-        if (!props.searchWord) return;
-        const token = localStorage.getItem("spotifyToken");
-        if (!token) {
-            alert("You need to log in below first!");
-            return;
-        }
-
-        const result = await searchMusic(props.searchWord, token);
-        setSearchResults(result || []);
-    }*/

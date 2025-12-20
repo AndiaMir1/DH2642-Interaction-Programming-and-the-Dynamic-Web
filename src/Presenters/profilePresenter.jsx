@@ -11,11 +11,8 @@ const Profile = observer(
         const currentBio = props.model.currentBio;
         
         function handleSavedACB(newCity) {
+            props.model.setCity(newCity);
             props.model.getWeather(newCity);
-            if(invalidCityError){
-                props.model.setCity(newCity);
-            }
-            else return;
         }
 
         function handleUsernameChangeACB(newUsername) {
