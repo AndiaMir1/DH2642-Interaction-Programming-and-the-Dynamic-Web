@@ -31,22 +31,6 @@ const Profile = observer(
             props.model.setBio(newBio);
         }
 
-        function handleExportPlaylistACB(playlistName) {
-            props.model.exportLikedSongsToSpotify(playlistName)
-        .then(function(spotifyResponse) {
-            var formatted = {
-                playlistId: spotifyResponse.id,
-                name: spotifyResponse.name,
-                spotifyUrl: spotifyResponse.external_urls.spotify,
-            };
-            
-            props.model.setExportedPlaylist(formatted);
-        })
-        .catch(function(err) {
-            console.error("Export failed:", err);
-        });
-        }
-
         return ( 
             <ProfileView 
                     invalidCityError={invalidCityError}
@@ -56,7 +40,6 @@ const Profile = observer(
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
                     onUsernameChange={handleUsernameChangeACB}
-                    onExportPlaylist={handleExportPlaylistACB}
                     onBioChange={handleBioChangeACB}
                     currentGenre={currentGenre} 
                     onGenreChange={handleGenreChangeACB}

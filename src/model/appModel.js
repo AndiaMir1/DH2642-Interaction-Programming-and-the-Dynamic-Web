@@ -137,6 +137,7 @@ export const rootModel = {
         if (!user || !user.id) {
             throw new Error("Spotfiy session invalid");
         }
+        
         var playlist = await createSpotifyPlaylist (
             user.id,
             playlistName,
@@ -150,6 +151,15 @@ export const rootModel = {
         });
 
         await addTracksToPlaylist(playlist.id, uris, token);
+        
+        var formattedPlaylist = {
+            playlistId: playlist.id,
+            name: playlist.name,
+            spotifyUrl: playlist.external_urls?.spotify,
+            image: playlist.images?.[0]?.url
+        };
+        this.exportedPlaylists = [...this.exportedPlaylists, formattedPlaylist];
+        
         return playlist;
     },
 

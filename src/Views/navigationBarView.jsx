@@ -1,14 +1,32 @@
 //buttons and css, go between 
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import "./style/navigationBarView.css";
-import SignOutPresenter from '../Presenters/signOutPresenter';
+import "./style/popUp.css";
 
-export default function NavigationBar({activePath}) {
+export default function NavigationBar({activePath, onSignOut}) {
+    const [showSignOutPopup, setShowSignOutPopup] = useState(false);
+
+    function handleSignOutClick(e) {
+        e.preventDefault();
+        setShowSignOutPopup(true);
+    }
+
+    function handleYesSignOut() {
+        setShowSignOutPopup(false);
+        if (onSignOut) {
+            onSignOut();
+        }
+    }
+
+    function handleNoSignOut() {
+        setShowSignOutPopup(false);
+    }
     return (
         <nav className='navigation-bar'>
             <div className='nav-title'>
                 <Link to="/" className="title-link" >
-                Here Comes The Song
+                Here Comes The Song 
                 </Link>
             </div>
 
@@ -30,14 +48,30 @@ export default function NavigationBar({activePath}) {
                     About us
                 </Link>
             
-                <Link 
-                    to="/logout" 
-                    state={{ from: activePath }}
-                    className={`nav-button ${activePath ==="/logout" ? "active" : ""}`}>
+                <button 
+                    onClick={handleSignOutClick}
+                    className="nav-button signout-btn">
                     Sign Out
-                </Link>
+                </button>
                  
             </div>
+
+            {showSignOutPopup && (
+                <div id="bg-modal">
+                    <div className="modal-contact signout-modal">
+                        <span className="close" onClick={handleNoSignOut}>&times;</span>
+                        <h2>Are you sure you want to sign out?</h2>
+                        <div className="signout-buttons">
+                            <button className="yes-btn" onClick={handleYesSignOut}>
+                                Yes
+                            </button>
+                            <button className="no-btn" onClick={handleNoSignOut}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </nav>
 /*hej */
     );

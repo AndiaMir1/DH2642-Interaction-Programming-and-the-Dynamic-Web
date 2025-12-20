@@ -4,9 +4,8 @@ import "./style/weatherView.css";
 import { getCurrentUser } from "../apiConfig/musicSource";
 
 export function GetSongsView(props) {
-    /************kan tas bort sen****************/
+
     useEffect(() => {
-        //const token = localStorage.getItem("spotifyToken");
         if (props.spotifyToken) {
             getCurrentUser(props.spotifyToken)
                 .then((data) => {
@@ -39,40 +38,38 @@ export function GetSongsView(props) {
     }
 
     return(
-        <section className="centered-below">
-            <h2>🎵 Test Spotify API</h2>
-            <button onClick={spotifyLoginACB} className="spotify-login-btn">
-                        Log in with Spotify
-            </button>
+        <section className="get-songs-section">
+            <div className="get-songs-container">
+                <div className="get-songs-header">
+                    <h2>{!props.spotifyToken ? "🎵 Test Spotify API" : " Get Music Recommendations"}</h2>
+                </div>
+                <div className="get-songs-content">
+                    {!props.spotifyToken ? (
+                        <>
+                            <p>Log in with Spotify to get started!</p>
+                            <button onClick={spotifyLoginACB} className="spotify-login-btn">
+                                Log in with Spotify
+                            </button>
+                        </>
+                    ) : (
+                        <p>Welcome! You're logged in to Spotify.</p>
+                    )}
+                    
+                    <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button>
+                    
+                    {props.searchError && (
+                        <p className="error-message">Logga in igen</p>
+                    )}
+                </div>
 
-            <br />
-
-            <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button>
-            {props.searchError && (
-                <p>Logga in igen</p>
-            )}
-
-            <div className="songs-container">
+                <div className="songs-container">
                 {props.searchResults.map((track) => (
                     <div key={track.id} className="track-item">
-                        <img
-                            src={track.album?.images?.[0]?.url || ''}
-                            alt={track.name}
-                            className="track-image"
-                        />
                         <div className="track-content">
                             <div className="track-header">
-                                <strong>{track.name}</strong>
-                                <span className="artist-name">{track.artists?.[0]?.name}</span>
                                 <button onClick={() => likeSongACB(track)} className="like-btn">
                                     {isLikedACB(track.id) ? "Unlike" : "❤"}
                                 </button>
-                            </div>
-
-                            <div className="audio-container">
-                                {track.preview_url && (
-                                    <audio controls src={track.preview_url} className="audio-player" />
-                                )}
                             </div>
 
                             <div className="iframe-container">
@@ -87,6 +84,7 @@ export function GetSongsView(props) {
                         </div>
                     </div>
                 ))}
+                </div>
             </div>
         </section>
     );

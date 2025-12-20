@@ -1,6 +1,5 @@
 @import './variables.css';
 
-/* HUVUDCONTAINER: Centrerar dialogen på sidan */
 .signout-confirmation {
     display: flex;
     justify-content: center;
@@ -9,7 +8,6 @@
     padding: 2rem;
 }
 
-/* DIALOGRUTA: Skapar en snygg modal-liknande box */
 .confirmation-dialog {
     background: var(--white, white);
     border-radius: 8px;
@@ -20,20 +18,17 @@
     width: 100%;
 }
 
-/* RUBRIK: Styling för frågan */
 .confirmation-dialog h2 {
     margin-bottom: 2rem;
     color: var(--primary, #333);
 }
 
-/* KNAPP-CONTAINER: Placerar knapparna bredvid varandra */
 .confirmation-buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
 }
 
-/* GRUNDSTIL FÖR BÅDA KNAPPAR */
 .yes-btn, .no-btn {
     padding: 0.8rem 2rem;
     border: none;
@@ -43,7 +38,6 @@
     transition: background-color 0.2s ease;
 }
 
-/* YES-KNAPP: Röd för att signalera "varning" */
 .yes-btn {
     background-color: #e74c3c;
     color: white;
@@ -53,7 +47,6 @@
     background-color: #c0392b;
 }
 
-/* NO-KNAPP: Grå för "säker" handling */
 .no-btn {
     background-color: #95a5a6;
     color: white;

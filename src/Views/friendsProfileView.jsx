@@ -27,8 +27,7 @@ export default function FriendsProfileView(props) {
         <div className="friends-profile">  
             <h2>{profile.username}</h2>
             <div className="profile-bio">
-                <p><strong>About me:</strong></p>
-                <p className="bio-text">{profile.bio || "This user hasn't written a bio yet."}</p>
+                <strong>About me: </strong>{profile.bio || "This user hasn't written a bio yet."}
             </div>
             <p><strong>Current City: </strong> {profile.currentCity || "Not set"}</p>
             <p><strong> Favorite genre: </strong> {profile.genre || "Not set"}</p>

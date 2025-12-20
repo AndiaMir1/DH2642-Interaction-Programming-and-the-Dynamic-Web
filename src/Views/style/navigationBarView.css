@@ -4,34 +4,43 @@
     background: rgba(255, 255, 255, 0.72);
     backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
+    padding: 0.25rem 1rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    height: 70px;
+    min-height: 50px;
     position: sticky;
     top: 0;
     z-index: 1000;
+    margin-bottom: 0;
 }
 
 .nav-title h1 {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--primary);
     letter-spacing: -0.022em;
+    margin-bottom: 0.1rem;
+    text-align: center;
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .nav-button {
     color: var(--primary);
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 20px;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .nav-button:hover {
@@ -47,6 +56,43 @@
     background-color: rgba(0, 0, 0, 0.08);
     color: var(--accent);
     font-weight: 600;
+}
+
+.signout-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .navigation-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        padding: 0 2rem;
+        min-height: auto;
+    }
+
+    .nav-title h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    .nav-links {
+        gap: 2rem;
+        width: auto;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+    }
+
+    .nav-button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
 }
 
 .title-link {

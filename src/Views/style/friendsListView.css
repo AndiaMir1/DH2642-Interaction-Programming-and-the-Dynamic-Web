@@ -3,17 +3,21 @@
 .friends-list {
     max-width: 600px;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 .friends-list h2 {
     margin-bottom: 2rem;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .add-friend {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     margin-bottom: 2rem;
-    padding: 2rem;
+    padding: 1.5rem;
     background: var(--white);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -21,12 +25,22 @@
 }
 
 .add-friend input {
-    flex: 1;
-    margin-bottom: 0;
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .add-friend button {
-    white-space: nowrap;
+    padding: 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 .friends-list ul {
@@ -36,8 +50,8 @@
 
 .friends-list li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1.5rem;
     background: var(--white);
     border-radius: var(--radius-sm);
@@ -53,32 +67,68 @@
     box-shadow: var(--shadow-hover);
 }
 
-/* Normal state for Remove button */
 .friends-list li .remove-button {
-    background: #ff4d4d; /* A lighter red for the base state */
+    background: #ff4d4d;
     color: white;
-    width: auto; /* Overrides the 100% width from your global styles */
-    padding: 0.5rem 1rem;
-}
-
-/* Hover state for Remove button */
-.friends-list li .remove-button:hover {
-    background: #ff3838; /* The darker red you wanted */
-    color: white;
-    transform: scale(1.05);
-}
-
-/* Normal state for Profile/Username button */
-.friends-list li .profile-button {
-    background: #994b91; /* A base green */
-    color: white;
-    width: auto;
-    padding: 0.5rem 1rem;
-}
-
-/* Hover state for Profile button */
-.friends-list li .profile-button:hover {
-    background: #994b91; /* The darker green you wanted */
-    color: white;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
     cursor: pointer;
+}
+
+.friends-list li .remove-button:hover {
+    background: #ff3838;
+}
+
+.friends-list li .profile-button {
+    background: #994b91;
+    color: white;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.friends-list li .profile-button:hover {
+    background: #7a396f;
+}
+
+@media (min-width: 768px) {
+    .friends-list {
+        padding: 2rem;
+    }
+    
+    .add-friend {
+        flex-direction: row;
+        align-items: center;
+        padding: 2rem;
+    }
+    
+    .add-friend input {
+        width: auto;
+        flex: 1;
+    }
+    
+    .add-friend button {
+        white-space: nowrap;
+        width: auto;
+        padding: 1rem 1.5rem;
+    }
+    
+    .friends-list li {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .friends-list li .remove-button,
+    .friends-list li .profile-button {
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
 }

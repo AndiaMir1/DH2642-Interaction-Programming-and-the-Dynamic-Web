@@ -1,20 +1,23 @@
 @import './variables.css';
 
 .profile-view {
-    max-width: 600px;
+    max-width: 95%;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 .profile-view h1 {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
 }
 
 .current-location,
 .change-location {
     background: var(--white);
     border-radius: var(--radius);
-    padding: 2rem;
-    margin-bottom: 2rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
     box-shadow: var(--shadow);
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -29,12 +32,14 @@
 .change-location h2 {
     color: var(--primary);
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
 }
 
 .current-location p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--primary);
+    text-align: center;
 }
 
 .current-location strong {
@@ -44,11 +49,134 @@
 
 .current-location {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
 }
 
 .current-location button {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: auto;
+    max-width: 120px;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.current-location button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-group input,
+.input-group select {
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(147, 84, 137, 0.1);
+}
+
+.input-group button {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: auto;
+    max-width: 120px;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.input-group button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+    .profile-view {
+        max-width: 600px;
+        padding: 0;
+    }
+
+    .profile-view h1 {
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+        text-align: left;
+    }
+
+    .current-location,
+    .change-location {
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .current-location h2,
+    .change-location h2 {
+        font-size: 1.5rem;
+        text-align: left;
+    }
+
+    .current-location p {
+        font-size: 1.1rem;
+        text-align: left;
+    }
+
+    .current-location {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+    }
+
+    .current-location button {
+        width: auto;
+        padding: 0.4rem 0.8rem;
+        max-width: none;
+    }
+
+    .input-group {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .input-group input,
+    .input-group select {
+        width: auto;
+        flex: 1;
+    }
+
+    .input-group button {
+        width: auto;
+        padding: 0.4rem 0.8rem;
+        white-space: nowrap;
+        max-width: none;
+    }
+}
+.card {
     background-color: #f0f0f0;
     color: #666;
     border: 1px solid #ddd;

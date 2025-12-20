@@ -3,32 +3,36 @@
 .feed {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     animation: fadeIn 0.6s ease-out;
-    padding: 1rem 0;
+    padding: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .feed-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     gap: 1rem;
-    flex-wrap: wrap;
+    text-align: center;
 }
 
 .feed-header h2 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
 }
 
 .manage-friends-button {
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
     border-radius: 999px;
     background: var(--accent);
     color: var(--white);
     cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: var(--transition);
     border: none;
     transition: var(--transition);
 
@@ -57,13 +61,12 @@
 .feed-item {
     background: var(--white);
     border-radius: var(--radius);
-    padding: 1.5rem 2rem;
+    padding: 1rem;
     box-shadow: var(--shadow);
     border: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+    flex-direction: column;
+    gap: 1rem;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 

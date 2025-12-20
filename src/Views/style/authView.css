@@ -1,34 +1,38 @@
 @import './variables.css';
 
 .auth-view {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 2rem;
+    max-width: 95%;
+    width: 100%;
+    margin: 1rem auto;
+    padding: 1.5rem;
     background: var(--white);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     text-align: center;
+    box-sizing: border-box;
 }
-
 
 .auth-view h1 {
     color: var(--accent);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
 }
 
 .auth-view h2 {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-weight: 500;
+    font-size: 1.2rem;
 }
 
 .auth-view input {
-    margin-bottom: rem;
+    margin-bottom: 1rem;
 }
 
 .auth-view input[type="email"],
 .auth-view input[type="password"] {
     width: 100%;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
+    box-sizing: border-box;
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
     font: inherit;
@@ -158,6 +162,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 50px;
+    padding: 20px;
     background: transparent;
+}
+
+@media (min-width: 768px) {
+    .auth-view {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+
+    .auth-view h1 {
+        margin-bottom: 2rem;
+        font-size: 2rem;
+    }
+
+    .auth-view h2 {
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+    }
+
+    .auth-view input[type="email"],
+    .auth-view input[type="password"] {
+        padding: 1rem 1.5rem;
+    }
+
+    .auth-description {
+        padding: 50px;
+    }
 }
