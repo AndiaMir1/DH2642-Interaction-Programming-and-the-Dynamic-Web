@@ -20,8 +20,8 @@ export default function NavigationBar({activePath}) {
                     Feed
                 </Link>
                
-                <Link to="/dashboard" className={`nav-button ${activePath ==="/dashboard" ? "active" : ""}`}>
-                    Dashboard
+                <Link to="/compare-friend-playlists" className={`nav-button ${activePath ==="/dashboard" ? "active" : ""}`}>
+                    Compare
                 </Link>
                 <Link to="/profile" className={`nav-button ${activePath ==="/profile" ? "active" : ""}`}>
                     Profile

@@ -92,6 +92,7 @@ export const rootModel = {
         playlistId: playlist.playlistId,
         name: playlist.name,
         spotifyUrl: playlist.spotifyUrl,
+        trackUris: playlist.trackUris || []
     };
         this.exportedPlaylists = this.exportedPlaylists.concat([newEntry]);
         this.addUserUpdate("PLAYLIST_EXPORT",{playlistName : playlist.name});
@@ -150,6 +151,14 @@ export const rootModel = {
         });
 
         await addTracksToPlaylist(playlist.id, uris, token);
+        const playlistToSave = {
+            playlistId: playlist.id,
+            name: playlist.name,
+            spotifyUrl: playlist.external_urls.spotify,
+            trackUris: uris
+        };
+        this.setExportedPlaylist(playlistToSave);
+            
         return playlist;
     },
 
