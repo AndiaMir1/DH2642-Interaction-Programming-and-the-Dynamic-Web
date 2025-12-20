@@ -30,8 +30,8 @@ export function AuthView(props) {
       
                 <h2>Here Comes the Song !</h2>
                 <p>
-                    Create playlists based on the current weather in your location and export it directly to Spotify! No matter the weather Here Comes the Song is equipped to produce playlists that describes the mood perfectly. Add friends and see what they're up to, whether they have traveled to another city, updated their profile or created a new playlist! The new social media for music sharing among music lovers!
-                    Create an account and join four KTH students.
+                    Create playlists based on the current weather in your location and export it directly to Spotify! No matter the weather Here Comes the Song is equipped to produce playlists that describes the mood perfectly. Add friends and see what they're up to, whether they have traveled to another city, updated their profile or created a new playlist! The new social media for music sharing among music lovers.
+                    Create an account today and invite your friends!
                 </p>
               </div>
               <div className="auth-view">
