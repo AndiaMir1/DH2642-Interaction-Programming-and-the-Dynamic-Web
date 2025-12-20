@@ -7,37 +7,49 @@ const FriendsList = observer(
         const navigate = useNavigate();
         var friends = props.model.friends;
 
-        function handleSearchACB(username) {
-            if (!username) return Promise.resolve([]);
+        async function handleSearchACB(username) {
+            try {
+                if (!username) {
+                return { results: [], error: "Please enter a username." };
+                }
 
-            return props.model.findUserUidByUsername(username).then(function(friendObject) {
-            if (!friendObject) return [];
-            return [friendObject];
-            });
-        }
+                const friend = await props.model.findUserUidByUsername(username);
+                if (friend) {
+                    return { results: [friend], error: null };
+                } else {
+                    return { results: [], error: "User not found." };
+                }
+            } catch (err) {
+                return { results: [], error: "Error searching for friend." };
+            }
+        }    
 
         function handleAddFriendsACB(friendObject) {
-                props.model.addFriend(friendObject);
+            props.model.addFriend(friendObject);
             }
 
         function handleRemoveACB(uid) {
             props.model.removeFriend(uid);
         }
         
-
         function handleSelectFriendACB(uid) {
             props.model.selectedUserUid = uid;
             navigate(`/friendsProfileView`);
         }
 
+        function handleBackACB() {
+            navigate("/feed");
+        }
 
-        return <FriendsListView friends={friends}
-                                onSearch={handleSearchACB}
-                                onAddFriend={handleAddFriendsACB}
-                                onRemoveFriend={handleRemoveACB}
-                                onSelectFriend={handleSelectFriendACB}
-        
-        />;
-    }
-);
+        return (
+        <FriendsListView friends={friends}
+                onSearch={handleSearchACB}
+                onAddFriend={handleAddFriendsACB}
+                onRemoveFriend={handleRemoveACB}
+                onSelectFriend={handleSelectFriendACB}
+                onBack={handleBackACB}
+        />
+    );
+
+});
 export {FriendsList}
