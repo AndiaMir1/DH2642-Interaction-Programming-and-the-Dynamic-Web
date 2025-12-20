@@ -1,2 +1,9 @@
 import { observer } from "mobx-react-lite";
-import AboutUs from "/src/Views/aboutUsView"
+import AboutUsView from "/src/Views/aboutUsView"
+const AboutUs = observer(function AboutUsRender(props) {
+
+    return <AboutUsView />;
+
+});
+
+export { AboutUs };

@@ -34,6 +34,11 @@ const Home = observer(
         function handleSpotifyLoginACB(){
             props.model.spotifyLogin();
         }
+        function handleLikeToggleACB(track){
+            function sameSongCB(song){
+                return song.id ===track.id;
+            }
+        }
         
          if(weatherData && weatherData.weather && weatherData.weather.length > 0){
             return (<TestLayout

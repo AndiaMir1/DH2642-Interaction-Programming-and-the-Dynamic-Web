@@ -1,4 +1,3 @@
-import React from "react";
 export default function AboutUsView(props) {
     return (
         <div className="about-us-container">

@@ -4,82 +4,82 @@ import { eyeImage } from "../images/images";
 
 export function AuthView(props) {
 
-    function handleEmailChangeACB(e) {
+  function handleEmailChangeACB(e) {
         props.setEmail(e.target.value);
     }
 
-    function handlePasswordChangeACB(e) {
+  function handlePasswordChangeACB(e) {
         props.setPassword(e.target.value);
-    }
+  }
 
-    function handleUsernameChangeACB(e) {
+  function handleUsernameChangeACB(e) {
       props.setUsername(e.target.value);
-    }
+  }
 
-    function handleToggleACB() {
+  function handleToggleACB() {
         props.toggleMode();
-    }
+  }
 
-    function handleSubmitACB() {
+  function handleSubmitACB() {
         props.submit();
-    }
+  }
 
   return (
-    <div className ="auth-page-full">
-      <div className="auth-description">
+          <div className ="auth-page-full">
+              <div className="auth-description">
       
-      <h2>Here Comes the Song !</h2>
-        <p>
-      Create playlists based on the current weather in your location and export it directly to Spotify! No matter the weather Here Comes the Song is equipped to produce playlists that describes the mood perfectly. Add friends and see what they're up to, whether they have traveled to another city, updated their profile or created a new playlist! The new social media for music sharing among music lovers!
-      Create an account and join four KTH students.
-              </p>
+                <h2>Here Comes the Song !</h2>
+                <p>
+                    Create playlists based on the current weather in your location and export it directly to Spotify! No matter the weather Here Comes the Song is equipped to produce playlists that describes the mood perfectly. Add friends and see what they're up to, whether they have traveled to another city, updated their profile or created a new playlist! The new social media for music sharing among music lovers!
+                    Create an account and join four KTH students.
+                </p>
+              </div>
+              <div className="auth-view">
+
+                <h1>Welcome !</h1>
+                <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
+                <input 
+                  type="email" 
+                  value={props.email} 
+                  placeholder="Email" 
+                  onChange={handleEmailChangeACB} 
+                  onKeyDown={onEnterKey(handleSubmitACB)}
+                />
+                <div className="password-wrapper">
+                  <input 
+                    type={props.showPassword ? "text" : "password"} 
+                    value={props.password} 
+                    placeholder="Password" 
+                    onChange={handlePasswordChangeACB} 
+                    onKeyDown={onEnterKey(handleSubmitACB)}
+                  />
+                  <button
+                  type="button"
+                  className="show-password-btn"
+                  onClick={props.togglePasswordVisibility}
+                  >
+                    {eyeImage}
+                  </button>
+                </div>
+
+                {props.isSignUp && (
+                  <input 
+                    type="text" 
+                    value={props.currentUsername}
+                    placeholder="Username" 
+                    onChange={handleUsernameChangeACB} 
+                    onKeyDown={onEnterKey(handleSubmitACB)}
+                  />
+                )}
+      
+
+                {props.error && <div style={{ color: "purple" }}>{props.error}</div>}
+                <button onClick={handleSubmitACB}>{props.isSignUp ? "Sign Up" : "Sign In"}</button>
+                  <p>
+                  {props.isSignUp ? "Already have an account?" : "Don't have an account?"} 
+                  <button onClick={handleToggleACB}>{props.isSignUp ? "Sign In" : "Sign Up"}</button>
+                </p>
           </div>
-    <div className="auth-view">
-
-      <h1>Welcome !</h1>
-      <h2>{props.isSignUp ? "Sign Up" : "Sign In"}</h2>
-      <input 
-        type="email" 
-        value={props.email} 
-        placeholder="Email" 
-        onChange={handleEmailChangeACB} 
-        onKeyDown={onEnterKey(handleSubmitACB)}
-      />
-      <div className="password-wrapper">
-      <input 
-        type={props.showPassword ? "text" : "password"} 
-        value={props.password} 
-        placeholder="Password" 
-        onChange={handlePasswordChangeACB} 
-        onKeyDown={onEnterKey(handleSubmitACB)}
-      />
-      <button
-      type="button"
-      className="show-password-btn"
-      onClick={props.togglePasswordVisibility}
-      >
-        {eyeImage}
-      </button>
-      </div>
-
-      {props.isSignUp && (
-        <input 
-          type="text" 
-          value={props.currentUsername}
-          placeholder="Username" 
-          onChange={handleUsernameChangeACB} 
-          onKeyDown={onEnterKey(handleSubmitACB)}
-        />
-      )}
-      
-
-      {props.error && <div style={{ color: "purple" }}>{props.error}</div>}
-      <button onClick={handleSubmitACB}>{props.isSignUp ? "Sign Up" : "Sign In"}</button>
-        <p>
-        {props.isSignUp ? "Already have an account?" : "Don't have an account?"} 
-        <button onClick={handleToggleACB}>{props.isSignUp ? "Sign In" : "Sign Up"}</button>
-      </p>
-    </div>
     </div>
   );
 }

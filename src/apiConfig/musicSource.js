@@ -25,6 +25,9 @@ export async function redirectToSpotifyLogin() {
 
 export async function getAccessTokenFromCode(code) {
     const verifier = localStorage.getItem("verifier");
+    if (!verifier){
+        throw new Error ("no code verifier found");
+    }
 
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -39,7 +42,19 @@ export async function getAccessTokenFromCode(code) {
         body: params
     });
 
+    if (!result.ok) {
+        const errorText = await result.text();
+        throw new Error(
+            "Spotify token request failed: " +
+            result.status + " " + errorText
+        );
+    }
+
+
     const data = await result.json();
+    if (!data.access_token) {
+        throw new Error("No access token in response");
+    }
 
     return data.access_token;
 }

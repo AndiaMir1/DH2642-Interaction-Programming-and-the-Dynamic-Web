@@ -1,7 +1,7 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
 import { getTrack, getArtist, createSpotifyPlaylist, 
-    addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin
+    addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode
  } from "../apiConfig/musicSource";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
@@ -29,6 +29,7 @@ export const rootModel = {
     currentArtistId: null,
 
     searchParams: {},
+    accessTokenFromCodePromiseState: {},
     spotifyLoginPromiseState: {},
     currentTrackPromiseState: {},
     currentArtistPromiseState: {},
@@ -53,6 +54,11 @@ export const rootModel = {
     spotifyLogin(){
         resolvePromise(redirectToSpotifyLogin(), this.spotifyLoginPromiseState);
     },
+
+    spotifyAcces(code){
+        resolvePromise(getAccessTokenFromCode(code), this.accessTokenFromCodePromiseState);
+    },
+
     getMusicRecommendations(weatherData){
         const category = getWeatherCategory(weatherData.conditionId);
         const temp = getTemperature(weatherData.temp);
@@ -78,6 +84,7 @@ export const rootModel = {
         this.addUserUpdate("GENRE_CHANGE",{genre : genre});
     },
 // playlist save imp
+
     setExportedPlaylist(playlist) {
         var exists = this.exportedPlaylists.some(function(p) {
             return p.playlistId === playlist.playlistId;
@@ -163,24 +170,6 @@ export const rootModel = {
             this.addUserUpdate("LIKED_SONG",{track : track.name});
             }
         },
-    
-
-    /*setLikedSong(track) {
-        const exists = this.likedSongs.some(function(song) {
-            return song.id === track.id;
-        });
-
-        if (exists) return;
-
-        this.likedSongs = this.likedSongs.concat([{
-            id: track.id,
-            uri: track.uri,
-            name: track.name,
-            artist: track.artists[0].name,
-            image: track.album.images[0]?.url
-        }]);
-        this.addUserUpdate("LIKED_SONG",{track : track.name});
-    },*/
 
     setRemoveSong(trackId) {
         this.likedSongs = this.likedSongs.filter(function(song) {
@@ -354,4 +343,3 @@ export const rootModel = {
     
 
 };
-

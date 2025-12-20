@@ -4,13 +4,13 @@ import {Profile} from "../Presenters/profilePresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import {AuthPresenter} from "../Presenters/authPresenter";
-import CallbackView from "./CallbackView";
+import {CallbackPresenter} from "../Presenters/CallbackPresenter.jsx";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
 import { Feed } from "../Presenters/feedPresenter.jsx";
 import DashboardPresenter from "../Presenters/dashboardPresenter.jsx";
-import AboutUsView from "./aboutUsView";
+import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
 export function MainPage (props) {  
     const location = useLocation();
 
@@ -41,12 +41,12 @@ export function MainPage (props) {
 
                     <Route 
                         path="/callback" 
-                        element={<CallbackView model={props.model} />} 
+                        element={<CallbackPresenter model={props.model} />} 
                     />
 
                     <Route
                         path="/about"
-                        element={<AboutUsView model={props.model} />}
+                        element={<AboutUs model={props.model} />}
                     />
 
                     <Route
