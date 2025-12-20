@@ -1,65 +1,60 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./fireStoreModel.js";
 import { getTrack, getArtist, createSpotifyPlaylist, 
-    addTracksToPlaylist, getCurrentUser,searchMusic
+    addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode
  } from "../apiConfig/musicSource";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
-import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
 import { runInAction } from "mobx";
-
-function resolvePromise(promise, stateObject) {
-    stateObject.promise = promise;
-    stateObject.data = null;
-    stateObject.error = null;
-
-    promise
-        .then(function(data) {
-            if (stateObject.promise === promise) {
-                stateObject.data = data;
-                stateObject.error = null;
-            }
-        })
-        .catch(function(error) {
-            if (stateObject.promise === promise) {
-                stateObject.data = null;
-                stateObject.error = error;
-            }
-        });
-}
+import {resolvePromise} from "/src/resolvePromise.js"
 
 export const rootModel = {
 
     isUserLoggedIn: true,
     user: undefined,
-    currentView: "main",
-    currentCity: null,
-    currentUsername: null,
-    weatherPromiseState: {},
-    //friends list imp
     selectedUserUid: null,
+
+    currentUsername: null,
+    currentBio: null,
+    currentCity: null,
+    weatherPromiseState: {},
+    currentGenre: null,
+    
     playlistName: null,
-
-
+    exportedPlaylists: [],
     tracks: [], 
     likedSongs: [],
     currentTrackId: null,
     currentArtistId: null,
+
     searchParams: {},
+    accessTokenFromCodePromiseState: {},
+    spotifyLoginPromiseState: {},
     currentTrackPromiseState: {},
     currentArtistPromiseState: {},
     spotifyToken: null,
     searchResultsPromiseState: {},
-
-    currentGenre: null,
-
-    // song imp
-    //playedTrackIds: [],
-
-    //friends list imp
+    
     friends: [],
-    // feed imp
     friendFeed: [],
+
+    setSearchQuery(query) {
+        this.searchParams.query = query;
+    },
+
+    setSearchType(type) {
+        this.searchParams.type = type;
+    },
+
+    /**************************MUSIC*************************************/
+    spotifyLogin(){
+        resolvePromise(redirectToSpotifyLogin(), this.spotifyLoginPromiseState);
+    },
+
+    spotifyAcces(code){
+        resolvePromise(getAccessTokenFromCode(code), this.accessTokenFromCodePromiseState);
+    },
 
     getMusicRecommendations(weatherData){
         const category = getWeatherCategory(weatherData.conditionId);
@@ -81,42 +76,38 @@ export const rootModel = {
         return features || ""; 
 
     },
-
-    setCity(city) {
-        this.currentCity = city;
-        //feed imp
-        this.addUserUpdate("CITY_CHANGE", {city : city});
-        this.fetchFriendFeed();
-    },
-
-    setUser(user) {
-        this.user = user;
-        this.isUserLoggedIn = !!user;
-    },
-    
-    setUsername(name) {
-       this.currentUsername = name;
-    },
-    
-    setPlaylistName(listName) {
-        this.playlistName = listName;
-    },
-
-    setFriends(friendsArray) {
-        this.friends = friendsArray;
-    },
-
-    setGenre(genre) {
+     setGenre(genre) {
         this.currentGenre = genre;
         this.addUserUpdate("GENRE_CHANGE",{genre : genre});
+    },
+// playlist save imp
+
+    setExportedPlaylist(playlist) {
+        var exists = this.exportedPlaylists.some(function(p) {
+            return p.playlistId === playlist.playlistId;
+        });
+
+         if (exists) return;
+          const newEntry = {
+        playlistId: playlist.playlistId,
+        name: playlist.name,
+        spotifyUrl: playlist.spotifyUrl,
+    };
+        this.exportedPlaylists = this.exportedPlaylists.concat([newEntry]);
+        this.addUserUpdate("PLAYLIST_EXPORT",{playlistName : playlist.name});
     },
     
     setCurrentTrackId(trackId) {
         this.currentTrackId = trackId;
     },
 
+
     setCurrentArtistId(artistId) {
         this.currentArtistId = artistId;
+    },
+
+    setPlaylistName(listName) {
+        this.playlistName = listName;
     },
 
     addToTracks(trackToAdd) {
@@ -130,12 +121,124 @@ export const rootModel = {
         this.tracks = this.tracks.filter(shouldWeKeepTrackCB);
     },
 
-    setSearchQuery(query) {
-        this.searchParams.query = query;
+    async exportLikedSongsToSpotify (playlistName) {
+        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
+
+        if (!token) {
+            throw "LOGIN_REQUIRED";
+        }
+
+        if (this.likedSongs.length === 0) {
+            throw new Error ("no liked songs to export");
+        }
+
+        var user = await getCurrentUser(token);
+
+        if (!user || !user.id) {
+            throw new Error("Spotfiy session invalid");
+        }
+        var playlist = await createSpotifyPlaylist (
+            user.id,
+            playlistName,
+            "songs liked from HCTS",
+            true,
+            token
+        );
+
+        var uris = this.likedSongs.map(function(song) {
+            return song.uri;
+        });
+
+        await addTracksToPlaylist(playlist.id, uris, token);
+        return playlist;
     },
 
-    setSearchType(type) {
-        this.searchParams.type = type;
+
+    setLikedSong(track){
+        function sameSongCB(song){
+            return song.id === track.id
+            }
+
+             if (this.likedSongs.some(sameSongCB)){
+
+            this.likedSongs= this.likedSongs.filter(function(song) {
+            return song.id !== track.id;
+            });}
+            
+            else {
+            this.likedSongs= [...this.likedSongs, track]
+            this.addUserUpdate("LIKED_SONG",{track : track.name});
+            }
+
+        },
+
+    setRemoveSong(trackId) {
+        this.likedSongs = this.likedSongs.filter(function(song) {
+            return song.id !== trackId;
+        });
+    }, 
+
+    setSpotifyToken(token) {
+        this.spotifyToken = token;
+    },
+
+    doMusicSearch(query) {
+        resolvePromise(
+            searchMusic(query, this.spotifyToken),
+            this.searchResultsPromiseState
+        );
+    },
+
+    currentTrackEffect() {
+        if (this.currentTrackId && this.spotifyToken) { 
+            resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
+        } else {
+            this.currentTrackPromiseState = {};
+        }
+    },
+
+    //används inte
+    currentArtistEffect() {
+        if (this.currentArtistId) {
+            resolvePromise(getArtist(this.currentArtistId), this.currentArtistPromiseState);
+        } else {
+            this.currentArtistPromiseState = {};
+        }
+    },
+
+    //Används inte just nu
+    storePlayedTracks (tracks) {
+        var model = this;
+
+        tracks.forEach(function (track) {
+            if (track && track.id) {
+                if(model.playedTrackIds.indexOf(track.id) === -1) {
+                    model.playedTrackIds.push(track.id);
+                }
+            }
+        });
+
+    },
+
+    /************************WEATHER******************************************/
+    setCity(city) {
+        this.currentCity = city;
+        //feed imp
+        this.addUserUpdate("CITY_CHANGE", {city : city});
+        this.fetchFriendFeed();
+    },
+    
+    getWeather(city) {
+        if (!city) {
+            console.warn("City is not chosen");
+            return;
+        }
+        resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
+    },
+
+    /***************************FRIENDS*********************************************/
+     setFriends(friendsArray) {
+        this.friends = friendsArray;
     },
 
     addFriend (friendObject) {
@@ -145,7 +248,6 @@ export const rootModel = {
 
         if(!exists) {
             this.friends = this.friends.concat([friendObject]);
-            this.persistFriends();
         }
     },
 
@@ -154,77 +256,8 @@ export const rootModel = {
             return pal.uid !== friendUid;
         }
         this.friends = this.friends.filter(shouldKeepACB)
-        this.persistFriends();
     },
 
-    persistFriends () {
-        if (!this.user) return;
-
-        const docRef = doc(db, "USER", this.user.uid);
-        const friendsToPersist = this.friends.map(function(friend) {
-            return { uid: friend.uid, username: friend.username};
-        });
-
-        setDoc(docRef, {friends: friendsToPersist}, {merge : true })
-        .then(function persistSuccessACB() {
-            console.log("friends list updated");
-        })
-        .catch(function persistErrorACB(err) {
-            console.error("Error updating friends list", err);
-        });
-    },
-
-    async findUserUidByUsername (username) {
-        if(!username) return null;
-        
-        const userQuery = query(collection(db, "USER"), where("username", "==", username));
-
-            const querySnapshot = await getDocs(userQuery);
-
-            if (querySnapshot.empty) {
-                return null;
-            }
-
-           const docSnap = querySnapshot.docs[0];
-           return {uid: docSnap.id, username: docSnap.data().username };
-    },
-
-    //feed imp
-
-    addUserUpdate(type, payload) {
-        if(!this.user) return;
-
-        var updatesRef = collection(db, "USER", this.user.uid, "updates");
-
-        addDoc(updatesRef, {
-            type: type,
-            payload: payload,
-            username: this.currentUsername,
-            uid: this.user.uid,
-            timestamp: serverTimestamp()
-        });
-    },
-
-    async fetchRecommendedSongs() {
-        if(!this.spotifyToken) {
-            console.warn("Spotify token missing");
-            return;
-        }
-
-        const audioFeatures = this.getMusicRecommendations({
-            conditionId: this.weatherPromiseState.data?.weather?.[0].id, 
-            temp: this.weatherPromiseState.data?.main?.temp,
-            windSpeed: this.weatherPromiseState.data?.wind?.speed
-        });
-
-        try {
-            const tracks = await getRecommendedSongsByAudioFeature(this.spotifyToken, audioFeatures)
-            this.tracks = tracks;
-        } catch (err) {
-            console.error("failed", err);
-        }
-    },
-//no snapshot - flytta 
     fetchFriendFeed() {
     var model = this;
 
@@ -266,106 +299,51 @@ export const rootModel = {
     });
 },
 
-    // song imp
-    storePlayedTracks (tracks) {
-        var model = this;
-
-        tracks.forEach(function (track) {
-            if (track && track.id) {
-                if(model.playedTrackIds.indexOf(track.id) === -1) {
-                    model.playedTrackIds.push(track.id);
-                }
-            }
-        });
-
+    /******************************USER************************************************/
+    setUser(user) {
+        this.user = user;
+        this.isUserLoggedIn = !!user;
     },
-
-    async exportLikedSongsToSpotify (playlistName) {
-        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
-
-        if (!token) {
-            throw new Error("Spotify login required");
-        }
-
-        if (this.likedSongs.length === 0) {
-            throw new Error ("no liked songs to export");
-        }
-
-        var user = await getCurrentUser(token);
-        var playlist = await createSpotifyPlaylist (
-            user.id,
-            playlistName,
-            "songs liked from HCTS",
-            true,
-            token
-        );
-
-        var uris = this.likedSongs.map(function(song) {
-            return song.uri;
-        });
-
-        await addTracksToPlaylist(playlist.id, uris, token);
-        return playlist;
-    },
-
-
-    setLikedSong(track) {
-        const exists = this.likedSongs.some(function(song) {
-            return song.id === track.id;
-        });
-
-        if (exists) return;
-
-        this.likedSongs = this.likedSongs.concat([{
-            id: track.id,
-            uri: track.uri,
-            name: track.name,
-            artist: track.artists[0].name,
-            image: track.album.images[0]?.url
-        }]);
-    },
-
-    setRemoveSong(trackId) {
-        this.likedSongs = this.likedSongs.filter(function(song) {
-            return song.id !== trackId;
-        });
-    },
-
-
-    getWeather(city) {
-        if (!city) {
-            console.warn("City is not chosen");
-            return;
-        }
-        resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
-    },
-
     
-    setSpotifyToken: function (token) {
-        this.spotifyToken = token;
+    setUsername(name) {
+       this.currentUsername = name;
+        this.addUserUpdate("NAME_CHANGE", {name : name});
+
+    },
+    
+    async findUserUidByUsername (username) {
+        if(!username) return null;
+        
+        const userQuery = query(collection(db, "USER"), where("username", "==", username));
+
+            const querySnapshot = await getDocs(userQuery);
+
+            if (querySnapshot.empty) {
+                return null;
+            }
+
+           const docSnap = querySnapshot.docs[0];
+           return {uid: docSnap.id, username: docSnap.data().username };
+    },
+    
+    setBio(bio) {
+        this.currentBio = bio
+        this.addUserUpdate("BIO_CHANGE",{bio : bio});
     },
 
-    doMusicSearch: function (query) {
-        resolvePromise(
-            searchMusic(query, this.spotifyToken),
-            this.searchResultsPromiseState
-        );
-    },
+    addUserUpdate(type, payload) {
+        if(!this.user) return;
 
-    currentTrackEffect() {
-        if (this.currentTrackId && this.spotifyToken) { 
-            resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
-        } else {
-            this.currentTrackPromiseState = {};
-        }
-    },
+        var updatesRef = collection(db, "USER", this.user.uid, "updates");
 
-    currentArtistEffect() {
-        if (this.currentArtistId) {
-            resolvePromise(getArtist(this.currentArtistId), this.currentArtistPromiseState);
-        } else {
-            this.currentArtistPromiseState = {};
-        }
-    }
+        addDoc(updatesRef, {
+            type: type,
+            payload: payload,
+            username: this.currentUsername,
+            uid: this.user.uid,
+            timestamp: serverTimestamp()
+        });
+    },
+    
 
 };

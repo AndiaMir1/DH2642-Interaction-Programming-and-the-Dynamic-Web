@@ -4,13 +4,13 @@ import {Profile} from "../Presenters/profilePresenter";
 import "./style/mainPageView.css";
 import SignOutPresenter from "../Presenters/signOutPresenter";
 import {AuthPresenter} from "../Presenters/authPresenter";
-import CallbackView from "./CallbackView";
+import {CallbackPresenter} from "../Presenters/CallbackPresenter.jsx";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
 import FriendsProfileView from  "./friendsProfileView.jsx";
 import { Feed } from "../Presenters/feedPresenter.jsx";
-import DashboardPresenter from "../Presenters/dashboardPresenter.jsx";
-
+//import DashboardPresenter from "../Presenters/dashboardPresenter.jsx";
+import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
 export function MainPage (props) {  
     const location = useLocation();
 
@@ -41,12 +41,12 @@ export function MainPage (props) {
 
                     <Route 
                         path="/callback" 
-                        element={<CallbackView model={props.model} />} 
+                        element={<CallbackPresenter model={props.model} />} 
                     />
 
                     <Route
-                        path="*"
-                        element={<h1>HEJ!</h1>}
+                        path="/about"
+                        element={<AboutUs model={props.model} />}
                     />
 
                     <Route
@@ -57,10 +57,11 @@ export function MainPage (props) {
                         path="/friendsProfileView"
                         element={<FriendsProfileView uid={props.model.selectedUserUid} />}
                         />
+                    {/**
                     <Route
                     path="/dashboard"
                     element={<DashboardPresenter model ={props.model} />}
-                    />
+                    /> */}
                     
                 </Routes>
             </div>

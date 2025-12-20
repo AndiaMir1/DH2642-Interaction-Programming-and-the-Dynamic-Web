@@ -2,26 +2,32 @@ import { generateCodeVerifier, generateCodeChallenge } from '/src/utils/authUtil
 import { clientId, redirectUri } from "./musicConfig";
 
 export async function redirectToSpotifyLogin() {
-    const verifier = generateCodeVerifier(128);
-    const challenge = await generateCodeChallenge(verifier);
-
+    try{
+        const verifier = generateCodeVerifier(128);
+        const challenge = await generateCodeChallenge(verifier);
     
-    localStorage.setItem("verifier", verifier);
+        localStorage.setItem("verifier", verifier);
 
-    const params = new URLSearchParams();
-    params.append("client_id", clientId);
-    params.append("response_type", "code");
-    params.append("redirect_uri", redirectUri);
-    params.append("scope", "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private");
-    params.append("code_challenge_method", "S256");
-    params.append("code_challenge", challenge);
+        const params = new URLSearchParams();
+        params.append("client_id", clientId);
+        params.append("response_type", "code");
+        params.append("redirect_uri", redirectUri);
+        params.append("scope", "user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private");
+        params.append("code_challenge_method", "S256");
+        params.append("code_challenge", challenge);
 
-    document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+        document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+    }catch(err){
+        throw err;
+    }
 }
 
 
 export async function getAccessTokenFromCode(code) {
     const verifier = localStorage.getItem("verifier");
+    if (!verifier){
+        throw new Error ("no code verifier found");
+    }
 
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -36,20 +42,35 @@ export async function getAccessTokenFromCode(code) {
         body: params
     });
 
+    if (!result.ok) {
+        const errorText = await result.text();
+        throw new Error(
+            "Spotify token request failed: " +
+            result.status + " " + errorText
+        );
+    }
+
+
     const data = await result.json();
+    if (!data.access_token) {
+        throw new Error("No access token in response");
+    }
+
     return data.access_token;
 }
 
 
 export async function searchMusic(query, token) {
     if (!token) {
-         console.error("No token found! User must log in.");
-         return [];
+        throw new Error("You must log in to Spotify first");
+         
     }
-    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10&market=SE`, {
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&market=SE`, {
         headers: { Authorization: `Bearer ${token}` }
     });
-
+    if (!response.ok){
+        throw new Error("session expired, log in to spotify again");
+    }
     const data = await response.json();
     return data.tracks.items;
 }

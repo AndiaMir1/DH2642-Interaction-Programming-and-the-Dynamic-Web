@@ -26,12 +26,22 @@ export default function FeedView(props) {
         if (update.type === "GENRE_CHANGE") {
             return "changed favorite genre to " + update.payload.genre;
         }
-
+/*
         if (update.type === "TRACK_ADDED") {
             return "added track " + update.payload.trackName;
         }
+*/
+        if (update.type === "LIKED_SONG") {
+            return "liked a track " + (update.payload.track || "Unknown Track");
+        }
 
-        return "did something";
+        if (update.type === "PLAYLIST_EXPORT") {
+            return "created a new playlist " + (update.payload.playlistName || "untitled");
+        }
+
+        if (update.type === "BIO_CHANGE") {
+            return "updated their bio " + (update.payload.bio || "");
+        }
     }
 
     function renderTimestamp(timestamp) {

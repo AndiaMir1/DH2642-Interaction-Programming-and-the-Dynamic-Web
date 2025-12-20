@@ -22,7 +22,7 @@
                         </div>
                     </div>
 
-                     <div className="home-main">
+                    <div className="home-main">
                         <h1>Welcome to Here Comes the Song</h1>
                         <p className="welcome-text">
                             Discover music that matches your mood and weather. 

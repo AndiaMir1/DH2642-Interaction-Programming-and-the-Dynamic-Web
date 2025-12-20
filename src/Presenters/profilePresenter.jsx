@@ -6,12 +6,16 @@ const Profile = observer(
         const currentCity = props.model.currentCity;
         const isLoading = props.model.weatherPromiseState.promise && !props.model.weatherPromiseState.data && !props.model.weatherPromiseState.error;
         const currentGenre = props.model.currentGenre;
-        const weatherPromiseState = props.model.weatherPromiseState;
-        const weatherError = weatherPromiseState.error;
+        const invalidCityError = props.model.weatherPromiseState.error;
+        const exportedPlaylists = props.model.exportedPlaylists;
+        const currentBio = props.model.currentBio;
         
         function handleSavedACB(newCity) {
-            props.model.setCity(newCity);
             props.model.getWeather(newCity);
+            if(invalidCityError){
+                props.model.setCity(newCity);
+            }
+            else return;
         }
 
         function handleUsernameChangeACB(newUsername) {
@@ -19,42 +23,46 @@ const Profile = observer(
         }
     
         function handleGenreChangeACB(newGenre) {
-        
             props.model.setGenre(newGenre); 
-        
+
+        }
+
+        function handleBioChangeACB(newBio) {
+            props.model.setBio(newBio);
         }
 
         function handleExportPlaylistACB(playlistName) {
-            props.model.exportLikedSongsToSpotify(playlistName);
+            props.model.exportLikedSongsToSpotify(playlistName)
+        .then(function(spotifyResponse) {
+            var formatted = {
+                playlistId: spotifyResponse.id,
+                name: spotifyResponse.name,
+                spotifyUrl: spotifyResponse.external_urls.spotify,
+            };
             
+            props.model.setExportedPlaylist(formatted);
+        })
+        .catch(function(err) {
+            console.error("Export failed:", err);
+        });
         }
 
-
-        const weatherData = weatherPromiseState.data;
-
-    let artist = [];
-
-    if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
-    artist = props.model.getMusicRecommendations({
-        conditionId: weatherData.weather[0].id,
-        temp: weatherData.main.temp,
-        windSpeed: weatherData.wind.speed
-    });
-}
-
-        return <ProfileView 
-                    currentUsername = {currentUsername}
+        return ( 
+            <ProfileView 
+                    invalidCityError={invalidCityError}
+                    currentUsername={currentUsername}
                     currentCity={currentCity}
+                    currentBio={currentBio}
                     isSaving={isLoading}
                     onSaveClick={handleSavedACB}
                     onUsernameChange={handleUsernameChangeACB}
-                    weatherError={weatherError}
                     onExportPlaylist={handleExportPlaylistACB}
-
+                    onBioChange={handleBioChangeACB}
                     currentGenre={currentGenre} 
                     onGenreChange={handleGenreChangeACB}
+                    exportedPlaylists={exportedPlaylists}
         
-        />;
+        />);
     }
 );
 

@@ -1,11 +1,49 @@
-.home-page-layout{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: flex-start;
-}
-.left-side,
-.right-side{
-    flex:1;
+.home-page-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
 }
 
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    gap: 40px;
+    padding: 40px;
+}
+.recommended-root {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.recommend-right {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+.left-side,
+.right-side {
+    flex: 1;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-side > *, 
+.right-side > * {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.get-songs {
+    width: 100%;
+    padding: 20px;
+    margin-top: auto;
+    border-top: 1px solid #ddd;
+}

@@ -3,12 +3,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from "../../firebaseConfig.js";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
-// uncomment the following lines when you have your firebaseConfig. Understand what the lines are doing!
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 const COLLECTION="USER";
-//user imp
+
 export const auth = getAuth(app);
 
 //firebase globally available for testing in console
@@ -19,7 +18,6 @@ window.setDoc = setDoc;
 export function connectToPersistence(model, watchFunction) {
     //sets model.ready to false until data is loaded
     model.ready = false;
-    //user imp
     model.user = undefined;
 
     onAuthStateChanged(auth, function(user) {
@@ -34,13 +32,14 @@ export function connectToPersistence(model, watchFunction) {
                     const data = snapshot.data() || {};
                     model.currentCity = data.currentCity ?? null;
                     model.currentUsername = data.username ?? user.displayName ?? "unknown user";
-                    model.getWeather(model.currentCity);
                     model.currentGenre = data.genre ?? null;
-                    //friends list imp
+                    model.spotifyToken = data.spotifyToken ?? null;
                     model.friends = data.friends || [];
                     model.likedSongs = data.likedSongs || [];
                     model.ready = true;
-
+                    model.exportedPlaylists = data.exportedPlaylists || [];
+                    model.currentBio = data.bio ?? null;
+                    model.getWeather(model.currentCity);
                     model.fetchFriendFeed();
             })
         .catch(function getDocErrorACB(err) {
@@ -48,14 +47,16 @@ export function connectToPersistence(model, watchFunction) {
             model.ready = true;
         });
     } else {
+        model.spotifyToken = null;
         model.currentCity = null;
         model.currentUsername = null;
         model.currentGenre = null;
-        model.ready = true;
         model.friends = [];
         model.likedSongs =[];
+        model.exportedPlaylists =[];
+        model.currentBio = null;
+        model.ready = true;
         //likedArtist =[];
-        //producedPlaylists = [];
     }
 }); 
 
@@ -72,10 +73,12 @@ export function connectToPersistence(model, watchFunction) {
                 model.currentUsername,
                 model.currentGenre,
                 model.friends,
-                model.likedSongs
+                model.likedSongs,
+                model.exportedPlaylists,
+                model.currentBio,
+                model.spotifyToken,
             ];
 
-        //produced playlists
         //liked artists
     }
     
@@ -90,15 +93,17 @@ export function connectToPersistence(model, watchFunction) {
                username: model.currentUsername,
                genre: model.currentGenre,
                friends: model.friends,
-               likedSongs: model.likedSongs
+               likedSongs: model.likedSongs,
+               exportedPlaylists: model.exportedPlaylists,
+               bio: model.currentBio,
+               spotifyToken: model.spotifyToken
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
             .catch(persistErrorACB); //error
 }
     }
-
-     
+    
     //install watcher at setup
         watchFunction(watchACB, sideEffectACB);
 

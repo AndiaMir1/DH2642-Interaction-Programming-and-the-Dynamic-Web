@@ -1,6 +1,5 @@
 @import './variables.css';
 
-/* Music test section */
 .music-test {
     margin-top: 40px;
     border-top: 2px dashed #aaa;
@@ -16,12 +15,17 @@
 }
 .recommend-right{
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .recommended-root{
     display: flex;
     flex-direction: column;
+    height: 100%;
+    flex: 1;
 }
-/* Spotify login button */
+
 .spotify-login-btn {
     margin-bottom: 15px;
     background-color: #1DB954;
@@ -49,12 +53,11 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     
     
-    height: 300px;
+    height: 430px;
     overflow: scroll;
   
 }
 
-/* Get songs button */
 .get-songs-btn {
     padding: 8px 16px;
     background-color: var(--primary, #333);
@@ -69,13 +72,11 @@
     background-color: var(--primary-dark, #555);
 }
 
-/* Songs container */
 .songs-container {
     margin-top: 15px;
     text-align: left;
 }
 
-/* Individual track item */
 .track-item {
     padding: 8px;
     border-bottom: 1px solid #ddd;
@@ -88,7 +89,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Track image */
 .track-image {
     width: 100px;
     height: 100px;
@@ -96,12 +96,10 @@
     object-fit: cover;
 }
 
-/* Track content */
 .track-content {
     flex: 1;
 }
 
-/* Track header with title, artist and like button */
 .track-header {
     display: flex;
     align-items: center;
@@ -113,17 +111,15 @@
     color: var(--primary, #333);
 }
 
-/* Artist name */
 .artist-name {
     color: gray;
     font-style: italic;
 }
 
-/* Like button */
 .like-btn {
     margin-left: auto;
-    background-color: #f0f0f0;
-    color: #666;
+    background-color: var(--accent, #f0f0f0);
+    color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 0.3rem 0.6rem;
@@ -133,29 +129,26 @@
 }
 
 .like-btn:hover {
-    background-color: #e0e0e0;
+    background-color: var(--accent-light);
     color: #333;
     transform: translateY(-1px);
 }
 
-/* Audio container */
 .audio-container {
     margin-top: 8px;
 }
 
-/* Audio player */
 .audio-player {
     display: block;
     width: 100%;
     max-width: 400px;
 }
 
-/* Iframe container */
 .iframe-container {
     margin-top: 8px;
 }
 
-/* Spotify embed */
+
 .spotify-embed {
     width: 600px;
     height: 80px;
@@ -163,7 +156,7 @@
     max-width: 100%;
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
     .track-item {
         flex-direction: column;
