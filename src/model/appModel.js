@@ -4,7 +4,7 @@ import { getTrack, getArtist, createSpotifyPlaylist,
     addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode
  } from "../apiConfig/musicSource";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
-import { setDoc, doc, addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
 import { runInAction } from "mobx";
 import {resolvePromise} from "/src/resolvePromise.js"
@@ -14,12 +14,12 @@ export const rootModel = {
     isUserLoggedIn: true,
     user: undefined,
     selectedUserUid: null,
+
     currentUsername: null,
     currentBio: null,
-
     currentCity: null,
     weatherPromiseState: {},
-    //friends list imp
+    currentGenre: null,
     
     playlistName: null,
     exportedPlaylists: [],
@@ -35,11 +35,8 @@ export const rootModel = {
     currentArtistPromiseState: {},
     spotifyToken: null,
     searchResultsPromiseState: {},
-    currentGenre: null,
-    // song imp
-    //friends list imp
+    
     friends: [],
-    // feed imp
     friendFeed: [],
 
     setSearchQuery(query) {
@@ -103,11 +100,7 @@ export const rootModel = {
     setCurrentTrackId(trackId) {
         this.currentTrackId = trackId;
     },
-// desc imp
-    setBio(bio) {
-        this.currentBio = bio
-        this.addUserUpdate("BIO_CHANGE",{bio : bio});
-    },
+
 
     setCurrentArtistId(artistId) {
         this.currentArtistId = artistId;
@@ -165,17 +158,25 @@ export const rootModel = {
         function sameSongCB(song){
             return song.id === track.id
             }
-            if (!this.likedSongs.some(sameSongCB)){
+
+             if (this.likedSongs.some(sameSongCB)){
+
+            this.likedSongs= this.likedSongs.filter(function(song) {
+            return song.id !== track.id;
+            });}
+            
+            else {
             this.likedSongs= [...this.likedSongs, track]
             this.addUserUpdate("LIKED_SONG",{track : track.name});
             }
+
         },
 
     setRemoveSong(trackId) {
         this.likedSongs = this.likedSongs.filter(function(song) {
             return song.id !== trackId;
         });
-    },
+    }, 
 
     setSpotifyToken(token) {
         this.spotifyToken = token;
@@ -324,8 +325,11 @@ export const rootModel = {
            const docSnap = querySnapshot.docs[0];
            return {uid: docSnap.id, username: docSnap.data().username };
     },
-
-    //feed imp
+    
+    setBio(bio) {
+        this.currentBio = bio
+        this.addUserUpdate("BIO_CHANGE",{bio : bio});
+    },
 
     addUserUpdate(type, payload) {
         if(!this.user) return;

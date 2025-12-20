@@ -20,15 +20,14 @@ export function GetSongsView(props) {
     }, []);
 
     function isLikedACB(trackId) {
-        return props.likedSongs && props.likedSongs.some((song) => song.id === trackId);
+        function sameSongCB(song) {
+            return song.id === trackId;
+        }
+        return props.likedSongs && props.likedSongs.some(sameSongCB);
     }
     
-    function onLikeSongACB(track) {
-        if (isLikedACB(track.id)) {
-            props.onRemoveLikedSong(track.id);
-        } else {
-            props.onLikeSong(track);
-        }
+    function likeSongACB(track) {
+        props.onLikeSong(track);
     }
 
     function spotifyLoginACB(){
@@ -65,8 +64,8 @@ export function GetSongsView(props) {
                             <div className="track-header">
                                 <strong>{track.name}</strong>
                                 <span className="artist-name">{track.artists?.[0]?.name}</span>
-                                <button onClick={() => onLikeSongACB(track)} className="like-btn">
-                                    {isLikedACB(track.id) ? 'Unlike' : 'Like Song'}
+                                <button onClick={() => likeSongACB(track)} className="like-btn">
+                                    {isLikedACB(track.id) ? "Unlike" : "Like Song"}
                                 </button>
                             </div>
 

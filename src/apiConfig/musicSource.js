@@ -65,7 +65,7 @@ export async function searchMusic(query, token) {
         throw new Error("You must log in to Spotify first");
          
     }
-    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10&market=SE`, {
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&market=SE`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     if (!response.ok){

@@ -3,12 +3,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from "../../firebaseConfig.js";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
-// uncomment the following lines when you have your firebaseConfig. Understand what the lines are doing!
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 const COLLECTION="USER";
-//user imp
+
 export const auth = getAuth(app);
 
 //firebase globally available for testing in console
@@ -19,7 +18,6 @@ window.setDoc = setDoc;
 export function connectToPersistence(model, watchFunction) {
     //sets model.ready to false until data is loaded
     model.ready = false;
-    //user imp
     model.user = undefined;
 
     onAuthStateChanged(auth, function(user) {
@@ -36,7 +34,6 @@ export function connectToPersistence(model, watchFunction) {
                     model.currentUsername = data.username ?? user.displayName ?? "unknown user";
                     model.currentGenre = data.genre ?? null;
                     model.spotifyToken = data.spotifyToken ?? null;
-                    //friends list imp
                     model.friends = data.friends || [];
                     model.likedSongs = data.likedSongs || [];
                     model.ready = true;
@@ -60,7 +57,6 @@ export function connectToPersistence(model, watchFunction) {
         model.currentBio = null;
         model.ready = true;
         //likedArtist =[];
-        //producedPlaylists = [];
     }
 }); 
 
@@ -83,7 +79,6 @@ export function connectToPersistence(model, watchFunction) {
                 model.spotifyToken,
             ];
 
-        //produced playlists
         //liked artists
     }
     
@@ -108,8 +103,7 @@ export function connectToPersistence(model, watchFunction) {
             .catch(persistErrorACB); //error
 }
     }
-
-     
+    
     //install watcher at setup
         watchFunction(watchACB, sideEffectACB);
 

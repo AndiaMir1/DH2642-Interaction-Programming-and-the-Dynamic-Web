@@ -8,7 +8,6 @@ const Profile = observer(
         const currentGenre = props.model.currentGenre;
         const invalidCityError = props.model.weatherPromiseState.error;
         const exportedPlaylists = props.model.exportedPlaylists;
-        //desc imp
         const currentBio = props.model.currentBio;
         
         function handleSavedACB(newCity) {
@@ -27,7 +26,7 @@ const Profile = observer(
             props.model.setGenre(newGenre); 
 
         }
-// desc imp
+
         function handleBioChangeACB(newBio) {
             props.model.setBio(newBio);
         }
