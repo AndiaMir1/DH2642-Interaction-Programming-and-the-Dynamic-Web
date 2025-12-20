@@ -1,56 +1,13 @@
-import { useNavigate } from "react-router-dom";
 import "./style/feed.css";
+
 export default function FeedView(props) {
-    var nav = useNavigate();
 
-    function goToFriends() {
-        nav("/friends");
+    function handleGoToFriends() {
+        props.onGoToFriends();
     }
 
-    function goToFriendsProfile(uid) {
-        if (uid) {
-            props.onUserClick(uid);
-            nav("/friendsProfileView");
-        }
-    }
-
-    function renderUpdateText(update) {
-        if (!update.payload) {
-            return "did something";
-        }
-
-        if (update.type === "CITY_CHANGE") {
-            return "changed city to " + update.payload.city;
-        }
-
-        if (update.type === "GENRE_CHANGE") {
-            return "changed favorite genre to " + update.payload.genre;
-        }
-/*
-        if (update.type === "TRACK_ADDED") {
-            return "added track " + update.payload.trackName;
-        }
-*/
-        if (update.type === "LIKED_SONG") {
-            return "liked a track " + (update.payload.track || "Unknown Track");
-        }
-
-        if (update.type === "PLAYLIST_EXPORT") {
-            return "created a new playlist " + (update.payload.playlistName || "untitled");
-        }
-
-        if (update.type === "BIO_CHANGE") {
-            return "updated their bio " + (update.payload.bio || "");
-        }
-    }
-
-    function renderTimestamp(timestamp) {
-        if (!timestamp || !timestamp.seconds) {
-            return "";
-        }
-
-        var date = new Date(timestamp.seconds * 1000);
-        return date.toLocaleString();
+    function handleUserClickACB(uid) {
+        props.onUserClick(uid);
     }
 
     return (
@@ -59,7 +16,7 @@ export default function FeedView(props) {
                 <h2>Following</h2>
                 <button
                 className="manage-friends-button"
-                onClick={goToFriends}
+                onClick={handleGoToFriends}
                 >Manage Friends</button>
             </div>
 
@@ -73,14 +30,14 @@ export default function FeedView(props) {
                             <div>
                                 <strong
                                 className="clickable-username"
-                                onClick={function () { goToFriendsProfile(item.uid);}}
+                                onClick={function () {handleUserClickACB(item.uid);}}
                                 style={{ cursor: "pointer"}}
                                 >{item.user}</strong>{" "}
-                                {renderUpdateText(item)}
+                                {item.text}
                             </div>
 
                             <div className="feed-timestamp">
-                                {renderTimestamp(item.timestamp)}
+                                {item.timestamp}
                             </div>
                         </li>
                     );

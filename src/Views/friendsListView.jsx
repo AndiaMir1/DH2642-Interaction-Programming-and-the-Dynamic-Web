@@ -1,67 +1,39 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { onEnterKey } from "../utils/viewHandlers";
 import './style/friendsListView.css';
 
 export default function FriendsListView(props) {
     const [query, setQuery] = useState("");
-    const [results, setResults] =  useState([]);
-    const [error, setError] = useState(null);
-
-    var nav = useNavigate();
 
     function handleInputACB(event) {
         setQuery(event.target.value);
-        setError(null);
-    }
-
-    function goBackToFeed() {
-        nav("/feed");
+        props.onClearAddError?.();
     }
 
     async function handleSearchACB() {
-        const trimmed = query.trim();
-        if(!trimmed || !props.onSearch) return;
-        
-        setError(null);
-        const result = await props.onSearch(trimmed);
-            if (!result  || result.length === 0) {
-                setResults([]);
-                setError("user not found");
-            } else {
-                setResults(result);
-                setError(null);
-            }
-        }
+        await props.onSearch(query.trim());
+    }
 
     function handleAddFriendsACB(friendObject) {
-        if (props.onAddFriend) {
-            
-            props.onAddFriend(friendObject);
-            setResults([]);
-            setQuery("");
-        }
+        props.onAddFriend(friendObject);
     }
 
     function handleSelectFriendACB(user) {
-        
-        if (props.onSelectFriend) {
-            props.onSelectFriend(user);
-        }
+        props.onSelectFriend(user);
     }
 
-
     function handleRemoveACB(uid) {
-        if (props.onRemoveFriend) {
-            props.onRemoveFriend(uid);
-        }
+        props.onRemoveFriend(uid);
+    }
 
+    function handleBackACB() {
+        props.onBack();
     }
 
     return (
-    <div className="friends-list">
+        <div className="friends-list">
             <h2>Friends</h2>
-            <button onClick={goBackToFeed}>Back to Feed</button>
+            <button onClick={handleBackACB}>Back to Feed</button>
 
             <div className="add-friend">
                 <input
@@ -71,70 +43,58 @@ export default function FriendsListView(props) {
                     onChange={handleInputACB}
                     onKeyDown={onEnterKey(handleSearchACB)}
                 />
-                
-                <button onClick={handleSearchACB }>Search</button>
+                <button onClick={handleSearchACB}>Search</button>
             </div>
-                {error && <p style={{color: "red"}}>{error}</p>}
 
-                <div className="search-results">
-                    <h3>Results</h3>
+            {props.searchError && <p style={{ color: "red" }}>{props.searchError}</p>}
+            {props.addError && <p style={{ color: "red" }}>{props.addError}</p>}
+
+            <div className="search-results">
+                <h3>Results</h3>
                 <ul>
-                    {results.map(function (user) {
-                        return (
-                            <li key ={user.uid}>
-                                <button 
-                                className="profile-button"
-                                onClick={function() {
-                                    handleSelectFriendACB(user.uid);
-                                }}
-                                >
-                                    {user.username}
-                                </button>
-                                <button 
-                                className="add-button"
-                                onClick={function () {
-                                    
-                                    handleAddFriendsACB(user);
-                                }}>
-                                    Add Friend
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ul>
-             </div>   
-             <hr />
-
-             <div className="current-friends">
-                 <h3>Your Friends</h3>
-            <ul>
-                
-                {props.friends.length === 0 && <li>No friends added yet.</li>}
-                {props.friends.map(function(user) {
-                    return (
+                    {props.searchResults?.map(user => (
                         <li key={user.uid}>
-                            <button 
-                            className="profile-button"
-                            onClick={function() { 
-                                handleSelectFriendACB(user.uid); 
-                                }}>
+                            <button
+                                className="profile-button"
+                                onClick={() => handleSelectFriendACB(user.uid)}
+                            >
                                 {user.username}
                             </button>
+                            <button
+                                className="add-button"
+                                onClick={() => handleAddFriendsACB(user)}
+                            >
+                                Add Friend
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
-                            <button 
-                            className="remove-button"
-                            onClick={function () {
-                                handleRemoveACB(user.uid);
-                            }}
+            <hr />
+
+            <div className="current-friends">
+                <h3>Your Friends</h3>
+                <ul>
+                    {props.friends.length === 0 && <li>No friends added yet.</li>}
+                    {props.friends.map(user => (
+                        <li key={user.uid}>
+                            <button
+                                className="profile-button"
+                                onClick={() => handleSelectFriendACB(user.uid)}
+                            >
+                                {user.username}
+                            </button>
+                            <button
+                                className="remove-button"
+                                onClick={() => handleRemoveACB(user.uid)}
                             >
                                 Remove
                             </button>
                         </li>
-                    );
-                })}
-            </ul>
+                    ))}
+                </ul>
             </div>
-     </div>
-
+        </div>
     );
 }

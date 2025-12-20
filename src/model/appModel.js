@@ -92,6 +92,7 @@ export const rootModel = {
         playlistId: playlist.playlistId,
         name: playlist.name,
         spotifyUrl: playlist.spotifyUrl,
+        trackUris: playlist.trackUris || []
     };
         this.exportedPlaylists = this.exportedPlaylists.concat([newEntry]);
         this.addUserUpdate("PLAYLIST_EXPORT",{playlistName : playlist.name});
@@ -151,15 +152,14 @@ export const rootModel = {
         });
 
         await addTracksToPlaylist(playlist.id, uris, token);
-        
-        var formattedPlaylist = {
+        const playlistToSave = {
             playlistId: playlist.id,
             name: playlist.name,
-            spotifyUrl: playlist.external_urls?.spotify,
-            image: playlist.images?.[0]?.url
+            spotifyUrl: playlist.external_urls.spotify,
+            trackUris: uris
         };
-        this.exportedPlaylists = [...this.exportedPlaylists, formattedPlaylist];
-        
+        this.setExportedPlaylist(playlistToSave);
+            
         return playlist;
     },
 
@@ -252,13 +252,19 @@ export const rootModel = {
     },
 
     addFriend (friendObject) {
+        if(!this.user) return;
+        if (friendObject.uid === this.user.uid) {
+            return {ok: false, reason: "SELF"};
+        }
         const exists = this.friends.some(function(pal) {
             return pal.uid === friendObject.uid;
         });
 
-        if(!exists) {
-            this.friends = this.friends.concat([friendObject]);
+        if(exists) {
+            return {ok: false, reason: "EXISTS"};
         }
+        this.friends = this.friends.concat([friendObject]);
+        return {ok: true};  
     },
 
     removeFriend (friendUid) {

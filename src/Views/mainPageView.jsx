@@ -6,12 +6,10 @@ import {AuthPresenter} from "../Presenters/authPresenter";
 import {CallbackPresenter} from "../Presenters/CallbackPresenter.jsx";
 import {FriendsList} from "../Presenters/friendsPresenter";
 import {Home} from "../Presenters/homePresenter";
-import FriendsProfileView from  "./friendsProfileView.jsx";
+import  FriendsProfilePresenter  from "../Presenters/friendsProfilePresenter.jsx";
 import { Feed } from "../Presenters/feedPresenter.jsx";
 import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
-import { auth } from "../model/fireStoreModel";
-import { signOut } from "firebase/auth";
-
+import CompareFriendsPlaylistsPresenter from "../Presenters/comparePlaylistsPresenter.jsx";
 export function MainPage (props) {  
     const location = useLocation();
 
@@ -63,13 +61,13 @@ export function MainPage (props) {
                      />
                     <Route
                         path="/friendsProfileView"
-                        element={<FriendsProfileView uid={props.model.selectedUserUid} />}
+                        element={<FriendsProfilePresenter model={props.model} />}
                         />
-                    {/**
+
                     <Route
-                    path="/dashboard"
-                    element={<DashboardPresenter model ={props.model} />}
-                    /> */}
+                        path="/compare-friend-playlists"
+                        element={<CompareFriendsPlaylistsPresenter model={props.model} />}
+                        />
                     
                 </Routes>
             </div>

@@ -155,10 +155,10 @@
 .like-btn {
     background-color: var(--accent);
     color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.3rem 0.9rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
