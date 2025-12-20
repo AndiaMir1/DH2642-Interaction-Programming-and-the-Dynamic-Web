@@ -118,7 +118,7 @@
 
 .like-btn {
     margin-left: auto;
-    background-color: var(-accent, #f0f0f0);
+    background-color: var(--accent, #f0f0f0);
     color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
