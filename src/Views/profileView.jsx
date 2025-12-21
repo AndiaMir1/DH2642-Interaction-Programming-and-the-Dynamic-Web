@@ -165,68 +165,71 @@ export default function ProfileView(props) {
             )}
             
 
-    {/***********************************/}
-    <section className="exported-playlists">
-    <h2>Created Playlists</h2>
 
-    {(!props.exportedPlaylists || props.exportedPlaylists.length === 0) && (
-        <p>No playlists exported yet.</p>
-    )}
+                        <section className="change-genre">
+                            <h2>Favorite Genre</h2>
+                            <p></p>
+                            <div className="input-group"></div>
+                            <select
+                            className="genre-select"
+                            value={props.currentGenre || ""}
+                            onChange={onGenreChangeACB}
+            
+                            >
+            
+                                <option value="" disabled>Select a Genre</option>
+                                <option value="pop">Pop</option>
+                                <option value="rock">Rock</option>
+                                <option value="hip-hop">Hip Hop</option>
+                                <option value="jazz">Jazz</option>
+                                <option value="classical">Classical</option>
+                                <option value="electronic">Electronic</option>
+                                <option value="country">Country</option>
+                                <option value="r-n-b">R&B</option>
+                            </select>
+                        </section>
 
-    {props.exportedPlaylists && props.exportedPlaylists.length > 0 && (
-        <ul className="playlist-list">
-            {props.exportedPlaylists.map(function (playlist) {
-                return (
-                    <li key={playlist.playlistId} className="playlist-item">
-                        {playlist.image && (
-                            <img
-                                src={playlist.image}
-                                alt={playlist.name}
-                                className="playlist-image"
-                            />
-                        )}
+                        <section className="exported-playlists">
+                            <h2>Created Playlists</h2>
 
-                        <div className="playlist-info">
-                            <strong>{playlist.name}</strong>
-
-                            {playlist.spotifyUrl && (
-                                <div>
-                                    <a
-                                        href={playlist.spotifyUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Open in Spotify
-                                    </a>
-                                </div>
+                            {(!props.exportedPlaylists || props.exportedPlaylists.length === 0) && (
+                                <p>No playlists exported yet.</p>
                             )}
-                        </div>
-                    </li>
+
+                            {props.exportedPlaylists && props.exportedPlaylists.length > 0 && (
+                                <ul className="playlist-list">
+                                    {props.exportedPlaylists.map(function (playlist) {
+                                        return (
+                                            <li key={playlist.playlistId} className="playlist-item">
+                                                {playlist.image && (
+                                                    <img
+                                                        src={playlist.image}
+                                                        alt={playlist.name}
+                                                        className="playlist-image"
+                                                    />
+                                                )}
+
+                                                <div className="playlist-info">
+                                                    <strong>{playlist.name}</strong>
+
+                                                    {playlist.spotifyUrl && (
+                                                        <div>
+                                                            <a
+                                                                href={playlist.spotifyUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                Open in Spotify
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            )}
+                        </section>
+                    </div>
                 );
-            })}
-        </ul>
-    )}
-</section>
-
-
-
-
-            <section className="change-genre" style={{ marginTop: "20px" }}>
-                <h2>Favorite Genre</h2>
-                <p>Pick a vibe for your weather recommendations:</p>
-                <select value={props.currentGenre || ""} onChange={onGenreChangeACB} style={{ padding: "8px", fontSize: "1rem" }}>
-                    <option value="" disabled>Select a genre...</option>
-                    <option value="pop">Pop</option>
-                    <option value="rock">Rock</option>
-                    <option value="hip-hop">Hip Hop</option>
-                    <option value="jazz">Jazz</option>
-                    <option value="classical">Classical</option>
-                    <option value="electronic">Electronic</option>
-                    <option value="country">Country</option>
-                    <option value="r-n-b">R&B</option>
-                </select>
-            </section>
-             
-        </div>
-    );
 }
