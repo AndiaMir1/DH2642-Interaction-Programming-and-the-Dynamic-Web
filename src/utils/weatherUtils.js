@@ -139,3 +139,27 @@ export const weatherMusic = {
         }
     }
 };
+
+
+export function getRandomKeyword(conditionCode, temp, wind) {
+    const category = getWeatherCategory(conditionCode);
+    const tempKey = getTemperature(temp);
+    const windKey = getWind(wind);
+
+    const features = weatherMusic?.[category]?.[tempKey]?.[windKey];
+
+    if (Array.isArray(features) && features.length > 0) {
+        const randomIndex = Math.floor(Math.random() * features.length);
+        return features[randomIndex];
+    }
+    const fallbackOptions = [
+        "Top 50", 
+        "Trending", 
+        "Viral Hits", 
+        "Global Charts", 
+        "Fresh Finds",
+        "Good Vibes"
+    ];
+    const randomFallbackIndex = Math.floor(Math.random() * fallbackOptions.length);
+    return fallbackOptions[randomFallbackIndex];
+}

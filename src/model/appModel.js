@@ -3,7 +3,7 @@ import { getTrack, getArtist, createSpotifyPlaylist,
  } from "../apiConfig/musicSource";
 import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
-import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js";
+import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 //import { runInAction } from "mobx";
 import {resolvePromise} from "/src/resolvePromise.js";
 
@@ -35,6 +35,8 @@ export const rootModel = {
     spotifyToken: null,
     searchResultsPromiseState: {},
     
+    seenSongIds: new Set(),
+
     friends: [],
     friendFeed: [],
 
@@ -215,14 +217,14 @@ export const rootModel = {
         try {
             const user = await getCurrentUser(this.spotifyToken);
             if (!user) {
-                // Token is invalid, clear it
+                
                 this.spotifyToken = null;
                 localStorage.removeItem('spotifyToken');
                 return false;
             }
             return true;
         } catch (error) {
-            // Token is invalid, clear it
+            
             this.spotifyToken = null;
             localStorage.removeItem('spotifyToken');
             return false;
@@ -234,6 +236,84 @@ export const rootModel = {
             searchMusic(query, this.spotifyToken),
             this.searchResultsPromiseState
         );
+    },
+
+async searchWeatherSongs(retryCount = 0) {
+        
+        const weatherData = this.weatherPromiseState.data; 
+
+        if (!weatherData || !this.spotifyToken) {
+            console.log("Cannot search: Missing weather or token");
+            return;
+        }
+
+        const conditionId = weatherData.weather[0].id;
+        const temp = weatherData.main.temp;
+        const windSpeed = weatherData.wind.speed;
+
+        if (!this.recentQueries) {
+            this.recentQueries = [];
+        }
+
+        
+        let query = getRandomKeyword(conditionId, temp, windSpeed);
+        
+        
+        let attempts = 0;
+        while (this.recentQueries.includes(query) && attempts < 10) {
+            console.log(`Skipping "${query}" because we used it recently.`);
+            query = getRandomKeyword(conditionId, temp, windSpeed);
+            attempts++;
+        }
+
+        this.recentQueries.push(query);
+        if (this.recentQueries.length > 5) {
+            this.recentQueries.shift();
+        }
+
+        const randomOffset = Math.floor(Math.random() * 100);
+
+        try {
+            const tracks = await searchMusic(query, this.spotifyToken, randomOffset);
+            
+            if (tracks && tracks.length > 0) {
+                
+                
+                let uniqueTracks = tracks.filter(track => !this.seenSongIds.has(track.id));
+
+                
+                if (uniqueTracks.length < 5) {
+                    
+                    
+                    if (retryCount < 5) { 
+                        console.log(`Only found ${uniqueTracks.length} new songs. Retrying... (${retryCount + 1}/5)`);
+                        return this.searchWeatherSongs(retryCount + 1);
+                    }
+                    
+                    
+                    console.log("Ran out of new songs. Resetting history to ensure full list.");
+                    this.seenSongIds.clear(); 
+                    uniqueTracks = tracks; 
+                }
+
+                
+                const top5Songs = uniqueTracks.slice(0, 5);
+
+                
+                top5Songs.forEach(track => this.seenSongIds.add(track.id));
+
+                this.searchResultsPromiseState = {
+                    promise: Promise.resolve(top5Songs),
+                    data: { tracks: { items: top5Songs } }, 
+                    error: null
+                };
+                
+                console.log(`Searched for: "${query}". Displaying exactly 5 songs.`);
+            }
+        } catch (error) {
+            console.error("Search error:", error);
+            this.searchResultsPromiseState = { promise: null, data: null, error: error };
+        }
     },
     
     currentTrackEffect() {
