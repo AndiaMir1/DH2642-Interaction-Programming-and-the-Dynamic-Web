@@ -46,7 +46,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
             setError("Password must be at least 6 characters.");
             return;
             }
-            const existingUid = await model.findUserUidByUsername(username);
+            const existingUid = await model.searchUser(username);
             if(existingUid !==null){
                 setError("Username already taken");
                 return;

@@ -398,6 +398,11 @@ async searchWeatherSongs(retryCount = 0) {
     setSelectedUserUid(uid) {
         this.selectedUserUid = uid;
     },
+
+    async searchUser(username) {
+        const userData = await findUserUidByUsername(username);
+        return userData;
+    },
     /******************************************FIREBASE***************************************************** */
     fetchFriendFeed() {
         fetchFriendFeedForModel(this);
