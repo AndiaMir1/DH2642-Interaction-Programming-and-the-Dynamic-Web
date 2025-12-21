@@ -1,10 +1,81 @@
-Our Project: Here Comes The Song is a web application that provides real-time song suggestions by analyzing the user's current local weather conditions. It aims to create the perfect contextual listening experience, pairing a Rainy Day Chill playlist on a rainy day, or an Upbeat Energy selection with a sunny day.
-What we have done: Set up the base code and structure/layout of the app, set up the weather API and display it's data, set up the Music API and fetch data from it.
-What we still plan to do: display the data fetched from the API for music, add a music page on the app, fix the about us page. We are also working on persistence that will allow us to save user data and give more personalised music suggestions etc.
-Project file structure:
-src, main source code for the application.
-.firebase, configuration files for the Firebase hosting.
-Presenters, presenter files, the middle layer between the data and the UI.
-Views, renders the UI.
-apiConfig, configuration and set up files for accessing the api services.
-Images, static image asset.
+## 📝 Short Description
+
+* **Presenters:** This folder contains all the presenters currently in the project. They handle the logic and mediate between the Model and the Views.
+* **Views:** This folder contains all the views as well as the pages for routing.
+* **Configuration:** The config files (in `apiConfig`) handle API KEYS and configuration.
+* **Models & Source:** Model files represent the state/data, while source files handle API calls and methods.
+* **Core Files:**
+    * `globals.css`: The main CSS file.
+    * `layout.js`: Contains the initial structure of all the files.
+    * `loading.jsx`: Rendered while data is fetched and the page is processing.
+    * `page.jsx`: The homepage entry point.
+
+## 📂 Project Structure
+
+```text
+└── src/
+    ├── apiConfig/                 # API Configuration & Keys
+    │   └── (apiConfig files)
+    ├── models/                    # Data & State Management
+    │   ├── appModel.js
+    │   ├── fireStoreModel.js
+    │   └── mobxReactiveModel.jsx
+    ├── presenters/                # Logic & User Interaction
+    │   ├── CallbackPresenter.jsx
+    │   ├── aboutUsPresenter.jsx
+    │   ├── authPresenter.jsx
+    │   ├── comparePlaylistsPresenter.jsx
+    │   ├── feedPresenter.jsx
+    │   ├── friendsPresenter.jsx
+    │   ├── friendsProfilePresenter.jsx
+    │   ├── homePresenter.jsx
+    │   ├── profilePresenter.jsx
+    │   └── signOutPresenter.jsx
+    ├── style/                     # Global & Component Styles
+    │   ├── authView.css
+    │   ├── comparePlaylistsView.css
+    │   ├── dashboard.css
+    │   ├── feed.css
+    │   ├── friendsListView.css
+    │   ├── friendsProfile.css
+    │   ├── homePage.css
+    │   ├── homePageLayoutView.css
+    │   ├── mainPageView.css
+    │   ├── navigationBarView.css
+    │   ├── popUp.css
+    │   ├── profileView.css
+    │   ├── recommendedSongsView.css
+    │   ├── signOutView.css
+    │   ├── suspenseView.css
+    │   ├── variables.css
+    │   ├── weatherView.css
+    │   └── weatherWidget.css
+    ├── utils/                     # Helper Functions
+    │   ├── authUtils.js
+    │   ├── firebaseUtil.js
+    │   ├── viewHandlers.js
+    │   └── weatherUtils.js
+    ├── views/                     # UI Components & Pages
+    │   ├── CallbackView.jsx
+    │   ├── ReactRoot.jsx
+    │   ├── RecommendedSongsView.jsx
+    │   ├── aboutUsView.jsx
+    │   ├── authView.jsx
+    │   ├── comparePlaylistsView.jsx
+    │   ├── feedView.jsx
+    │   ├── friendsListView.jsx
+    │   ├── friendsProfileView.jsx
+    │   ├── getSongsView.jsx
+    │   ├── homeLayoutView.jsx
+    │   ├── mainPageView.jsx
+    │   ├── navigationBarView.jsx
+    │   ├── playlistView.jsx
+    │   ├── profileView.jsx
+    │   ├── suspenseView.jsx
+    │   └── weatherView.jsx
+    ├── images.jsx                 # Image Assets
+    ├── index.jsx                  # Persistence/Entry
+    ├── layout.js                  # Main Layout Structure
+    ├── loading.jsx                # Loading State
+    ├── page.jsx                   # Homepage
+    └── resolvePromise.js          # Async State Helper
