@@ -122,7 +122,6 @@ export default function ProfileView(props) {
                     <h2>Change City</h2>
                     <button className="close-btn" onClick={onCloseCityACB}>Close</button>
                     { props.invalidCityError && (
-                         setShowCityChange(false),
                         <div className="error-message">
                             Type another valid city!
                         </div>

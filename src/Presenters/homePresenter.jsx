@@ -43,8 +43,8 @@ const Home = observer(
             props.model.setLikedSong(track)
         }
 
-        function handleExportPlaylistACB(playlistName) {
-            return props.model.exportLikedSongsToSpotify(playlistName);
+        function handleExportPlaylistACB(playlistName, existingPlaylistId) {
+            return props.model.exportLikedSongsToSpotify(playlistName, existingPlaylistId);
         }
         
         if (!weatherData || weatherPromiseState.promise && !weatherPromiseState.data){
@@ -70,6 +70,7 @@ const Home = observer(
                             likedSongs={props.model.likedSongs}
                             onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
                             onExportPlaylist={handleExportPlaylistACB}
+                            existingPlaylists={props.model.exportedPlaylists}
                         />}
                     getSong={
                         <GetSongsView

@@ -1,5 +1,5 @@
 import { getTrack, getArtist, createSpotifyPlaylist, 
-    addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode
+    addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
 import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
@@ -20,6 +20,7 @@ export const rootModel = {
     currentGenre: null,
     
     playlistName: null,
+    currentPlaylist: null,
     exportedPlaylists: [],
     tracks: [], 
     likedSongs: [],
@@ -120,47 +121,63 @@ export const rootModel = {
         this.tracks = this.tracks.filter(shouldWeKeepTrackCB);
     },
 
-    async exportLikedSongsToSpotify (playlistName) {
-        var token = this.spotifyToken ;
+    async exportLikedSongsToSpotify(playlistName, existingPlaylistId) {
+    const token = this.spotifyToken;
+    if (!token) throw "LOGIN_REQUIRED";
+    if (this.likedSongs.length === 0) throw new Error("No liked songs to export");
 
-        if (!token) {
-            throw "LOGIN_REQUIRED";
+    const uris = this.likedSongs.map(s => s.uri);
+    
+    if (existingPlaylistId) {
+        try {
+            await addItemsToPlaylist(existingPlaylistId, uris, token);
+        } catch (err) {
+            throw new Error("Failed to add tracks to existing playlist: " + err.message);
         }
 
-        if (this.likedSongs.length === 0) {
-            throw new Error ("no liked songs to export");
+        const found = this.exportedPlaylists.find(p => p.playlistId === existingPlaylistId);
+        if (found) {
+            found.trackUris = [...new Set([...found.trackUris, ...uris])];
+            this.addUserUpdate("PLAYLIST_UPDATE", { playlistId: existingPlaylistId, action: "ADD", trackUris: uris });
         }
+        return found || { playlistId: existingPlaylistId, trackUris: uris };
+    }
 
-        var user = await getCurrentUser(token);
+    const finalName = playlistName || this.playlistName;
+    if (!finalName || !finalName.trim()) throw new Error("Please provide a playlist name");
 
-        if (!user || !user.id) {
-            throw new Error("Spotfiy session invalid");
-        }
-        
-        var playlist = await createSpotifyPlaylist (
+    const user = await getCurrentUser(token);
+    if (!user?.id) throw new Error("Spotify session invalid");
+
+    let playlist;
+    try {
+        playlist = await createSpotifyPlaylist(
             user.id,
-            playlistName,
-            "songs liked from HCTS",
+            finalName.trim(),
+            "Songs liked from HCTS",
             true,
             token
         );
+    } catch (err) {
+        throw new Error("Failed to create playlist: " + err.message);
+    }
 
-        var uris = this.likedSongs.map(function(song) {
-            return song.uri;
-        });
-
+    try {
         await addTracksToPlaylist(playlist.id, uris, token);
-        const playlistToSave = {
-            playlistId: playlist.id,
-            name: playlist.name,
-            spotifyUrl: playlist.external_urls.spotify,
-            trackUris: uris
-        };
-        this.setExportedPlaylist(playlistToSave);
-            
-        return playlist;
-    },
+    } catch (err) {
+        throw new Error("Failed to add tracks to new playlist: " + err.message);
+    }
 
+    const playlistToSave = {
+        playlistId: playlist.id,
+        name: playlist.name,
+        spotifyUrl: playlist.external_urls.spotify,
+        trackUris: uris
+    };
+    this.setExportedPlaylist(playlistToSave);
+
+    return playlistToSave;
+},
 
     setLikedSong(track){
         function sameSongCB(song){
@@ -238,10 +255,13 @@ export const rootModel = {
     
     getWeather(city) {
         if (!city) {
+            
             console.warn("City is not chosen");
             return;
         }
+        console.log("varför");
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
+        
     },
 
     /***************************FRIENDS*********************************************/
@@ -297,11 +317,6 @@ export const rootModel = {
 
     setSelectedUserUid(uid) {
         this.selectedUserUid = uid;
-        if (uid) {
-            localStorage.setItem("selectedUserUid", uid);
-        } else {
-            localStorage.removeItem("selectedUserUid");
-        }
     },
     /******************************************FIREBASE***************************************************** */
     fetchFriendFeed() {
@@ -310,7 +325,23 @@ export const rootModel = {
 
     addUserUpdate(type, payload) {
         addUserUpdateForModel(this, type, payload);
+    },
+
+    //test
+setCurrentPlaylist(playlistId) {
+    var playlist = null;
+    for (var i = 0; i < this.exportedPlaylists.length; i++) {
+        if (this.exportedPlaylists[i].playlistId === playlistId) {
+            playlist = this.exportedPlaylists[i];
+            break;
+        }
     }
+    this.currentPlaylist = playlist || null;
+},
+
+closeCurrentPlaylist () {
+    this.currentPlaylist = null;
+}
     
 
 };

@@ -7,9 +7,10 @@ import { observer } from "mobx-react-lite";
 
 const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props) {
     const [profile, setProfile] = useState(null);
+    const uid = props.model.selectedUserUid;
 
     useEffect(() => {
-        const uid = props.model.selectedUserUid;
+        props.model.setSelectedUserUid(uid);
         if (!uid) {
             setProfile(null);
             return;

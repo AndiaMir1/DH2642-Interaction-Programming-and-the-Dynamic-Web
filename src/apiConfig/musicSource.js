@@ -163,3 +163,51 @@ export async function addTracksToPlaylist(playlistId, trackUris, token) {
     return await response.json();
 }
 
+export async function removeTracksFromPlaylist(playlistId, trackUris, token) {
+    var response = await fetch(
+        "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks",
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                tracks: trackUris.map(function(uri) { return { uri: uri }; })
+            })
+        }
+    );
+
+    if (!response.ok) {
+        console.error("Spotify request failed:", response.status, await response.text());
+        return null;
+    }
+
+    return await response.json();
+}
+
+export async function addItemsToPlaylist(playlistId, uris, token, position = null) {
+    const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+    const body = { uris };
+    if (position !== null) body.position = position;
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error?.message || "Failed to add tracks to playlist");
+    }
+
+    const data = await response.json();
+    return data.snapshot_id;
+}
+
+
+
