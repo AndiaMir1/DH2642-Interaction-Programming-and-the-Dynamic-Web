@@ -1,37 +1,7 @@
-import { useEffect, useState } from "react";
 import "./style/recommendedSongsView.css";
 import "./style/weatherView.css";
-import { getCurrentUser } from "../apiConfig/musicSource";
 
 export function GetSongsView(props) {
-    const [isTokenValid, setIsTokenValid] = useState(false);
-
-    useEffect(() => {
-        async function validateToken() {
-            if (props.spotifyToken) {
-                try {
-                    const data = await getCurrentUser(props.spotifyToken);
-                    if (data) {
-                        setIsTokenValid(true);
-                    } else {
-                        setIsTokenValid(false);
-                        if (props.onTokenInvalid) {
-                            props.onTokenInvalid();
-                        }
-                    }
-                } catch (error) {
-                    setIsTokenValid(false);
-                    if (props.onTokenInvalid) {
-                        props.onTokenInvalid();
-                    }
-                }
-            } else {
-                setIsTokenValid(false);
-            }
-        }
-        
-        validateToken();
-    }, [props.spotifyToken]);
 
     function isLikedACB(trackId) {
         function sameSongCB(song) {
@@ -56,10 +26,10 @@ export function GetSongsView(props) {
         <section className="get-songs-section">
             <div className="get-songs-container">
                 <div className="get-songs-header">
-                    <h2>{!props.spotifyToken || !isTokenValid ? "Log in with Spotifiy to get started!" : "Get Music Recommendations"}</h2>
+                    <h2>{!props.spotifyToken || !props.isTokenValid ? "Log in withSpotify to get Started!" : " Get Music Recommendations"}</h2>
                 </div>
                 <div className="get-songs-content">
-                    {!props.spotifyToken || !isTokenValid ? (
+                    {!props.spotifyToken || !props.isTokenValid ? (
                         <>
                             <p>Log in with Spotify to get started!</p>
                             <button onClick={spotifyLoginACB} className="spotify-login-btn">

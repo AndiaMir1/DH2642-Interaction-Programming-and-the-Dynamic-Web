@@ -4,12 +4,13 @@ import {SuspenseView} from "/src/Views/suspenseView.jsx";
 import {RecommendedSongsView} from "/src/Views/RecommendedSongsView.jsx";
 import WeatherView from "/src/Views/weatherView.jsx";
 import { GetSongsView } from "/src/Views/getSongsView.jsx"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Home = observer(
     function HomeRender(props){
         const searchPromiseState = props.model.searchResultsPromiseState
         const [isLiked, setIsLiked] = useState(false);
+        const [isTokenValid, setIsTokenValid] = useState(false);
         const searchResults = props.model.searchResultsPromiseState.data || [];
         const searchError = props.model.searchResultsPromiseState.error;
         const weatherPromiseState = props.model.weatherPromiseState;
@@ -17,6 +18,23 @@ const Home = observer(
         const spotifyToken = props.model.spotifyToken;
         const weatherData = props.model.weatherPromiseState.data;
         let searchWord = {};
+
+        useEffect(() => {
+            async function validateToken() {
+                if (spotifyToken) {
+                    try {
+                        const isValid = await props.model.validateSpotifyToken();
+                        setIsTokenValid(isValid);
+                    } catch (error) {
+                        setIsTokenValid(false);
+                        handleTokenInvalidACB();
+                    }
+                } else {
+                    setIsTokenValid(false);
+                }
+            }
+            validateToken();
+        }, [spotifyToken]);
         
         function handleRecommendSongsACB(){
             if (weatherData && weatherData.weather && weatherData.weather.length > 0) {
@@ -80,6 +98,7 @@ const Home = observer(
                         <GetSongsView
                             onRecommendSongs={handleRecommendSongsACB}
                             spotifyToken={spotifyToken}
+                            isTokenValid={isTokenValid}
                             onSpotifyLogin={handleSpotifyLoginACB}
                             onTokenInvalid={handleTokenInvalidACB}
                             searchError={searchError}
