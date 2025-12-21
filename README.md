@@ -73,9 +73,22 @@
     │   ├── profileView.jsx
     │   ├── suspenseView.jsx
     │   └── weatherView.jsx
-    ├── images.jsx                 # Image Assets
-    ├── index.jsx                  # Persistence/Entry
-    ├── layout.js                  # Main Layout Structure
-    ├── loading.jsx                # Loading State
-    ├── page.jsx                   # Homepage
-    └── resolvePromise.js          # Async State Helper
+    ├── images.jsx                 
+    ├── index.jsx                  
+    ├── layout.js                  
+    ├── loading.jsx                
+    ├── page.jsx                   
+    └── resolvePromise.js
+
+## 🛠 Setup
+To run this project, **Node.js** is required.
+
+### 1. Install dependencies
+```bash
+npm install
+
+2. Run project
+npm run dev
+
+3. Deploy project
+firebase deploy
