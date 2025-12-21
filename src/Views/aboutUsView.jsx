@@ -2,21 +2,16 @@ export default function AboutUsView(props) {
     return (
         <div className="about-us-container">
             <h1>About Us</h1>
-            
+
             <p>
-                <strong>Four Students. One Stack. Infinite Possibilities.</strong>
+                We are students at <strong>KTH Stockholm</strong> passionate about modern web development. 
+                Built for the course <em>Interaction Programming and the Dynamic Web</em> We love creating smooth interactions and seamless user experiences. We had a blast 
+                building this, and we hope you enjoy using it!
             </p>
 
             <p>
-                We are students at <strong>KTH Stockholm</strong>, diving deep into the world of frontend and backend development. 
-                Developed for the course <em>Interaction Programming and the Dynamic Web</em>, this application represents 
-                our mastery of the React ecosystem.
-            </p>
-
-            <p>
-                From designing reactive components to implementing seamless state management, we believe that 
-                great interaction programming is an art form. We hope you enjoy using this application as much 
-                as we enjoyed building it!
+                Best regards, <br />
+                Group 60
             </p>
         </div>
     );
