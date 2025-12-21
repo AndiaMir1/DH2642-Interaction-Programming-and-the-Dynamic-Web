@@ -80,10 +80,10 @@
     ├── page.jsx                   
     └── resolvePromise.js
 
-## 🛠 Setup
+🛠 Setup
 To run this project, **Node.js** is required.
 
-### 1. Install dependencies
+1. Install dependencies
 ```bash
 npm install
 
