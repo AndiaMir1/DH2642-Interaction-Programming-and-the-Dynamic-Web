@@ -67,6 +67,18 @@ const Home = observer(
                     />}
                     recommended={
                         <RecommendedSongsView 
+                        weatherSongs={
+                            props.model.searchResultsPromiseState.data
+                            ? props.model.searchResultsPromiseState.data.tracks.items
+                            : []
+                        }
+                        onRefresh={() => props.model.searchWeatherSongs()}
+                        onSetLikedSong={(track) => props.model.setLikedSong(track)}
+                        weatherCondition={
+                            props.model.weatherPromiseState.data
+                            ? props.model.weatherPromiseState.data.conditionId
+                            : "Current Weather"
+                        }
                             likedSongs={props.model.likedSongs}
                             onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
                             onExportPlaylist={handleExportPlaylistACB}
@@ -74,11 +86,17 @@ const Home = observer(
                         />}
                     getSong={
                         <GetSongsView
-                            onRecommendSongs={handleRecommendSongsACB}
+                            //onRecommendSongs={handleRecommendSongsACB}
+                            onRecommendSongs={() => props.model.searchWeatherSongs()}
+                            searchResults={
+                                props.model.searchResultsPromiseState.data && props.model.searchResultsPromiseState.data.tracks
+                                ? props.model.searchResultsPromiseState.data.tracks.items
+                                : []
+                            }
                             spotifyToken={spotifyToken}
                             onSpotifyLogin={handleSpotifyLoginACB}
                             searchError={searchError}
-                            searchResults={searchResults}
+                            //searchResults={searchResults}
                             likedSongs={props.model.likedSongs}
                             onLikeSong={handleLikedSong}
                             isLiked={isLiked}

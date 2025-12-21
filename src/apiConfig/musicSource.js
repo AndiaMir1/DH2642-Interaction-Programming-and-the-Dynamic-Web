@@ -60,12 +60,12 @@ export async function getAccessTokenFromCode(code) {
 }
 
 
-export async function searchMusic(query, token) {
+export async function searchMusic(query, token, offset) {
     if (!token) {
         throw new Error("You must log in to Spotify first");
          
     }
-    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&market=SE`, {
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=5&market=SE&offset=${offset}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
     if (!response.ok){
