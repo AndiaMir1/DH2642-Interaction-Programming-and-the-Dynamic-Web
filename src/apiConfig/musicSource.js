@@ -17,7 +17,7 @@ export async function redirectToSpotifyLogin() {
         params.append("code_challenge", challenge);
 
         document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
-    }catch(err){
+    } catch(err) {
         throw err;
     }
 }

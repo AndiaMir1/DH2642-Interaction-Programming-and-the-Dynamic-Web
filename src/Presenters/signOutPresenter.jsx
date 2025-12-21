@@ -21,10 +21,6 @@ export default function SignOutPresenter(props) {
             });
     }
 
-    /*useEffect(function() {
-        handleSignOutACB();
-    }, []);*/
-
     function handleYesACB() {
         setShowConfirmation(false);
         handleSignOutACB();

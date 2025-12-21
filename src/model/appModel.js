@@ -1,13 +1,11 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "./fireStoreModel.js";
 import { getTrack, getArtist, createSpotifyPlaylist, 
     addTracksToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode
  } from "../apiConfig/musicSource";
+import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
-import { addDoc, serverTimestamp, orderBy, limit, onSnapshot } from "firebase/firestore";
-import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js"
-import { runInAction } from "mobx";
-import {resolvePromise} from "/src/resolvePromise.js"
+import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js";
+//import { runInAction } from "mobx";
+import {resolvePromise} from "/src/resolvePromise.js";
 
 export const rootModel = {
 
@@ -76,11 +74,11 @@ export const rootModel = {
         return features || ""; 
 
     },
+
      setGenre(genre) {
         this.currentGenre = genre;
         this.addUserUpdate("GENRE_CHANGE",{genre : genre});
     },
-// playlist save imp
 
     setExportedPlaylist(playlist) {
         var exists = this.exportedPlaylists.some(function(p) {
@@ -123,7 +121,7 @@ export const rootModel = {
     },
 
     async exportLikedSongsToSpotify (playlistName) {
-        var token = this.spotifyToken || localStorage.getItem("spotifyToken");
+        var token = this.spotifyToken ;
 
         if (!token) {
             throw "LOGIN_REQUIRED";
@@ -220,7 +218,7 @@ export const rootModel = {
             this.searchResultsPromiseState
         );
     },
-
+    
     currentTrackEffect() {
         if (this.currentTrackId && this.spotifyToken) { 
             resolvePromise(getTrack(this.currentTrackId, this.spotifyToken), this.currentTrackPromiseState);
@@ -229,28 +227,6 @@ export const rootModel = {
         }
     },
 
-    //används inte
-    currentArtistEffect() {
-        if (this.currentArtistId) {
-            resolvePromise(getArtist(this.currentArtistId), this.currentArtistPromiseState);
-        } else {
-            this.currentArtistPromiseState = {};
-        }
-    },
-
-    //Används inte just nu
-    storePlayedTracks (tracks) {
-        var model = this;
-
-        tracks.forEach(function (track) {
-            if (track && track.id) {
-                if(model.playedTrackIds.indexOf(track.id) === -1) {
-                    model.playedTrackIds.push(track.id);
-                }
-            }
-        });
-
-    },
 
     /************************WEATHER******************************************/
     setCity(city) {
@@ -296,92 +272,36 @@ export const rootModel = {
         this.friends = this.friends.filter(shouldKeepACB)
     },
 
-    fetchFriendFeed() {
-    var model = this;
 
-    if (!model.user || model.friends.length === 0) {
-        runInAction(function() {  
-            model.friendFeed = [];
-        });
-        return;
-    }
-
-    model.friends.forEach(function(friend) {
-        var updatesRef = collection(db, "USER", friend.uid, "updates");
-        var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
-
-        onSnapshot(q, function(snapshot) {
-            var updates = snapshot.docs.map(function(docSnap) {
-                return {
-                    id: docSnap.id,
-                    user: friend.username || friend.username,
-                    uid: friend.uid,
-                    type: docSnap.data().type,
-                    payload: docSnap.data().payload,
-                    timestamp: docSnap.data().timestamp,
-                };
-
-
-            });
-            runInAction(function() { 
-            var otherUpdates = model.friendFeed.filter(function(u) {
-                return u.uid !== friend.uid;
-            });
-
-                model.friendFeed = otherUpdates.concat(updates);
-                model.friendFeed.sort(function(a,b) {
-                    return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
-                });
-            });
-        });
-    });
-},
-
-    /******************************USER************************************************/
+    /*******************************************USER************************************************/
     setUser(user) {
         this.user = user;
         this.isUserLoggedIn = !!user;
     },
     
-    setUsername(name) {
+    async setUsername(name) {
        this.currentUsername = name;
         this.addUserUpdate("NAME_CHANGE", {name : name});
 
     },
-    
-    async findUserUidByUsername (username) {
-        if(!username) return null;
-        
-        const userQuery = query(collection(db, "USER"), where("username", "==", username));
 
-            const querySnapshot = await getDocs(userQuery);
-
-            if (querySnapshot.empty) {
-                return null;
-            }
-
-           const docSnap = querySnapshot.docs[0];
-           return {uid: docSnap.id, username: docSnap.data().username };
+    async searchUser(username) {
+        const userData = await findUserUidByUsername(username);
+        return userData;
     },
     
     setBio(bio) {
         this.currentBio = bio
         this.addUserUpdate("BIO_CHANGE",{bio : bio});
     },
+    /******************************************FIREBASE***************************************************** */
+    fetchFriendFeed() {
+        fetchFriendFeedForModel(this);
+    },
 
     addUserUpdate(type, payload) {
-        if(!this.user) return;
-
-        var updatesRef = collection(db, "USER", this.user.uid, "updates");
-
-        addDoc(updatesRef, {
-            type: type,
-            payload: payload,
-            username: this.currentUsername,
-            uid: this.user.uid,
-            timestamp: serverTimestamp()
-        });
-    },
+        addUserUpdateForModel(this, type, payload);
+    }
     
 
 };

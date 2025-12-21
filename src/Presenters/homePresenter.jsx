@@ -38,11 +38,6 @@ const Home = observer(
             props.model.spotifyLogin();
         }
 
-        function handleTokenInvalidACB(){
-            props.model.setSpotifyToken(null);
-            localStorage.removeItem('spotifyToken');
-        }
-
         function handleLikedSong(track){
              setIsLiked(!isLiked);
             props.model.setLikedSong(track)
@@ -81,15 +76,51 @@ const Home = observer(
                             onRecommendSongs={handleRecommendSongsACB}
                             spotifyToken={spotifyToken}
                             onSpotifyLogin={handleSpotifyLoginACB}
-                            onTokenInvalid={handleTokenInvalidACB}
                             searchError={searchError}
                             searchResults={searchResults}
                             likedSongs={props.model.likedSongs}
                             onLikeSong={handleLikedSong}
                             isLiked={isLiked}
+                            //onLikeSong={function(track) { props.model.setLikedSong(track); }}
+                            //onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
                         />
                     }
                 />);
+
+
+        /*if(weatherData && weatherData.weather && weatherData.weather.length > 0){
+            return (<TestLayout
+                    weather={
+                        <WeatherView weatherData = {weatherData}
+                                    currentCity = {currentCity}
+                                
+                    />}
+                    recommended={
+                        <RecommendedSongsView 
+                            likedSongs={props.model.likedSongs}
+                            onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
+                        />}
+                    getSong={
+                        <GetSongsView
+                            onRecommendSongs={handleRecommendSongsACB}
+                            spotifyToken={spotifyToken}
+                            onSpotifyLogin={handleSpotifyLoginACB}
+                            searchError={searchError}
+                            searchResults={searchResults}
+                            likedSongs={props.model.likedSongs}
+                            onLikeSong={handleLikedSong}
+                            //onLikeSong={function(track) { props.model.setLikedSong(track); }}
+                            //onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
+                        />
+                    }
+                />);
+
+        }
+                
+          <SuspenseView promise={weatherPromiseState.promise}
+                                error={weatherPromiseState.error} />;*/
+       
+                  
     }
 );
 

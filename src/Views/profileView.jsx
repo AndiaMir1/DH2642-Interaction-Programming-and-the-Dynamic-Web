@@ -54,12 +54,14 @@ export default function ProfileView(props) {
     }
 
     function onUsernameKeySavedACB() {
-        const trimmedUsername = usernameInput.trim();
-        if (trimmedUsername && props.onUsernameChange) {
-            props.onUsernameChange(trimmedUsername);
-            setUsernameInput("");
-            setShowUsernameChange(false);
-        }
+        if (props.onUsernameChange) {
+            props.onUsernameChange(usernameInput, {
+            onSuccess: function () {
+                setUsernameInput("");
+                setShowUsernameChange(false);
+            }
+            });
+    }
     }
 
     function onChangeUsernameClickACB() {
@@ -119,7 +121,8 @@ export default function ProfileView(props) {
                 <section className="change-location">
                     <h2>Change City</h2>
                     <button className="close-btn" onClick={onCloseCityACB}>Close</button>
-                    {props.invalidCityError && (
+                    { props.invalidCityError && (
+                         setShowCityChange(false),
                         <div className="error-message">
                             Type another valid city!
                         </div>

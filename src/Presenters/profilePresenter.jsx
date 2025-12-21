@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import ProfileView from "/src/Views/profileView";
+import { useState } from "react";
 const Profile = observer(
     function ProfileRender(props){
         const currentUsername = props.model.currentUsername;
@@ -9,13 +10,28 @@ const Profile = observer(
         const invalidCityError = props.model.weatherPromiseState.error;
         const exportedPlaylists = props.model.exportedPlaylists;
         const currentBio = props.model.currentBio;
+        const [usernameError, setUsernameError] = useState("");
         
         function handleSavedACB(newCity) {
-            props.model.setCity(newCity);
             props.model.getWeather(newCity);
+            props.model.setCity(newCity);
+           
         }
 
-        function handleUsernameChangeACB(newUsername) {
+        async function handleUsernameChangeACB(newUsername) {
+            const trimmed = newUsername?.trim();
+            setUsernameError("");
+
+            if(!trimmed) {
+                setUsernameError("Username cannot be empty");
+                return;
+            }
+
+            const existingUser = await props.model.searchUser(trimmed);
+            if(existingUser && existingUser.uid !== props.model.user?.uid) {
+                setUsernameError("This username is already taken.");
+            return;
+            }
             props.model.setUsername(newUsername);
         }
     
@@ -41,6 +57,7 @@ const Profile = observer(
                     currentGenre={currentGenre} 
                     onGenreChange={handleGenreChangeACB}
                     exportedPlaylists={exportedPlaylists}
+                    usernameError={usernameError}
         
         />);
     }
