@@ -13,7 +13,8 @@
 }
 
 .current-location,
-.change-location {
+.change-location,
+.change-genre {
     background: var(--white);
     border-radius: var(--radius);
     padding: 1.5rem;
@@ -23,20 +24,23 @@
 }
 
 .current-location:hover,
-.change-location:hover {
+.change-location:hover,
+.change-genre:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }
 
 .current-location h2,
-.change-location h2 {
+.change-location h2,
+.change-genre h2 {
     color: var(--primary);
     margin-bottom: 1rem;
     font-size: 1.3rem;
     text-align: center;
 }
 
-.current-location p {
+.current-location p,
+.change-genre p {
     font-size: 1rem;
     color: var(--primary);
     text-align: center;
@@ -129,13 +133,15 @@
     }
 
     .current-location,
-    .change-location {
+    .change-location,
+    .change-genre {
         padding: 2rem;
         margin-bottom: 2rem;
     }
 
     .current-location h2,
-    .change-location h2 {
+    .change-location h2,
+    .change-genre h2 {
         font-size: 1.5rem;
         text-align: left;
     }
@@ -252,4 +258,70 @@
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 600;
+}
+
+
+.change-genre {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.change-genre h2 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.change-genre p {
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+
+.genre-select {
+    background: var(--accent);       
+    color: var(--white);             
+    border: none;
+    border-radius: var(--radius-sm); 
+    padding: 0.4rem 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition);
+    
+
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    text-align: center;
+    width: fit-content;             
+}
+
+
+.genre-select:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+
+@media (min-width: 768px) {
+    .change-genre {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem;
+    }
+    
+    .change-genre h2 {
+        text-align: left;
+        margin-bottom: 0.2rem;
+    }
 }
