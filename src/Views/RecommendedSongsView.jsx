@@ -60,20 +60,18 @@ export function RecommendedSongsView(props) {
         };
     }
     return (
-        <div className="recommended-root">
+        <div className="recommend-right">
             {statusMessage && <div className="status-banner">{statusMessage}</div>}
 
-            <div className="recommend-right">
+            
                 <h1>Liked songs</h1>
-                <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
-                    Export liked songs to Spotify
-                </button>
-
                 <div className="playlist-placeholder">
                     <div className="placeholder-content">
-                        <h2>🎵 Your liked songs</h2>
+                        
                         {props.likedSongs && props.likedSongs.length > 0 ? (
                             props.likedSongs.map((track, index) => (
+
+                                
                                 <div key={track.id || index} className="track-item">
                                     <div className="track-content">
                                         <div className="track-header">
@@ -97,8 +95,8 @@ export function RecommendedSongsView(props) {
                                 </div>
                             ))
                         ) : (
-                            <div className="playlist-placeholder">
-                                <div className="placeholder-content">
+                            <div >
+                                <div >
                                     <h2>🎵 No songs yet</h2>
                                     <p>Like some songs to fill up your playlist!</p>
                                 </div>
@@ -106,7 +104,10 @@ export function RecommendedSongsView(props) {
                         )}
                     </div>
                 </div>
-            </div>
+                <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
+                    Export liked songs to Spotify
+                </button>
+            
 
             {showPlaylistPopUp && (
                 <div id="bg-modal">

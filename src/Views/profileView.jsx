@@ -112,7 +112,7 @@ export default function ProfileView(props) {
             <section className="current-location">
                 <p>
                     Hometown:
-                    <strong> {props.currentCity || "Not Selected"} </strong>
+                    <strong> { props.currentCity || "Not Selected"} </strong>
                 </p>
                 <button onClick={onChangeCityClickACB}>Edit</button>
             </section>

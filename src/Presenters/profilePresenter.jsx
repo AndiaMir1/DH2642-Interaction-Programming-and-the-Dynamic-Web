@@ -5,6 +5,7 @@ const Profile = observer(
     function ProfileRender(props){
         const currentUsername = props.model.currentUsername;
         const currentCity = props.model.currentCity;
+        const weatherData = props.model.weatherPromiseState.data;
         const isLoading = props.model.weatherPromiseState.promise && !props.model.weatherPromiseState.data && !props.model.weatherPromiseState.error;
         const currentGenre = props.model.currentGenre;
         const invalidCityError = props.model.weatherPromiseState.error;
@@ -14,8 +15,11 @@ const Profile = observer(
         
         function handleSavedACB(newCity) {
             props.model.getWeather(newCity);
-            props.model.setCity(newCity);
-           
+        }
+
+        if(weatherData){
+            const city= weatherData.name;
+            props.model.setCity(city);
         }
 
         async function handleUsernameChangeACB(newUsername) {
@@ -46,6 +50,7 @@ const Profile = observer(
 
         return ( 
             <ProfileView 
+                    weatherData={weatherData}
                     invalidCityError={invalidCityError}
                     currentUsername={currentUsername}
                     currentCity={currentCity}

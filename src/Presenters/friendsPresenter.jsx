@@ -44,7 +44,7 @@ const FriendsList = observer(
         }    
 
         function handleAddFriendsACB(user) {
-            const result =props.model.addFriend(user);
+            const result = props.model.addFriend(user);
 
             if(!result.ok) {
                 if(result.reason === "SELF") {
@@ -67,7 +67,7 @@ const FriendsList = observer(
         }
         
         function handleSelectFriendACB(uid) {
-            props.model.selectedUserUid = uid;
+            props.model.setSelectedUserUid(uid);
             navigate(`/friendsProfileView`);
         }
 

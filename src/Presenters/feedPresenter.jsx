@@ -9,15 +9,8 @@ const Feed = observer(function FeedRender(props) {
         navigate("/friends");
     }
 
-    function handleGoToFriendsProfile(uid) {
-        if (uid) {
-            props.onUserClick(uid);
-            navigate("/friendsProfileView");
-        }
-    }
-
     function handleUserClick(uid) {
-        props.model.selectedUserUid = uid;
+        props.model.setSelectedUserUid(uid);
         navigate("/friendsProfileView");
     }
 
@@ -35,6 +28,8 @@ const Feed = observer(function FeedRender(props) {
                 return "created a new playlist " + (update.payload.playlistName || "untitled");
             case "BIO_CHANGE":
                 return "updated their bio " + (update.payload.bio || "");
+            case "PLAYLIST_UPDATE":
+                return "added songs to existing playlist";
             default:
                 return "did something";
         }

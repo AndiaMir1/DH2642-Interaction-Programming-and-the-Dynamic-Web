@@ -1,10 +1,10 @@
-import { getTrack, getArtist, createSpotifyPlaylist, 
+import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
 import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory } from "../utils/weatherUtils.js";
-//import { runInAction } from "mobx";
+
 import {resolvePromise} from "/src/resolvePromise.js";
 
 export const rootModel = {
@@ -247,19 +247,21 @@ export const rootModel = {
 
     /************************WEATHER******************************************/
     setCity(city) {
+        if(city){
+            
         this.currentCity = city;
         //feed imp
         this.addUserUpdate("CITY_CHANGE", {city : city});
-        this.fetchFriendFeed();
+        this.fetchFriendFeed();}
     },
     
     getWeather(city) {
         if (!city) {
-            
+
             console.warn("City is not chosen");
             return;
         }
-        console.log("varför");
+        
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
         
     },
@@ -270,7 +272,7 @@ export const rootModel = {
     },
 
     addFriend (friendObject) {
-        if(!this.user) return;
+        if(!friendObject) return;
         if (friendObject.uid === this.user.uid) {
             return {ok: false, reason: "SELF"};
         }
