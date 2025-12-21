@@ -2,7 +2,7 @@
 
 A weather-based music discovery app tailored to your environment. This application generates song recommendations based on your local weather conditions, allowing you to explore tracks, save your favorites, and seamlessly export your liked songs directly to a Spotify playlist.
 
-The project follows the **Model-View-Presenter (MVP)** architectural pattern and uses **MobX** for state management.
+
 
 
 ## 📝 Short Description
