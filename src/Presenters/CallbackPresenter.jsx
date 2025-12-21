@@ -10,6 +10,12 @@ export const CallbackPresenter = observer (function CallbackPresenter(props) {
     useEffect(() => {
     const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
+        const error = params.get("error");
+
+        if(error === "access_denied") {
+            navigate("/");
+            return;
+        }
 
     if (code && !props.model.accessTokenFromCodePromiseState.promise) {
           props.model.spotifyAcces(code);
