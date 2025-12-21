@@ -294,6 +294,15 @@ export const rootModel = {
         this.currentBio = bio
         this.addUserUpdate("BIO_CHANGE",{bio : bio});
     },
+
+    setSelectedUserUid(uid) {
+        this.selectedUserUid = uid;
+        if (uid) {
+            localStorage.setItem("selectedUserUid", uid);
+        } else {
+            localStorage.removeItem("selectedUserUid");
+        }
+    },
     /******************************************FIREBASE***************************************************** */
     fetchFriendFeed() {
         fetchFriendFeedForModel(this);

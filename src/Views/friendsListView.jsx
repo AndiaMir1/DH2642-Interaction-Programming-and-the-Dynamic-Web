@@ -18,8 +18,9 @@ export default function FriendsListView(props) {
         props.onAddFriend(friendObject);
     }
 
-    function handleSelectFriendACB(user) {
-        props.onSelectFriend(user);
+    function handleSelectFriendACB(uid) {
+        props.onSelectFriend= uid;
+        localStorage.setItem("selectedUserUid", uid);
     }
 
     function handleRemoveACB(uid) {

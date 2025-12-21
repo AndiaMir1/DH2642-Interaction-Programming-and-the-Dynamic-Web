@@ -23,7 +23,7 @@ const FriendsList = observer(
                 return;
                 }
 
-                const friend = await props.model.findUserUidByUsername(username);
+                const friend = await props.model.searchUser(username);
                 if (friend) {
                     setSearchError( null);
                     setResults([friend]);
