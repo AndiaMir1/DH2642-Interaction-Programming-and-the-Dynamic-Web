@@ -192,6 +192,28 @@ export const rootModel = {
         this.spotifyToken = token;
     },
 
+    async validateSpotifyToken() {
+        if (!this.spotifyToken) {
+            return false;
+        }
+        
+        try {
+            const user = await getCurrentUser(this.spotifyToken);
+            if (!user) {
+                // Token is invalid, clear it
+                this.spotifyToken = null;
+                localStorage.removeItem('spotifyToken');
+                return false;
+            }
+            return true;
+        } catch (error) {
+            // Token is invalid, clear it
+            this.spotifyToken = null;
+            localStorage.removeItem('spotifyToken');
+            return false;
+        }
+    },
+
     doMusicSearch(query) {
         resolvePromise(
             searchMusic(query, this.spotifyToken),
