@@ -10,6 +10,8 @@ import  FriendsProfilePresenter  from "../Presenters/friendsProfilePresenter.jsx
 import { Feed } from "../Presenters/feedPresenter.jsx";
 import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
 import CompareFriendsPlaylistsPresenter from "../Presenters/comparePlaylistsPresenter.jsx";
+import { signOut, auth } from "firebase/auth";
+
 export function MainPage (props) {  
     const location = useLocation();
 
