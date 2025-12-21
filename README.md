@@ -14,13 +14,13 @@
 
 ```text
 └── src/
-    ├── apiConfig/                 # API Configuration & Keys
+    ├── apiConfig/                 
     │   └── (apiConfig files)
-    ├── models/                    # Data & State Management
+    ├── models/                    
     │   ├── appModel.js
     │   ├── fireStoreModel.js
     │   └── mobxReactiveModel.jsx
-    ├── presenters/                # Logic & User Interaction
+    ├── presenters/                
     │   ├── CallbackPresenter.jsx
     │   ├── aboutUsPresenter.jsx
     │   ├── authPresenter.jsx
@@ -31,7 +31,7 @@
     │   ├── homePresenter.jsx
     │   ├── profilePresenter.jsx
     │   └── signOutPresenter.jsx
-    ├── style/                     # Global & Component Styles
+    ├── style/                     
     │   ├── authView.css
     │   ├── comparePlaylistsView.css
     │   ├── dashboard.css
@@ -50,12 +50,12 @@
     │   ├── variables.css
     │   ├── weatherView.css
     │   └── weatherWidget.css
-    ├── utils/                     # Helper Functions
+    ├── utils/                     
     │   ├── authUtils.js
     │   ├── firebaseUtil.js
     │   ├── viewHandlers.js
     │   └── weatherUtils.js
-    ├── views/                     # UI Components & Pages
+    ├── views/                     
     │   ├── CallbackView.jsx
     │   ├── ReactRoot.jsx
     │   ├── RecommendedSongsView.jsx
