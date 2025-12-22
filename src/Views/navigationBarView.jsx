@@ -1,4 +1,3 @@
-//buttons and css, go between 
 import { Link } from 'react-router-dom';
 import "./style/navigationBarView.css";
 import "./style/popUp.css";
@@ -34,23 +33,7 @@ export default function NavigationBar({activePath, children}) {
                 {children}
                  
             </div>
-{/*
-            {showSignOutPopup && (
-                <div id="bg-modal">
-                    <div className="modal-contact signout-modal">
-                        <span className="close" onClick={handleNoSignOut}>&times;</span>
-                        <h2>Are you sure you want to sign out?</h2>
-                        <div className="signout-buttons">
-                            <button className="yes-btn" onClick={handleYesSignOut}>
-                                Yes
-                            </button>
-                            <button className="no-btn" onClick={handleNoSignOut}>
-                                No
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}*/}
+
         </nav>
     );
     

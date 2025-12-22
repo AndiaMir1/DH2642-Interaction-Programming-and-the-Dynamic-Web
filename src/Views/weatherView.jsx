@@ -3,7 +3,9 @@ import "./style/weatherView.css";
 
 export default function WeatherView(props) {
     if (!props.weatherData || !props.currentCity) {
+        <div className="weather-view">
         return <h2>Choose a city in your profile</h2>;
+        </div>
     }
     
     const data = props.weatherData;

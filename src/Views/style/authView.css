@@ -157,7 +157,7 @@
 }
 
 .auth-description {
-    flex: 1;    
+    flex: 0%;  
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -166,7 +166,7 @@
     background: transparent;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1230px) {
     .auth-view {
         max-width: 400px;
         margin: 2rem auto;
@@ -192,3 +192,19 @@
         padding: 50px;
     }
 }
+@media (max-width: 1229px) {
+    .auth-page-full {
+        flex-direction: column; 
+        gap: 40px; 
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .auth-description,
+    .auth-view {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+

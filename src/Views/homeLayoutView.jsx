@@ -1,6 +1,6 @@
 import './style/homePageLayoutView.css';
 
-export function TestLayout(props){
+export function HomeLayout(props){
     return(
         <div className= "home-page-layout">
             <div className="body">

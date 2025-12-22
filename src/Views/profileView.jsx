@@ -41,12 +41,6 @@ export default function ProfileView(props) {
     function onCloseBioACB() {
         setShowBioChange(false);
     }
- 
-   /*
-    function onArtistChangeACB(event) {
-        setArtistInput(event.target.value);
-    }
-*/
 
     async function onSavedACB() {
         const trimmedCity = cityInput.trim();
@@ -176,9 +170,6 @@ export default function ProfileView(props) {
             </section>
         )}
 
-            
-
-    {/***********************************/}
     <section className="exported-playlists">
     <h2>Created Playlists</h2>
 
@@ -220,9 +211,6 @@ export default function ProfileView(props) {
         </ul>
     )}
 </section>
-
-
-
 
             <section className="change-genre" style={{ marginTop: "20px" }}>
                 <h2>Favorite Genre</h2>

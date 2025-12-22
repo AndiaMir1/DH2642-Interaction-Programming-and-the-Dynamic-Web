@@ -85,7 +85,7 @@ export function connectToPersistence(model, watchFunction) {
                 model.selectedUserUid,
             ];
 
-        //liked artists
+       
     }
     
     // saves model to Firestore when watcherACB results change

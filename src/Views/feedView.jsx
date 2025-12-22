@@ -17,7 +17,7 @@ export default function FeedView(props) {
                 <button
                 className="manage-friends-button"
                 onClick={handleGoToFriends}
-                >Manage Friends</button>
+                >Manage friends</button>
             </div>
 
             {(!props.feed || props.feed.length === 0) && (
@@ -43,6 +43,11 @@ export default function FeedView(props) {
                     );
                 })}
             </ul>
+            {props.hasMore && (
+                <button className="see-older-updates-btn" onClick={props.onSeeOlderUpdates}>
+                    See older updates
+                </button>
+            )}
         </div>
     );
 }

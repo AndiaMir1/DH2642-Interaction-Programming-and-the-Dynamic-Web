@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import ProfileView from "/src/Views/profileView";
-import { useState,useEffect  } from "react";
+import { useState } from "react";
 const Profile = observer(
     function ProfileRender(props){
         const currentUsername = props.model.currentUsername;

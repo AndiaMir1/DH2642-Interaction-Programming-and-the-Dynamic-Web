@@ -2,7 +2,7 @@
 import { observable, configure, reaction } from "mobx";
 import { rootModel } from "./appModel.js";
 
-configure({ enforceActions: "never" }); // Changed to "never" since we're not using MobX actions
+configure({ enforceActions: "never" }); 
 
 export const reactiveModel = observable(rootModel);
 import {connectToPersistence} from "/src/model/fireStoreModel.js";

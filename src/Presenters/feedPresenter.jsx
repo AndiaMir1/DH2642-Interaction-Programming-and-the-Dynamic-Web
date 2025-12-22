@@ -1,9 +1,11 @@
 import { observer } from "mobx-react-lite";
 import FeedView from "../Views/feedView";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Feed = observer(function FeedRender(props) {
     const navigate = useNavigate();
+    const [visibleCount, setVisibleCount] = useState(15);
 
     function handleGoToFriends() {
         navigate("/friends");
@@ -43,21 +45,26 @@ const Feed = observer(function FeedRender(props) {
         if (!props.model.friendFeed || !props.model.friends) return [];
 
         return props.model.friendFeed
-            .filter(function (update) {
-                return update && update.uid && props.model.friends.some(function (friend) {
-                    return friend.uid === update.uid;
-                });
-            })
-            .map(function (update) {
-                return {
-                    id: update.id,
-                    uid: update.uid,
-                    user: update.user,
-                    text: formatUpdateText(update),
-                    timestamp: formatTimestamp(update.timestamp)
-                };
-            });
+            .filter(update =>
+                update &&
+                update.uid &&
+                props.model.friends.some(friend => friend.uid === update.uid)
+            )
+            .map(update => ({
+                id: update.id,
+                uid: update.uid,
+                user: update.user,
+                text: formatUpdateText(update),
+                timestamp: formatTimestamp(update.timestamp)
+            }))
+            .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+            .slice(0, visibleCount); 
     }
+
+    function handleSeeOlderUpdates() {
+        setVisibleCount(prev => prev + 15);
+    }
+
 
     const visibleFeed = getVisibleFeed();
 
@@ -67,6 +74,8 @@ const Feed = observer(function FeedRender(props) {
             emptyMessage="Add some friends to see updates"
             onGoToFriends={handleGoToFriends}
             onUserClick={handleUserClick}
+            onSeeOlderUpdates={handleSeeOlderUpdates}
+            hasMore={visibleFeed.length < props.model.friendFeed.length}
             
         />
     );

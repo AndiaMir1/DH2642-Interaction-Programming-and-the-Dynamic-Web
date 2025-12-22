@@ -1,4 +1,4 @@
-import { getTrack, getArtist, createSpotifyPlaylist, 
+import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
 import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
