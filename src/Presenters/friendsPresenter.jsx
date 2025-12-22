@@ -71,6 +71,10 @@ const FriendsList = observer(
             navigate(`/friendsProfileView`);
         }
 
+        function handleBackToFeedACB() {
+        navigate("/feed");
+        }
+
         return (
         <FriendsListView 
                 friends={friends}
@@ -78,7 +82,7 @@ const FriendsList = observer(
                 onAddFriend={handleAddFriendsACB}
                 onRemoveFriend={handleRemoveACB}
                 onSelectFriend={handleSelectFriendACB}
-                onBack={handleBackToFeedACB(navigate)}
+                onBack={handleBackToFeedACB}
                 searchError={searchError}
                 addError={addError}
                 searchResults={results}

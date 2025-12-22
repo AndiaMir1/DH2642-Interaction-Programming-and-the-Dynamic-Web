@@ -60,20 +60,21 @@ export function RecommendedSongsView(props) {
         };
     }
     return (
-        <div className="recommended-root">
+        <div className="recommend-right">
             {statusMessage && <div className="status-banner">{statusMessage}</div>}
 
-            <div className="recommend-right">
+            
                 <h1>Liked songs</h1>
                 <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
-                    Export liked songs to Spotify
+                    Create spotify playlist with liked songs
                 </button>
-
                 <div className="playlist-placeholder">
                     <div className="placeholder-content">
-                        <h2>🎵 Your liked songs</h2>
+                        
                         {props.likedSongs && props.likedSongs.length > 0 ? (
                             props.likedSongs.map((track, index) => (
+
+                                
                                 <div key={track.id || index} className="track-item">
                                     <div className="track-content">
                                         <div className="track-header">
@@ -97,8 +98,8 @@ export function RecommendedSongsView(props) {
                                 </div>
                             ))
                         ) : (
-                            <div className="playlist-placeholder">
-                                <div className="placeholder-content">
+                            <div >
+                                <div >
                                     <h2>🎵 No songs yet</h2>
                                     <p>Like some songs to fill up your playlist!</p>
                                 </div>
@@ -106,17 +107,18 @@ export function RecommendedSongsView(props) {
                         )}
                     </div>
                 </div>
-            </div>
+                
+            
 
             {showPlaylistPopUp && (
                 <div id="bg-modal">
                     <div className="modal-contact">
                         <span className="close" onClick={closePlaylistPopup}>&times;</span>
-                        <h2>Export liked songs</h2>
+                        
 
                         {props.existingPlaylists && props.existingPlaylists.length > 0 && (
                         <div>
-                            <h3>Export to existing playlist:</h3>
+                            <h3>Add to existing playlist:</h3>
                             {props.existingPlaylists.map((pl, index) => (
                                 <button
                                     key={pl.playlistId || index}
@@ -140,7 +142,7 @@ export function RecommendedSongsView(props) {
                             onClick={() => onHandleExportPlaylist()}
                             onKeyDown={onEnterKey(() => onHandleExportPlaylist())}
                         >
-                            Create & Export
+                            Create
                         </button>
                     </div>
                 </div>

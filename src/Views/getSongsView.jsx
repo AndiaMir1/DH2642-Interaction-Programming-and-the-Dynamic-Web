@@ -72,7 +72,7 @@ export function GetSongsView(props) {
                     <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button>
                     
                     {props.searchError && (
-                        <p className="error-message">Logga in igen</p>
+                        <p className="error-message">Please sign in to get songs!</p>
                     )}
                 </div>
 

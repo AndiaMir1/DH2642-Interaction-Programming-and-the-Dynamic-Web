@@ -8,13 +8,6 @@ const Feed = observer(function FeedRender(props) {
     function handleGoToFriends() {
         navigate("/friends");
     }
-/*
-    function handleGoToFriendsProfile(uid) {
-        if (uid) {
-            props.onUserClick(uid);
-            navigate("/friendsProfileView");
-        }
-    }*/
 
     function handleUserClick(uid) {
         props.model.selectedUserUid = uid;
@@ -74,6 +67,7 @@ const Feed = observer(function FeedRender(props) {
             emptyMessage="Add some friends to see updates"
             onGoToFriends={handleGoToFriends}
             onUserClick={handleUserClick}
+            
         />
     );
 });
