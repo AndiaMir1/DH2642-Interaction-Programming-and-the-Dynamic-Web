@@ -261,7 +261,6 @@ async searchWeatherSongs(retryCount = 0) {
         
         let attempts = 0;
         while (this.recentQueries.includes(query) && attempts < 10) {
-            console.log(`Skipping "${query}" because we used it recently.`);
             query = getRandomKeyword(conditionId, temp, windSpeed);
             attempts++;
         }
@@ -286,12 +285,11 @@ async searchWeatherSongs(retryCount = 0) {
                     
                     
                     if (retryCount < 5) { 
-                        console.log(`Only found ${uniqueTracks.length} new songs. Retrying... (${retryCount + 1}/5)`);
                         return this.searchWeatherSongs(retryCount + 1);
                     }
                     
                     
-                    console.log("Ran out of new songs. Resetting history to ensure full list.");
+                    
                     this.seenSongIds.clear(); 
                     uniqueTracks = tracks; 
                 }
@@ -307,8 +305,6 @@ async searchWeatherSongs(retryCount = 0) {
                     data: { tracks: { items: top5Songs } }, 
                     error: null
                 };
-                
-                console.log(`Searched for: "${query}". Displaying exactly 5 songs.`);
             }
         } catch (error) {
             console.error("Search error:", error);
