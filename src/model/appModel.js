@@ -4,7 +4,6 @@ import { getTrack, getArtist, createSpotifyPlaylist,
 import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
-//import { runInAction } from "mobx";
 import {resolvePromise} from "/src/resolvePromise.js";
 
 export const rootModel = {
@@ -382,6 +381,8 @@ async searchWeatherSongs(retryCount = 0) {
             return {ok: false, reason: "EXISTS"};
         }
         this.friends = this.friends.concat([friendObject]);
+
+        this.fetchFriendFeed();
         return {ok: true};  
     },
 

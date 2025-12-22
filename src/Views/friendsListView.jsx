@@ -34,7 +34,7 @@ export default function FriendsListView(props) {
     return (
         <div className="friends-list">
             <h2>Friends</h2>
-            <button onClick={handleBackACB}>Back to Feed</button>
+            <button onClick={handleBackACB}> ← Back to Feed</button>
 
             <div className="add-friend">
                 <input

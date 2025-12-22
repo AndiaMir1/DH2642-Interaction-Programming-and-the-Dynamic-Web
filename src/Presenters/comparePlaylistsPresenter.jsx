@@ -44,17 +44,31 @@ const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
     }, [selectedFriendUid]);
 
     function handleSelectMyPlaylist(pl) {
-        setSelectedMyPlaylist(pl);
+        if(selectedMyPlaylist?.playlistId === pl.playlistId)
+        {
+            setSelectedMyPlaylist(null);
+        } else {
+            setSelectedMyPlaylist(pl)
+        }
         setSimilarityScore(null);
     }
 
     function handleSelectFriendPlaylist(pl) {
-        setSelectedFriendPlaylist(pl);
+       if(selectedFriendPlaylist?.playlistId === pl.playlistId)
+        {
+            setSelectedFriendPlaylist(null);
+        } else {
+            setSelectedFriendPlaylist(pl)
+        }
         setSimilarityScore(null);
     }
 
     function handleSelectFriend(uid) {
+        if(selectedFriendUid === uid) {
+            setSelectedFriendUid(null);
+        } else {
         setSelectedFriendUid(uid);
+        }
     }
 
     function comparePlaylists() {

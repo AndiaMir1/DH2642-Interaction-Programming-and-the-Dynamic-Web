@@ -8,12 +8,10 @@ const Profile = observer(
         const isLoading = props.model.weatherPromiseState.promise && !props.model.weatherPromiseState.data && !props.model.weatherPromiseState.error;
         const currentGenre = props.model.currentGenre;
         const invalidCityError = props.model.weatherPromiseState.error;
-        const weatherData = props.model.weatherPromiseState.data;
         const exportedPlaylists = props.model.exportedPlaylists;
         const currentBio = props.model.currentBio;
         const [usernameError, setUsernameError] = useState("");
-        const [cityError, setCityError] = useState("");
-        const [showCityChange, setShowCityChange] = useState(false);
+      
         
         async function handleSavedACB(newCity) {
             return await props.model.setCity(newCity);

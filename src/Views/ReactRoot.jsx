@@ -7,13 +7,15 @@ const ReactRoot = observer(function ReactRoot(props){
     if(!props.model.ready){
         return <SuspenseView promise={""}/>
     }
-    if(!props.model.user) {
-        return <AuthPresenter model={props.model}/>
-    }
     return (
         <BrowserRouter>
+        {!props.model.user ? (
+            <AuthPresenter model ={props.model} />
+        ) : (
+             <MainPage model={props.model} />
+        )}
     <div>
-        <MainPage model={props.model} />
+       
     </div>
     </BrowserRouter>
 

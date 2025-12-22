@@ -66,13 +66,17 @@ export function GetSongsView(props) {
                             </button>
                         </>
                     ) : (
-                        <p>Welcome! You're logged in to Spotify.</p>
+                        <><p>Welcome! You're logged in to Spotify.</p>
+                        <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button></>
                     )}
-                    
-                    <button onClick={recommendSongsACB} className="get-songs-btn">Get Songs</button>
+             
                     
                     {props.searchError && (
                         <p className="error-message">Please sign in to get songs!</p>
+                    )}
+                    
+                    {!props.searchResults && (
+                        <p className="error-message">chose a valid city!</p>
                     )}
                 </div>
 

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { auth } from "../model/fireStoreModel";
 import { AuthView } from "../Views/authView";
+import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
 
 export const AuthPresenter= observer(function AuthPresenter(props) {
     const model = props.model;
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,6 +15,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     const [error, setError] = useState("");
     const [username, setUsername] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
 
     function toggleMode() {
         setIsSignUp(!isSignUp);
@@ -56,6 +59,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
             .then(function(userCredential) {
                 model.setUser(userCredential.user);
                 model.setUsername(username);
+                navigate("/");
                 
                 })
                 .catch(handleAuthError);

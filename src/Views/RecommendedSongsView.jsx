@@ -37,8 +37,9 @@ export function RecommendedSongsView(props) {
         setStatusMessage("Playlist exported successfully!");
         setTimeout(function () {
             setStatusMessage(null);
+            closePlaylistPopup();
         }, 2000);
-        closePlaylistPopup();
+        
     } catch (err) {
         if (err === "LOGIN_REQUIRED") {
             setStatusMessage("Please log in to Spotify first!");
@@ -48,7 +49,7 @@ export function RecommendedSongsView(props) {
         setTimeout(function () {
             setStatusMessage(null);
         }, 3000);
-        closePlaylistPopup();
+        
     }
 }
 
@@ -61,9 +62,6 @@ export function RecommendedSongsView(props) {
     }
     return (
         <div className="recommend-right">
-            {statusMessage && <div className="status-banner">{statusMessage}</div>}
-
-            
                 <h1>Liked songs</h1>
                 <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
                     Create spotify playlist with liked songs
@@ -114,11 +112,26 @@ export function RecommendedSongsView(props) {
                 <div id="bg-modal">
                     <div className="modal-contact">
                         <span className="close" onClick={closePlaylistPopup}>&times;</span>
-                        
+                         {statusMessage && <div className="status-banner"><p className="error-message">{statusMessage}</p></div>}
+                         {!statusMessage && <div>
+                        <h3>Create a new playlist:</h3>
+                        <input
+                            type="text"
+                            placeholder="New playlist name"
+                            value={playlistName}
+                            onChange={onPlayListNameChangeACB}
+                            onKeyDown={onEnterKey(() => onHandleExportPlaylist())}
+                        />
+                        <button
+                            className="buttonpopup"
+                            onClick={() => onHandleExportPlaylist()}   
+                        >
+                            Create
+                        </button>
 
                         {props.existingPlaylists && props.existingPlaylists.length > 0 && (
                         <div>
-                            <h3>Add to existing playlist:</h3>
+                            <h3>Or add to existing playlist:</h3>
                             {props.existingPlaylists.map((pl, index) => (
                                 <button
                                     key={pl.playlistId || index}
@@ -129,21 +142,9 @@ export function RecommendedSongsView(props) {
                             ))}
                         </div>
                     )}
+                    </div>}
 
-                        <h3>Or create a new playlist:</h3>
-                        <input
-                            type="text"
-                            placeholder="New playlist name"
-                            value={playlistName}
-                            onChange={onPlayListNameChangeACB}
-                        />
-                        <button
-                            className="buttonpopup"
-                            onClick={() => onHandleExportPlaylist()}
-                            onKeyDown={onEnterKey(() => onHandleExportPlaylist())}
-                        >
-                            Create
-                        </button>
+                        
                     </div>
                 </div>
             )}

@@ -2,11 +2,10 @@
 import "./style/weatherView.css";
 
 export default function WeatherView(props) {
-
     if (!props.weatherData || !props.currentCity) {
         return <h2>Choose a city in your profile</h2>;
     }
-
+    
     const data = props.weatherData;
     const city = data.name;
     const temp = Math.round(data.main.temp); //round temperature
@@ -16,6 +15,8 @@ export default function WeatherView(props) {
     const humidity = data.main.humidity;
     const pressure = data.main.pressure;
     const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+
+    
 
     return (
         <div className="weather-view">

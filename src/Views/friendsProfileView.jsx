@@ -7,7 +7,7 @@ export function FriendsProfileView (props) {
     return (
         <div className="friends-profile">  
         <button 
-                className="nav-button back-to-feed-btn" 
+                className="back-to-feed-button" 
                 onClick={handleBackACB}
             >
                 ← Back to Feed

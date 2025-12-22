@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { onEnterKey } from "../utils/viewHandlers";
 import "./style/profileView.css";
 
@@ -9,6 +9,11 @@ export default function ProfileView(props) {
     const [showUsernameChange, setShowUsernameChange] = useState(false);
     const [showBioChange, setShowBioChange] = useState(false);
     const [showCityChange, setShowCityChange] = useState(false);
+
+    useEffect(function() {
+        setCityInput(props.currentCity || "");
+    }, [props.currentCity]);
+
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
@@ -17,7 +22,7 @@ export default function ProfileView(props) {
         setBioInput(event.target.value);
 
     }
-
+    
     function onGenreChangeACB(event) {
             props.onGenreChange(event.target.value); 
     }

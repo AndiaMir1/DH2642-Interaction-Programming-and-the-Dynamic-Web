@@ -40,6 +40,8 @@ export function connectToPersistence(model, watchFunction) {
                     model.exportedPlaylists = data.exportedPlaylists || [];
                     model.currentBio = data.bio ?? null;
                     model.selectedUserUid = data.selectedUserUid ?? null;
+                    model.weatherPromiseState ={};
+
                     model.getWeather(model.currentCity);
                     model.fetchFriendFeed();
             })
@@ -58,7 +60,8 @@ export function connectToPersistence(model, watchFunction) {
         model.currentBio = null;
         model.ready = true;
         model.selectedUserUid = null;
-        //likedArtist =[];
+        model.weatherPromiseState ={};
+
     }
 }); 
 

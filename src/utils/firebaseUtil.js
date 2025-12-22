@@ -31,19 +31,19 @@ export function fetchFriendFeedForModel (model) {
     });
 }
 
-    export function addUserUpdateForModel(model, type, payload) {
-        if(!model.user) return;
+export function addUserUpdateForModel(model, type, payload) {
+    if(!model.user) return;
 
-        var updatesRef = collection(db, "USER", model.user.uid, "updates");
+    var updatesRef = collection(db, "USER", model.user.uid, "updates");
 
-        addDoc(updatesRef, {
-            type: type,
-            payload: payload,
-            username: model.currentUsername,
-            uid: model.user.uid,
-            timestamp: serverTimestamp()
-        });
-    }
+    addDoc(updatesRef, {
+        type: type,
+        payload: payload,
+        username: model.currentUsername,
+        uid: model.user.uid,
+        timestamp: serverTimestamp()
+    });
+}
 
 
 export async function findUserUidByUsername(username) {
@@ -63,44 +63,4 @@ export async function findUserUidByUsername(username) {
         ...doc.data()
     };
 }
-   /* export function fetchFriendFeed() {
-    var model = this;
-
-    if (!model.user || model.friends.length === 0) {
-        runInAction(function() {  
-            model.friendFeed = [];
-        });
-        return;
-    }
-
-    model.friends.forEach(function(friend) {
-        var updatesRef = collection(db, "USER", friend.uid, "updates");
-        var q = query(updatesRef, orderBy("timestamp", "desc"), limit(200));
-
-        onSnapshot(q, function(snapshot) {
-            var updates = snapshot.docs.map(function(docSnap) {
-                return {
-                    id: docSnap.id,
-                    user: friend.username || friend.username,
-                    uid: friend.uid,
-                    type: docSnap.data().type,
-                    payload: docSnap.data().payload,
-                    timestamp: docSnap.data().timestamp,
-                };
-
-
-            });
-            runInAction(function() { 
-            var otherUpdates = model.friendFeed.filter(function(u) {
-                return u.uid !== friend.uid;
-            });
-
-                model.friendFeed = otherUpdates.concat(updates);
-                model.friendFeed.sort(function(a,b) {
-                    return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
-                });
-            });
-        });
-    });
-}
-*/
+   

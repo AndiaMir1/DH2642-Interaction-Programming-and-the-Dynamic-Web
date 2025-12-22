@@ -105,6 +105,9 @@
     box-sizing: border-box;
     word-wrap: break-word;
 }
+.friends-profile .back-to-feed-button {
+    -webkit-text-fill-color: white;
+}
 
 .playlist-link:hover {
     background: var(--accent-hover);
@@ -121,6 +124,33 @@
     border: none;
     padding: 0;
 }
+
+.back-to-feed-button {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--accent);
+    color: white !important;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.back-to-feed-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.back-to-feed-button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow);
+}
+
+
 
 @media (min-width: 768px) {
     .friends-profile {
