@@ -14,6 +14,9 @@ There is also a way to compare playlists with friends, seeing how similar their 
 
 The user can then log out, the information will be persisted in firebase per user. All the information and updates that was there when logging out will also be available when the user decides to log in again. 
 
+TRICKS: 
+Add "Melissa" or "Sanna" as a friend to see the friends profile, their updates will be visible immediately in feed. Compare playlists with them and also check out their produced playlists!
+
 Project file structure:
 src, main source code for the application.
 .firebase, configuration files for the Firebase hosting.
