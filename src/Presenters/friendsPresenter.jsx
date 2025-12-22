@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import FriendsListView from "/src/Views/friendsListView";
 import { useState } from "react";
-import { handleBackToFeedACB } from "../utils/navigationsUtils";
 
 const FriendsList = observer(
     function FriendsListRender(props){

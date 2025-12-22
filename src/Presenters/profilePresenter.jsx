@@ -15,8 +15,9 @@ const Profile = observer(
         const [cityError, setCityError] = useState("");
         const [showCityChange, setShowCityChange] = useState(false);
         
-        function handleSavedACB(newCity) {
-            props.model.setCity(newCity);
+        async function handleSavedACB(newCity) {
+            return await props.model.setCity(newCity);
+    
         }
 
         async function handleUsernameChangeACB(newUsername) {

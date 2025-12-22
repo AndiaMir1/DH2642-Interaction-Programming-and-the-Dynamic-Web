@@ -19,6 +19,7 @@ export const rootModel = {
     weatherPromiseState: {},
     currentGenre: null,
     
+    
     playlistName: null,
     currentPlaylist: null,
     exportedPlaylists: [],
@@ -322,11 +323,34 @@ async searchWeatherSongs(retryCount = 0) {
 
 
     /************************WEATHER******************************************/
-    setCity(city) {
-        this.currentCity = city;
+    async setCity(city) {
+
+        if(!city) return false;
+
+        this.weatherPromiseState= {};
+
+        try {
+            const weatherData = await fetchWeatherData(city);
+            this.currentCity = city;
+            this.weatherPromiseState = {
+                data: weatherData,
+                error: null,
+                promise: Promise.resolve(weatherData),
+            };
+            
         //feed imp
-        this.addUserUpdate("CITY_CHANGE", {city : city});
-        this.fetchFriendFeed();
+            this.addUserUpdate("CITY_CHANGE", {city : city});
+            this.fetchFriendFeed();
+            return true;
+        }catch(err) {
+            this.currentCity = city;
+            this.weatherPromiseState = {
+                data: null,
+                error: err,
+                promise:null,
+            };
+            return false;
+        }
     },
     
     getWeather(city) {

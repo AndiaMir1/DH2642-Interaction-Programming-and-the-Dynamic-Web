@@ -13,7 +13,7 @@ export default function ProfileView(props) {
         setCityInput(event.target.value);
     }
 
-    function onBioChangeACB(event) {
+    function onBioChangeACB(event) {
         setBioInput(event.target.value);
 
     }
@@ -43,10 +43,11 @@ export default function ProfileView(props) {
     }
 */
 
-    function onSavedACB() {
+    async function onSavedACB() {
         const trimmedCity = cityInput.trim();
-        if (trimmedCity && props.onSaveClick) {
-            props.onSaveClick(trimmedCity);
+        if (!trimmedCity && !props.onSaveClick) return;
+        const ok = await props.onSaveClick(trimmedCity);
+        if(ok) {
             setCityInput("");
             setShowCityChange(false);
         }

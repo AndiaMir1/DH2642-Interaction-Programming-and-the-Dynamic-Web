@@ -1,26 +1,29 @@
 import './style/friendsProfile.css';
 
-export function FriendsProfileView ({profile}) {
+export function FriendsProfileView (props) {
+     function handleBackACB() {
+        props.onBack();
+    }
     return (
         <div className="friends-profile">  
         <button 
                 className="nav-button back-to-feed-btn" 
-                onClick={profile.handleBackToFeedACB}
+                onClick={handleBackACB}
             >
                 ← Back to Feed
             </button>
-            <h2>{profile.username}</h2>
+            <h2>{props.profile.username}</h2>
             <div className="profile-bio">
-                <strong>About me: </strong>{profile.bio || "This user hasn't written a bio yet."}
+                <strong>About me: </strong>{props.profile.bio || "This user hasn't written a bio yet."}
             </div>
-            <p><strong>Current City: </strong> {profile.currentCity || "Not set"}</p>
-            <p><strong> Favorite genre: </strong> {profile.genre || "Not set"}</p>
+            <p><strong>Current City: </strong> {props.profile.currentCity || "Not set"}</p>
+            <p><strong> Favorite genre: </strong> {props.profile.genre || "Not set"}</p>
 
         <div className="profile-playlists">
             <h3>Created Playlists: </h3>
-            {profile.exportedPlaylists && profile.exportedPlaylists.length > 0 ? (
+            {props.profile.exportedPlaylists && props.profile.exportedPlaylists.length > 0 ? (
                 <ul>
-                    {profile.exportedPlaylists.map((pl, index) => (
+                    {props.profile.exportedPlaylists.map((pl, index) => (
                         <li key={pl.playlistId || index}>
                             <a 
                                 href={pl.spotifyUrl}
@@ -38,6 +41,8 @@ export function FriendsProfileView ({profile}) {
             )}
             </div>
         </div>
+        
 
     );
+    
 }
