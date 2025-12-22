@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import ProfileView from "/src/Views/profileView";
-import { useState } from "react";
+import { useState,useEffect  } from "react";
 const Profile = observer(
     function ProfileRender(props){
         const currentUsername = props.model.currentUsername;
@@ -8,14 +8,15 @@ const Profile = observer(
         const isLoading = props.model.weatherPromiseState.promise && !props.model.weatherPromiseState.data && !props.model.weatherPromiseState.error;
         const currentGenre = props.model.currentGenre;
         const invalidCityError = props.model.weatherPromiseState.error;
+        const weatherData = props.model.weatherPromiseState.data;
         const exportedPlaylists = props.model.exportedPlaylists;
         const currentBio = props.model.currentBio;
         const [usernameError, setUsernameError] = useState("");
+        const [cityError, setCityError] = useState("");
+        const [showCityChange, setShowCityChange] = useState(false);
         
         function handleSavedACB(newCity) {
-            props.model.getWeather(newCity);
             props.model.setCity(newCity);
-           
         }
 
         async function handleUsernameChangeACB(newUsername) {
@@ -24,15 +25,16 @@ const Profile = observer(
 
             if(!trimmed) {
                 setUsernameError("Username cannot be empty");
-                return;
+                return false;
             }
 
             const existingUser = await props.model.searchUser(trimmed);
             if(existingUser && existingUser.uid !== props.model.user?.uid) {
                 setUsernameError("This username is already taken.");
-            return;
+            return false;
             }
             props.model.setUsername(newUsername);
+            return true;
         }
     
         function handleGenreChangeACB(newGenre) {
@@ -58,6 +60,7 @@ const Profile = observer(
                     onGenreChange={handleGenreChangeACB}
                     exportedPlaylists={exportedPlaylists}
                     usernameError={usernameError}
+                    
         
         />);
     }

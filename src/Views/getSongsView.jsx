@@ -61,7 +61,6 @@ export function GetSongsView(props) {
                 <div className="get-songs-content">
                     {!props.spotifyToken || !isTokenValid ? (
                         <>
-                            <p>Log in with Spotify to get started!</p>
                             <button onClick={spotifyLoginACB} className="spotify-login-btn">
                                 Log in with Spotify
                             </button>

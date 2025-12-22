@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import FriendsListView from "/src/Views/friendsListView";
 import { useState } from "react";
+import { handleBackToFeedACB } from "../utils/navigationsUtils";
 
 const FriendsList = observer(
     function FriendsListRender(props){
@@ -67,12 +68,8 @@ const FriendsList = observer(
         }
         
         function handleSelectFriendACB(uid) {
-            props.model.selectedUserUid = uid;
+            props.model.setSelectedUserUid(uid);
             navigate(`/friendsProfileView`);
-        }
-
-        function handleBackACB() {
-            navigate("/feed");
         }
 
         return (
@@ -82,7 +79,7 @@ const FriendsList = observer(
                 onAddFriend={handleAddFriendsACB}
                 onRemoveFriend={handleRemoveACB}
                 onSelectFriend={handleSelectFriendACB}
-                onBack={handleBackACB}
+                onBack={handleBackToFeedACB(navigate)}
                 searchError={searchError}
                 addError={addError}
                 searchResults={results}

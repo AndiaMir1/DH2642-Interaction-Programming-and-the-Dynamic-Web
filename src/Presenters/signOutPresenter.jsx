@@ -1,53 +1,31 @@
-import { useState} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { auth } from "../model/fireStoreModel";
+// SignOutPresenter.jsx
+import { useState } from "react";
 import { signOut } from "firebase/auth";
+import { auth } from "../model/fireStoreModel";
+import SignOutView from "../Views/signOutView";
 
 export default function SignOutPresenter(props) {
     const model = props.model;
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [showConfirmation, setShowConfirmation] = useState(true);
+    const [showPopUp, setShowPopUp] = useState(false);
 
+    function openPopup() { setShowPopUp(true); }
+    function closePopup() { setShowPopUp(false); }
 
-    function handleSignOutACB() {
+    function handleSignOut() {
         signOut(auth)
-            .then(function() {
-                model.setUser(null); 
-                navigate("/");  
+            .then(() => {
+                model.setUser(null);
+                closePopup();
             })
-            .catch(function(error) {
-                console.error(error);
-            });
-    }
-
-    function handleYesACB() {
-        setShowConfirmation(false);
-        handleSignOutACB();
-    }
-
-    function handleNoACB() {
-        const previousPath = location.state?.from || "/";
-        navigate(previousPath)
-    }
-
-    if (!showConfirmation) {
-        return <div>Signing out...</div>;
+            .catch(error => console.error("Sign out failed:", error));
     }
 
     return (
-        <div className="sign-out-confirmation">
-            <div className="confirmation-question">
-                <h2>Are you sure you want to sign out?</h2>
-                <div className="confirmation-buttons">
-                    <button className="yes-btn" onClick={handleYesACB}>
-                        Yes
-                    </button>
-                    <button className="no-btn" onClick={handleNoACB}>
-                        No
-                    </button>
-                </div>
-            </div>
-        </div>
+        <SignOutView 
+            show={showPopUp} 
+            onOpen={openPopup} 
+            onClose={closePopup} 
+            onConfirm={handleSignOut} 
+        />
     );
 }

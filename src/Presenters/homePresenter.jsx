@@ -47,7 +47,7 @@ const Home = observer(
             return props.model.exportLikedSongsToSpotify(playlistName, existingPlaylistId);
         }
         
-        if (!weatherData || weatherPromiseState.promise && !weatherPromiseState.data){
+        if (weatherPromiseState.promise && !weatherPromiseState.data && !weatherPromiseState.error){
             return <SuspenseView 
                 promise={weatherPromiseState.promise} 
                 error={weatherPromiseState.error}/>

@@ -7,9 +7,8 @@ export default function ProfileView(props) {
     const [usernameInput, setUsernameInput] = useState("");
     const [bioInput, setBioInput] = useState("");
     const [showUsernameChange, setShowUsernameChange] = useState(false);
-    const [showCityChange, setShowCityChange] = useState(false);
     const [showBioChange, setShowBioChange] = useState(false);
-
+    const [showCityChange, setShowCityChange] = useState(false);
     function onTextChangeACB(event) {
         setCityInput(event.target.value);
     }
@@ -53,15 +52,15 @@ export default function ProfileView(props) {
         }
     }
 
-    function onUsernameKeySavedACB() {
-        if (props.onUsernameChange) {
-            props.onUsernameChange(usernameInput, {
-            onSuccess: function () {
-                setUsernameInput("");
-                setShowUsernameChange(false);
-            }
-            });
-    }
+    async function onUsernameKeySavedACB() {
+        if (!props.onUsernameChange) return;
+
+    const success = await props.onUsernameChange(usernameInput);
+
+    if (success) {
+        setUsernameInput("");
+        setShowUsernameChange(false);
+        }
     }
 
     function onChangeUsernameClickACB() {
@@ -112,7 +111,7 @@ export default function ProfileView(props) {
             <section className="current-location">
                 <p>
                     Hometown:
-                    <strong> {props.currentCity || "Not Selected"} </strong>
+                    <strong> { props.currentCity || "Not Selected"} </strong>
                 </p>
                 <button onClick={onChangeCityClickACB}>Edit</button>
             </section>
@@ -147,89 +146,94 @@ export default function ProfileView(props) {
                 <button onClick={onChangeUsernameClickACB}>Edit</button>
             </section>
 
-            {showUsernameChange && (
-                <section className="change-location">
-                    <h2>Change Username</h2>
-                    <button className="close-btn" onClick={onCloseUsernameACB}>Close</button>
-                    <input
-                        type="text"
-                        placeholder="Enter new username"
-                        value={usernameInput}
-                        onChange={onUsernameChangeACB}
-                        onKeyDown={onEnterKey(onUsernameKeySavedACB)}
-                    />
-                    <button onClick={onUsernameKeySavedACB} disabled={props.isSaving}>
-                        {props.isSaving ? "Saving..." : "Save"}
-                    </button>
-                </section>
-            )}
-            
+                    {showUsernameChange && (
+            <section className="change-location">
+                <h2>Change Username</h2>
+                <button className="close-btn" onClick={onCloseUsernameACB}>Close</button>
 
-
-                        <section className="change-genre">
-                            <h2>Favorite Genre</h2>
-                            <p></p>
-                            <div className="input-group"></div>
-                            <select
-                            className="genre-select"
-                            value={props.currentGenre || ""}
-                            onChange={onGenreChangeACB}
-            
-                            >
-            
-                                <option value="" disabled>Select a Genre</option>
-                                <option value="pop">Pop</option>
-                                <option value="rock">Rock</option>
-                                <option value="hip-hop">Hip Hop</option>
-                                <option value="jazz">Jazz</option>
-                                <option value="classical">Classical</option>
-                                <option value="electronic">Electronic</option>
-                                <option value="country">Country</option>
-                                <option value="r-n-b">R&B</option>
-                            </select>
-                        </section>
-
-                        <section className="exported-playlists">
-                            <h2>Created Playlists</h2>
-
-                            {(!props.exportedPlaylists || props.exportedPlaylists.length === 0) && (
-                                <p>No playlists exported yet.</p>
-                            )}
-
-                            {props.exportedPlaylists && props.exportedPlaylists.length > 0 && (
-                                <ul className="playlist-list">
-                                    {props.exportedPlaylists.map(function (playlist) {
-                                        return (
-                                            <li key={playlist.playlistId} className="playlist-item">
-                                                {playlist.image && (
-                                                    <img
-                                                        src={playlist.image}
-                                                        alt={playlist.name}
-                                                        className="playlist-image"
-                                                    />
-                                                )}
-
-                                                <div className="playlist-info">
-                                                    <strong>{playlist.name}</strong>
-
-                                                    {playlist.spotifyUrl && (
-                                                        <div>
-                                                            <a
-                                                                href={playlist.spotifyUrl}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                Open in Spotify
-                                                            </a>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            )}
-                        </section>
+                {props.usernameError && (
+                    <div className="error-message">
+                        {props.usernameError}
                     </div>
+                )}
+
+                <input
+                    type="text"
+                    placeholder="Enter new username"
+                    value={usernameInput}
+                    onChange={onUsernameChangeACB}
+                    onKeyDown={onEnterKey(onUsernameKeySavedACB)}
+                />
+                <button onClick={onUsernameKeySavedACB} disabled={props.isSaving}>
+                    {props.isSaving ? "Saving..." : "Save"}
+                </button>
+            </section>
+        )}
+
+            
+
+    {/***********************************/}
+    <section className="exported-playlists">
+    <h2>Created Playlists</h2>
+
+    {(!props.exportedPlaylists || props.exportedPlaylists.length === 0) && (
+        <p>No playlists exported yet.</p>
+    )}
+
+    {props.exportedPlaylists && props.exportedPlaylists.length > 0 && (
+        <ul className="playlist-list">
+            {props.exportedPlaylists.map(function (playlist) {
+                return (
+                    <li key={playlist.playlistId} className="playlist-item">
+                        {playlist.image && (
+                            <img
+                                src={playlist.image}
+                                alt={playlist.name}
+                                className="playlist-image"
+                            />
+                        )}
+
+                        <div className="playlist-info">
+                            <strong>{playlist.name}</strong>
+
+                            {playlist.spotifyUrl && (
+                                <div>
+                                    <a
+                                        href={playlist.spotifyUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Open in Spotify
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </li>
                 );
+            })}
+        </ul>
+    )}
+</section>
+
+
+
+
+            <section className="change-genre" style={{ marginTop: "20px" }}>
+                <h2>Favorite Genre</h2>
+                
+                <select value={props.currentGenre || ""} onChange={onGenreChangeACB} style={{ padding: "8px", fontSize: "1rem" }}>
+                    <option value="" disabled>Select a genre...</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hip-hop">Hip Hop</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="classical">Classical</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="country">Country</option>
+                    <option value="r-n-b">R&B</option>
+                </select>
+            </section>
+             
+        </div>
+    );
 }

@@ -10,26 +10,17 @@ import  FriendsProfilePresenter  from "../Presenters/friendsProfilePresenter.jsx
 import { Feed } from "../Presenters/feedPresenter.jsx";
 import {AboutUs} from "../Presenters/aboutUsPresenter.jsx";
 import CompareFriendsPlaylistsPresenter from "../Presenters/comparePlaylistsPresenter.jsx";
-import { signOut } from "firebase/auth";
-import { auth } from "../model/fireStoreModel.js";
+import SignOutPresenter from "../Presenters/signOutPresenter.jsx";
 
 export function MainPage (props) {  
     const location = useLocation();
 
-    function handleSignOutACB() {
-        signOut(auth)
-            .then(function() {
-                props.model.setUser(null);
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
-    }
-
     return (
         <div className="main-page">
-            <NavigationBar activePath={location.pathname} onSignOut={handleSignOutACB}/>
- 
+            <NavigationBar activePath={location.pathname}>
+            <SignOutPresenter model ={props.model} />
+            </NavigationBar>
+
             <div className="content">
                 <Routes>
                     <Route
@@ -68,7 +59,7 @@ export function MainPage (props) {
                         />
 
                     <Route
-                        path="/compare-friend-playlists"
+                        path="/compare-friends-playlists"
                         element={<CompareFriendsPlaylistsPresenter model={props.model} />}
                         />
                     

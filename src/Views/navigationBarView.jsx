@@ -1,27 +1,10 @@
 //buttons and css, go between 
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import "./style/navigationBarView.css";
 import "./style/popUp.css";
 
-export default function NavigationBar({activePath, onSignOut}) {
-    const [showSignOutPopup, setShowSignOutPopup] = useState(false);
-
-    function handleSignOutClick(e) {
-        e.preventDefault();
-        setShowSignOutPopup(true);
-    }
-
-    function handleYesSignOut() {
-        setShowSignOutPopup(false);
-        if (onSignOut) {
-            onSignOut();
-        }
-    }
-
-    function handleNoSignOut() {
-        setShowSignOutPopup(false);
-    }
+export default function NavigationBar({activePath, children}) {
+   
     return (
         <nav className='navigation-bar'>
             <div className='nav-title'>
@@ -38,7 +21,7 @@ export default function NavigationBar({activePath, onSignOut}) {
                     Feed
                 </Link>
                
-                <Link to="/compare-friend-playlists" className={`nav-button ${activePath ==="/dashboard" ? "active" : ""}`}>
+                <Link to="/compare-friends-playlists" className={`nav-button ${activePath ==="/compare-friends-playlists" ? "active" : ""}`}>
                     Compare
                 </Link>
                 <Link to="/profile" className={`nav-button ${activePath ==="/profile" ? "active" : ""}`}>
@@ -48,14 +31,10 @@ export default function NavigationBar({activePath, onSignOut}) {
                     About us
                 </Link>
             
-                <button 
-                    onClick={handleSignOutClick}
-                    className="nav-button signout-btn">
-                    Sign Out
-                </button>
+                {children}
                  
             </div>
-
+{/*
             {showSignOutPopup && (
                 <div id="bg-modal">
                     <div className="modal-contact signout-modal">
@@ -71,9 +50,8 @@ export default function NavigationBar({activePath, onSignOut}) {
                         </div>
                     </div>
                 </div>
-            )}
+            )}*/}
         </nav>
-/*hej */
     );
     
 } 

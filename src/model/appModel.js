@@ -339,7 +339,7 @@ async searchWeatherSongs(retryCount = 0) {
             console.warn("City is not chosen");
             return;
         }
-        console.log("varför");
+
         resolvePromise(fetchWeatherData(city), this.weatherPromiseState);
         
     },

@@ -3,6 +3,12 @@ import './style/friendsProfile.css';
 export function FriendsProfileView ({profile}) {
     return (
         <div className="friends-profile">  
+        <button 
+                className="nav-button back-to-feed-btn" 
+                onClick={profile.handleBackToFeedACB}
+            >
+                ← Back to Feed
+            </button>
             <h2>{profile.username}</h2>
             <div className="profile-bio">
                 <strong>About me: </strong>{profile.bio || "This user hasn't written a bio yet."}
