@@ -77,7 +77,7 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
 
     function handleAuthError(err) {
         var errorCode = err.code;
-
+        console.log("hallo");
         if(errorCode === "auth/invalid-email") {
             setError("Please enter a valid email address.");
         } else if (errorCode === "auth/user-not-found" || errorCode === "auth/wrong-password"
