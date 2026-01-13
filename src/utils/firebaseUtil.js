@@ -88,7 +88,7 @@ export async function fetchUserProfile(uid) {
     };
 }
 
-export async function fetchSelectedFriendUidForModel(uid) {
+export async function fetchSelectedFriendUid(uid) {
     if (!uid) return null;
 
     const docRef = doc(db, "USER", uid);
@@ -117,6 +117,4 @@ export async function refreshFriendsList(model) {
         model.friends = latestFriends;
     });
 }
-
-
    
