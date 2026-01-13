@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, getDoc, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
 import {db} from "../model/fireStoreModel.js";
 import {runInAction} from "mobx";
 
