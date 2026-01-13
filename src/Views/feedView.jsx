@@ -17,11 +17,11 @@ export default function FeedView(props) {
                 <button
                 className="manage-friends-button"
                 onClick={handleGoToFriends}
-                >Manage friends</button>
+                >Manage following</button>
             </div>
 
             {(!props.feed || props.feed.length === 0) && (
-                <p>Add some friends to see updates</p>
+                <p>Follow someone to see updates</p>
     )}
             <ul className="feed-list">
                 {props.feed.map(function (item) {

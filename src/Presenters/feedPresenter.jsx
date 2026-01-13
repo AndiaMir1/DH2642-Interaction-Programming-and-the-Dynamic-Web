@@ -30,6 +30,8 @@ const Feed = observer(function FeedRender(props) {
                 return "created a new playlist " + (update.payload.playlistName || "untitled");
             case "BIO_CHANGE":
                 return "updated their bio " + (update.payload.bio || "");
+                case "USERNAME_CHANGE":
+                return "changed their display name to " + (update.payload.username || "");
             default:
                 return "did something";
         }

@@ -116,4 +116,3 @@ export async function refreshFriendsList(model) {
         model.friends = latestFriends;
     });
 }
-   

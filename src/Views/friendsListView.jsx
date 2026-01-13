@@ -33,7 +33,7 @@ export default function FriendsListView(props) {
 
     return (
         <div className="friends-list">
-            <h2>Friends</h2>
+            <h2>Following</h2>
             <button onClick={handleBackACB}> ← Back to Feed</button>
 
             <div className="add-friend">
@@ -65,7 +65,7 @@ export default function FriendsListView(props) {
                                 className="add-button"
                                 onClick={() => handleAddFriendsACB(user)}
                             >
-                                Add Friend
+                                Follow
                             </button>
                         </li>
                     ))}
@@ -75,9 +75,9 @@ export default function FriendsListView(props) {
             <hr />
 
             <div className="current-friends">
-                <h3>Your Friends</h3>
+                <h3>Following</h3>
                 <ul>
-                    {props.friends.length === 0 && <li>No friends added yet.</li>}
+                    {props.friends.length === 0 && <li>No one followed yet.</li>}
                     {props.friends.map(user => (
                         <li key={user.uid}>
                             <button
@@ -90,7 +90,7 @@ export default function FriendsListView(props) {
                                 className="remove-button"
                                 onClick={() => handleRemoveACB(user.uid)}
                             >
-                                Remove
+                                Unfollow
                             </button>
                         </li>
                     ))}

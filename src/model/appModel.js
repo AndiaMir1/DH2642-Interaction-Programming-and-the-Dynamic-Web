@@ -320,13 +320,12 @@ async searchWeatherSongs(retryCount = 0) {
         }
     },
 
-
     /************************WEATHER******************************************/
     async setCity(city) {
 
         if(!city) return false;
-
         this.weatherPromiseState= {};
+        this.currentCity = "";
 
         try {
             const weatherData = await fetchWeatherData(city);
@@ -342,7 +341,7 @@ async searchWeatherSongs(retryCount = 0) {
             this.fetchFriendFeed();
             return true;
         }catch(err) {
-            this.currentCity = city;
+            this.currentCity = "";
             this.weatherPromiseState = {
                 data: null,
                 error: err,
@@ -402,7 +401,7 @@ async searchWeatherSongs(retryCount = 0) {
     
     async setUsername(name) {
        this.currentUsername = name;
-        this.addUserUpdate("NAME_CHANGE", {name : name});
+        this.addUserUpdate("USERNAME_CHANGE", {name : name});
 
     },
 
