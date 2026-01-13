@@ -17,7 +17,7 @@ export default function FeedView(props) {
                 <button
                 className="manage-friends-button"
                 onClick={handleGoToFriends}
-                >Manage friends</button>
+                >Manage following</button>
             </div>
 
             {(!props.feed || props.feed.length === 0) && (

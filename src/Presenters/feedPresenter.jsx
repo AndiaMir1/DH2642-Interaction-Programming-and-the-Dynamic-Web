@@ -20,12 +20,15 @@ const Feed = observer(function FeedRender(props) {
         if (!update || !update.payload) return "did something";
 
         switch (update.type) {
+            case "USERNAME_CHANGE":
+                //console.log("hallå");
+                return "changed their username to " + (update.payload.username || "unknown");
             case "CITY_CHANGE":
                 return "changed city to " + update.payload.city;
             case "GENRE_CHANGE":
                 return "changed favorite genre to " + update.payload.genre;
             case "LIKED_SONG":
-                return "liked a track " + (update.payload.track || "Unknown Track");
+                return "liked a track " + (update.payload.track || "unknown track");
             case "PLAYLIST_EXPORT":
                 return "created a new playlist " + (update.payload.playlistName || "untitled");
             case "BIO_CHANGE":
@@ -54,6 +57,7 @@ const Feed = observer(function FeedRender(props) {
                 id: update.id,
                 uid: update.uid,
                 user: update.user,
+                username: update.username,
                 text: formatUpdateText(update),
                 timestamp: formatTimestamp(update.timestamp)
             }))

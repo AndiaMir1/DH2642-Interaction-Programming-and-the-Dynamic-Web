@@ -1,7 +1,7 @@
 import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
-import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername } from "../utils/firebaseUtil.js";
+import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 import {resolvePromise} from "/src/resolvePromise.js";
@@ -320,7 +320,6 @@ async searchWeatherSongs(retryCount = 0) {
         }
     },
 
-
     /************************WEATHER******************************************/
     async setCity(city) {
 
@@ -400,10 +399,9 @@ async searchWeatherSongs(retryCount = 0) {
         this.isUserLoggedIn = !!user;
     },
     
-    async setUsername(name) {
-       this.currentUsername = name;
-        this.addUserUpdate("NAME_CHANGE", {name : name});
-
+    async setUsername(username) {
+        this.currentUsername = username;
+        this.addUserUpdate("USERNAME_CHANGE", { username: username });
     },
 
     async searchUser(username) {
@@ -412,7 +410,7 @@ async searchWeatherSongs(retryCount = 0) {
     },
     
     setBio(bio) {
-        this.currentBio = bio
+        this.currentBio = bio;
         this.addUserUpdate("BIO_CHANGE",{bio : bio});
     },
 
@@ -447,7 +445,11 @@ setCurrentPlaylist(playlistId) {
 
 closeCurrentPlaylist () {
     this.currentPlaylist = null;
-}
+},
+
+async refreshFriends() {
+        await refreshFriendsList(this);
+    }
     
 
 };

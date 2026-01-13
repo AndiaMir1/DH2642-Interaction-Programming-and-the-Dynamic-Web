@@ -1,4 +1,5 @@
-import { collection, query, where, getDocs, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, getDoc, getDocs, orderBy, limit, onSnapshot,
+     addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
 import {db} from "../model/fireStoreModel.js";
 import {runInAction} from "mobx";
 
@@ -15,7 +16,7 @@ export function fetchFriendFeedForModel (model) {
         onSnapshot(q, snapshot => {
             const updates = snapshot.docs.map(docSnap => ({
                 id: docSnap.id,
-                user: friend.username || friend.username,
+                user: docSnap.data().username || "unknown",
                 uid: friend.uid,
                 type: docSnap.data().type,
                 payload: docSnap.data().payload,
@@ -39,9 +40,9 @@ export function addUserUpdateForModel(model, type, payload) {
     addDoc(updatesRef, {
         type: type,
         payload: payload,
-        username: model.currentUsername,
         uid: model.user.uid,
-        timestamp: serverTimestamp()
+        username: model.currentUsername,
+        timestamp: serverTimestamp(),
     });
 }
 
@@ -62,5 +63,58 @@ export async function findUserUidByUsername(username) {
         uid: doc.id,
         ...doc.data()
     };
+}
+export async function updateMainUserDoc(uid, newUsername) {
+    const userRef = doc(db, "USER", uid);
+    await updateDoc(userRef, { username: newUsername });
+}
+
+export async function fetchUserProfile(uid) {
+    if (!uid) return null;
+
+    const docRef = doc(db, "USER", uid);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) return null;
+
+    const data = snapshot.data();
+
+    return {
+        ...data,
+        exportedPlaylists: (data.exportedPlaylists || []).map(p => ({
+            ...p,
+            trackUris: p.trackUris || []
+        }))
+    };
+}
+
+export async function fetchSelectedFriendUid(uid) {
+    if (!uid) return null;
+
+    const docRef = doc(db, "USER", uid);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) return null;
+
+    return snapshot.data();
+}
+
+export async function refreshFriendsList(model) {
+    if (!model.user || model.friends.length === 0) return;
+
+    const updatedFriendsPromises = model.friends.map(async (friend) => {
+        const docRef = doc(db, "USER", friend.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { uid: friend.uid, ...docSnap.data() };
+        }
+        return friend;
+    });
+
+    const latestFriends = await Promise.all(updatedFriendsPromises);
+
+    runInAction(() => {
+        model.friends = latestFriends;
+    });
 }
    

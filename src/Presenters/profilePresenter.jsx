@@ -32,6 +32,7 @@ const Profile = observer(
                 setUsernameError("This username is already taken.");
             return false;
             }
+            
             props.model.setUsername(newUsername);
             return true;
         }

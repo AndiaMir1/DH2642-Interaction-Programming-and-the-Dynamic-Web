@@ -84,8 +84,6 @@ export function connectToPersistence(model, watchFunction) {
                 model.spotifyToken,
                 model.selectedUserUid,
             ];
-
-       
     }
     
     // saves model to Firestore when watcherACB results change
