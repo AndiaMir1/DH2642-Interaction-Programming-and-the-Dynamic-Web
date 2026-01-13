@@ -24,7 +24,7 @@ const Home = observer(
              setIsLiked(!isLiked);
             props.model.setLikedSong(track)
         }
-
+ 
         function handleExportPlaylistACB(playlistName, existingPlaylistId) {
             return props.model.exportLikedSongsToSpotify(playlistName, existingPlaylistId);
         }
@@ -78,6 +78,7 @@ const Home = observer(
                             spotifyToken={spotifyToken}
                             onSpotifyLogin={handleSpotifyLoginACB}
                             searchError={searchError}
+                            selectedCity={props.model.currentCity}
                             likedSongs={props.model.likedSongs}
                             onLikeSong={handleLikedSong}
                             isLiked={isLiked}
