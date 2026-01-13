@@ -75,14 +75,9 @@ export function GetSongsView(props) {
                         <p className="error-message">Please sign in to get songs!</p>
                     )}
                     
-                    {(props.spotifyToken && isTokenValid && (!props.selectedCity || props.selectedCity === "" || props.selectedCity === null)) && (
-                        <p className="error-message">Please select a city in your profile to get recommendations</p>
+                    {!props.searchResults && (
+                        <p className="error-message">chose a valid city!</p>
                     )}
-
-                    {(props.spotifyToken && isTokenValid && props.selectedCity && props.searchResults && props.searchResults.length === 0) && (
-                        <p className="error-message">Choose a valid City!</p>
-                    )}
-
                 </div>
 
                 <div className="songs-container">
