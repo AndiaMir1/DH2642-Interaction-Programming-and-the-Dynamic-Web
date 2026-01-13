@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { SuspenseView } from "../Views/suspenseView.jsx";
 import { FriendsProfileView } from  "../Views/friendsProfileView.jsx";
 import { observer } from "mobx-react-lite";
-import { fetchSelectedFriendUid } from "../utils/firebaseUtil.js";
 import { useNavigate } from "react-router-dom";
 
 const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props) {
@@ -16,7 +15,7 @@ const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props)
             return;
         }
 
-        fetchSelectedFriendUid(uid).then(setProfile);
+        props.model.fetchSelectedFriendUid(uid).then(setProfile);
     }, [uid]);
 
     if (!profile) {

@@ -1,7 +1,7 @@
 import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
-import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
+import { fetchFriendFeedForModel, addUserUpdateForModel, fetchSelectedFriendUidForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 import {resolvePromise} from "/src/resolvePromise.js";
@@ -449,6 +449,13 @@ closeCurrentPlaylist () {
 
 async refreshFriends() {
         await refreshFriendsList(this);
+    },
+
+    async fetchSelectedFriendUid() {
+        if(!this.selectedUserUid) return null;
+
+        const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
+        return data;
     }
     
 
