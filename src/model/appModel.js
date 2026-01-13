@@ -1,7 +1,7 @@
 import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
-import { fetchFriendFeedForModel, addUserUpdateForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
+import { fetchFriendFeedForModel, fetchSelectedFriendUidForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 import {resolvePromise} from "/src/resolvePromise.js";
@@ -11,6 +11,7 @@ export const rootModel = {
     isUserLoggedIn: true,
     user: undefined,
     selectedUserUid: null,
+    selectedFriendProfile: null,
 
     currentUsername: null,
     currentBio: null,
@@ -26,6 +27,7 @@ export const rootModel = {
     likedSongs: [],
     currentTrackId: null,
     currentArtistId: null,
+    
 
     searchParams: {},
     accessTokenFromCodePromiseState: {},
@@ -324,7 +326,7 @@ async searchWeatherSongs(retryCount = 0) {
     async setCity(city) {
 
         if(!city) return false;
-
+        this.searchResultsPromiseState = {};
         this.weatherPromiseState= {};
 
         try {
@@ -449,7 +451,15 @@ closeCurrentPlaylist () {
 
 async refreshFriends() {
         await refreshFriendsList(this);
-    }
+    },
     
+async fetchSelectedFriendUid() {
+    if(!this.selectedUserUid) return null;
+
+    const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
+    return data;
+}
 
 };
+
+
