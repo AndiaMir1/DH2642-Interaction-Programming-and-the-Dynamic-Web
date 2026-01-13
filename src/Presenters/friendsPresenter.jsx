@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import FriendsListView from "/src/Views/friendsListView";
 import { useState } from "react";
-import { useEffect } from "react";
 
 const FriendsList = observer(
     function FriendsListRender(props){
@@ -11,13 +10,7 @@ const FriendsList = observer(
         const [addError, setAddError] = useState(null);
         const [results, setResults] = useState([]);
 
-        useEffect(() => {
-            if (props.model.friends.length > 0) {
-                props.model.refreshFriends(); 
-            }
-        }, []);
-
-        const friends = props.model.friends;
+        var friends = props.model.friends;
 
         async function handleSearchACB(username) {
             try {

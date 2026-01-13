@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
-import { fetchUserProfile } from "../utils/firebaseUtil.js";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../model/fireStoreModel.js";
 import CompareFriendsPlaylistsView from "../Views/comparePlaylistsView";
 
 const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
@@ -17,22 +18,30 @@ const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
         };
     });
 
-    useEffect(function () {
-    if (!selectedFriendUid) {
-        setSelectedFriendProfile(null);
-        setSelectedFriendPlaylist(null);
-        setSimilarityScore(null);
-        return;
-    }
-
-    fetchUserProfile(selectedFriendUid)
-        .then(function (profile) {
-            setSelectedFriendProfile(profile);
+    useEffect(function() {
+        if (!selectedFriendUid) {
+            setSelectedFriendProfile(null);
+            setSelectedFriendPlaylist(null);
+            setSimilarityScore(null);
+            return;
+        }
+        const docRef = doc(db, "USER", selectedFriendUid);
+        
+        getDoc(docRef).then(function(snapshot) {
+            const data = snapshot.data();
+            setSelectedFriendProfile({
+                ...data,
+                exportedPlaylists: (data.exportedPlaylists || []).map(function(p) {
+                    return {
+                        ...p,
+                        trackUris: p.trackUris || []
+                    };
+                })
+            });
             setSelectedFriendPlaylist(null);
             setSimilarityScore(null);
         });
-}, [selectedFriendUid]);
-
+    }, [selectedFriendUid]);
 
     function handleSelectMyPlaylist(pl) {
         if(selectedMyPlaylist?.playlistId === pl.playlistId)

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { SuspenseView } from "../Views/suspenseView.jsx";
 import { FriendsProfileView } from  "../Views/friendsProfileView.jsx";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../model/fireStoreModel.js";
 import { observer } from "mobx-react-lite";
-import { fetchSelectedFriendUid } from "../utils/firebaseUtil.js";
 import { useNavigate } from "react-router-dom";
 
 const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props) {
@@ -10,14 +11,20 @@ const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props)
     const uid = props.model.selectedUserUid;
     const navigate = useNavigate();
 
+    
+
     useEffect(() => {
+        props.model.setSelectedUserUid(uid);
         if (!uid) {
             setProfile(null);
             return;
         }
 
-        fetchSelectedFriendUid(uid).then(setProfile);
-    }, [uid]);
+        const docRef = doc(db, "USER", uid);
+        getDoc(docRef).then(snapshot => {
+            setProfile(snapshot.data());
+        });
+    }, [props.model.selectedUserUid]);
 
     if (!profile) {
         return <SuspenseView />;
@@ -27,10 +34,12 @@ const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props)
         navigate("/feed");
     }
 
+
     return (
         <FriendsProfileView 
         profile={profile}
         onBack={handleBackToFeedACB}
+    
          />
     );
 });
