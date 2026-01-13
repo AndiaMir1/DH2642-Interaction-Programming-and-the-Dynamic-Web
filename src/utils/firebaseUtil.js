@@ -63,4 +63,57 @@ export async function findUserUidByUsername(username) {
         ...doc.data()
     };
 }
+export async function updateMainUserDoc(uid, newUsername) {
+    const userRef = doc(db, "USER", uid);
+    await updateDoc(userRef, { username: newUsername });
+}
+
+export async function fetchUserProfile(uid) {
+    if (!uid) return null;
+
+    const docRef = doc(db, "USER", uid);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) return null;
+
+    const data = snapshot.data();
+
+    return {
+        ...data,
+        exportedPlaylists: (data.exportedPlaylists || []).map(p => ({
+            ...p,
+            trackUris: p.trackUris || []
+        }))
+    };
+}
+
+export async function fetchSelectedFriendUidForModel(uid) {
+    if (!uid) return null;
+
+    const docRef = doc(db, "USER", uid);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) return null;
+
+    return snapshot.data();
+}
+
+export async function refreshFriendsList(model) {
+    if (!model.user || model.friends.length === 0) return;
+
+    const updatedFriendsPromises = model.friends.map(async (friend) => {
+        const docRef = doc(db, "USER", friend.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { uid: friend.uid, ...docSnap.data() };
+        }
+        return friend;
+    });
+
+    const latestFriends = await Promise.all(updatedFriendsPromises);
+
+    runInAction(() => {
+        model.friends = latestFriends;
+    });
+}
    

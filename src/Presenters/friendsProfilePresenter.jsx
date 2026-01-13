@@ -20,11 +20,8 @@ const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props)
             return;
         }
 
-        const docRef = doc(db, "USER", uid);
-        getDoc(docRef).then(snapshot => {
-            setProfile(snapshot.data());
-        });
-    }, [props.model.selectedUserUid]);
+        props.model.fetchSelectedFriendUid(uid).then(setProfile);
+    }, [uid]);
 
     if (!profile) {
         return <SuspenseView />;
