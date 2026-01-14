@@ -31,7 +31,7 @@ const Feed = observer(function FeedRender(props) {
             case "BIO_CHANGE":
                 return "updated their bio " + (update.payload.bio || "");
                 case "USERNAME_CHANGE":
-                return "changed their display name to " + (update.payload.username || "");
+                return "changed their display name to " + (update.payload.name || "");
             default:
                 return "did something";
         }
@@ -56,6 +56,7 @@ const Feed = observer(function FeedRender(props) {
                 id: update.id,
                 uid: update.uid,
                 user: update.user,
+                name: update.name,
                 text: formatUpdateText(update),
                 timestamp: formatTimestamp(update.timestamp)
             }))
