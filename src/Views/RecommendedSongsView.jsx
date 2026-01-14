@@ -7,10 +7,6 @@ export function RecommendedSongsView(props) {
     const [playlistName, setPlaylistName] = useState("");
     const [statusMessage, setStatusMessage] = useState(null);
 
-    console.log("likedSongs", props.likedSongs);
-console.log("existingPlaylists", props.existingPlaylists);
-
-
     function openPlaylistPopup() {
         setShowPlaylistPopUp(true);
     }
@@ -64,64 +60,67 @@ console.log("existingPlaylists", props.existingPlaylists);
             }
         };
     }
-  return (
+    return (
         <div className="recommend-right">
-            <h1>Liked songs</h1>
-            
-            <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
-                Create spotify playlist with liked songs
-            </button>
-
-            {/* CLEAR BUTTON: Placed next to Export for visibility */}
-            {props.likedSongs?.length > 0 && (
-                <button
-                    className="buttonpopup clear-btn"
-                    style={{ backgroundColor: '#ff4d4d', color: 'white', marginLeft: '10px' }} 
-                    onClick={() => {
-                        if (window.confirm("Clear all liked songs?")) {
-                            props.onClearLikedSongs(); //
-                        }
-                    }}
-                >
-                    Clear All
+                <h1>Liked songs</h1>
+                <button className="buttonpopup export-btn" onClick={openPlaylistPopup}>
+                    Create Spotify Playlist with Liked Songs
                 </button>
-            )}
 
-            <div className="playlist-placeholder">
-                <div className="playlist-content">
-                    {props.likedSongs && props.likedSongs.length > 0 ? (
-                        props.likedSongs.map((track, index) => (
-                            <div key={track.id || index} className="track-item">
-                                <div className="track-content">
-                                    <div className="track-header">
-                                        <button
-                                            onClick={() => props.onRemoveLikedSong(track.id)}
-                                            className="like-btn"
-                                        >
-                                            Unlike
-                                        </button>
-                                    </div>
-                                    <div className="iframe-container">
-                                        <iframe
-                                            title={`spotify-${track.id || index}`}
-                                            src={`https://open.spotify.com/embed/track/${track.id}`}
-                                            className="spotify-embed"
-                                            frameBorder="0"
-                                            allow="encrypted-media"
-                                        ></iframe>
+                {props.likedSongs && props.likedSongs.length > 0 && (
+                    <button 
+                        className="buttonpopup clear-btn" 
+                        onClick={() => {
+                            if(window.confirm("Are you sure you want to clear all liked songs?")) {
+                                props.onClearAllSongs();
+                            }
+                        }}
+                        style={{ backgroundColor: '#ff4444', marginLeft: '10px' }}
+                    >
+                        Clear All Liked Songs
+                    </button>
+                )}
+                <div className="playlist-placeholder">
+                    <div className="placeholder-content">
+                        
+                        {props.likedSongs && props.likedSongs.length > 0 ? (
+                            props.likedSongs.map((track, index) => (
+
+                                
+                                <div key={track.id || index} className="track-item">
+                                    <div className="track-content">
+                                        <div className="track-header">
+                                            <button
+                                                onClick={() => props.onRemoveLikedSong(track.id)}
+                                                className="like-btn"
+                                            >
+                                                Unlike
+                                            </button>
+                                        </div>
+                                        <div className="iframe-container">
+                                            <iframe
+                                                title={`spotify-${track.id || index}`}
+                                                src={`https://open.spotify.com/embed/track/${track.id}`}
+                                                className="spotify-embed"
+                                                frameBorder="0"
+                                                allow="encrypted-media"
+                                            ></iframe>
+                                        </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div >
+                                <div >
+                                    <h2>🎵 No songs yet</h2>
+                                    <p>Like some songs to fill up your playlist!</p>
+                                </div>
                             </div>
-                        ))
-                    ) : (
-                        <div className="empty-state">
-                            <h2>🎵 No songs yet</h2>
-                            <p>Like some songs to fill up your playlist!</p>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
-            </div>
-
+                
+            
 
             {showPlaylistPopUp && (
                 <div id="bg-modal">

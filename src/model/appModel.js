@@ -449,12 +449,16 @@ closeCurrentPlaylist () {
 },
     
 
-    async fetchSelectedFriendUid() {
-        if(!this.selectedUserUid) return null;
+async fetchSelectedFriendUid() {
+    if(!this.selectedUserUid) return null;
 
-        const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
-        return data;
-    }
+    const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
+    return data;
+},
+
+setClearLikedSongs() {
+    this.likedSongs = [];
+}
     
 
 };

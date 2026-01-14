@@ -15,6 +15,7 @@ const Home = observer(
         const currentCity = props.model.weatherPromiseState.data?.name ?? props.model.currentCity;
         const spotifyToken = props.model.spotifyToken;
         const weatherData = props.model.weatherPromiseState.data;
+        const cityError = !props.model.currentCity || weatherPromiseState.error;
 
         function handleSpotifyLoginACB(){
             props.model.spotifyLogin();
@@ -63,6 +64,7 @@ const Home = observer(
                         }
                             likedSongs={props.model.likedSongs}
                             onRemoveLikedSong={function(trackId) { props.model.setRemoveSong(trackId); }}
+                            onClearAllSongs={() => props.model.setClearLikedSongs()}
                             onExportPlaylist={handleExportPlaylistACB}
                             existingPlaylists={props.model.exportedPlaylists}
                         />}
@@ -77,7 +79,8 @@ const Home = observer(
                             }
                             spotifyToken={spotifyToken}
                             onSpotifyLogin={handleSpotifyLoginACB}
-                            searchError={searchError}
+                            weatherError={props.model.weatherPromiseState.error}
+                            cityError={cityError}
                             likedSongs={props.model.likedSongs}
                             onLikeSong={handleLikedSong}
                             isLiked={isLiked}

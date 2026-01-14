@@ -5,6 +5,7 @@ import { getCurrentUser } from "../apiConfig/musicSource";
 
 export function GetSongsView(props) {
     const [isTokenValid, setIsTokenValid] = useState(false);
+    const [showCityError, setShowCityError] = useState(false);
 
     useEffect(() => {
         async function validateToken() {
@@ -48,9 +49,19 @@ export function GetSongsView(props) {
         props.onSpotifyLogin();
     }
     
-    function recommendSongsACB(){
-        props.onRecommendSongs();
+    function recommendSongsACB() {
+    if (props.cityError) {
+        setShowCityError(true);
+
+        setTimeout(() => {
+            setShowCityError(false);
+        }, 2000);
+
+        return;
     }
+    props.onRecommendSongs();
+    }
+
 
     return(
         <section className="get-songs-section">
@@ -75,8 +86,8 @@ export function GetSongsView(props) {
                         <p className="error-message">Please sign in to get songs!</p>
                     )}
                     
-                    {!props.searchResults && (
-                        <p className="error-message">chose a valid city!</p>
+                    {showCityError && (
+                        <p className="error-message">Choose a valid city!</p>
                     )}
                 </div>
 
