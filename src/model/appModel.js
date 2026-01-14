@@ -409,8 +409,8 @@ export const rootModel = {
     },
     
     async setUsername(name) {
-        this.currentUsername = name;
         this.addUserUpdate("USERNAME_CHANGE", {name : name});
+        this.currentUsername = name;
 
     },
 

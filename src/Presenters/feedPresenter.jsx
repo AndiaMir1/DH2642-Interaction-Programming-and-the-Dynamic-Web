@@ -30,7 +30,9 @@ const Feed = observer(function FeedRender(props) {
                 return "created a new playlist " + (update.payload.playlistName || "untitled");
             case "BIO_CHANGE":
                 return "updated their bio " + (update.payload.bio || "");
+
                 case "USERNAME_CHANGE":
+                    
                 return "changed their display name to " + (update.payload.name || "");
             default:
                 return "did something";
@@ -42,6 +44,7 @@ const Feed = observer(function FeedRender(props) {
         const date = new Date(timestamp.seconds * 1000);
         return date.toLocaleString();
     }
+    
 
     function getVisibleFeed() {
         if (!props.model.friendFeed || !props.model.friends) return [];
@@ -56,7 +59,7 @@ const Feed = observer(function FeedRender(props) {
                 id: update.id,
                 uid: update.uid,
                 user: update.user,
-                name: update.name,
+                name: update.payload.name,
                 text: formatUpdateText(update),
                 timestamp: formatTimestamp(update.timestamp)
             }))

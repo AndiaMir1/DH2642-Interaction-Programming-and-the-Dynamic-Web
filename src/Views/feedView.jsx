@@ -32,8 +32,9 @@ export default function FeedView(props) {
                                 className="clickable-username"
                                 onClick={function () {handleUserClickACB(item.uid);}}
                                 style={{ cursor: "pointer"}}
-                                >{item.user}</strong>{" "}
+                                >{item.name? item.name : item.user}</strong>{" "}
                                 {item.text}
+                                
                             </div>
 
                             <div className="feed-timestamp">

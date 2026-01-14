@@ -15,7 +15,7 @@ export function fetchFriendFeedForModel (model) {
         onSnapshot(q, snapshot => {
             const updates = snapshot.docs.map(docSnap => ({
                 id: docSnap.id,
-                user: friend.username || friend.username,
+                user: docSnap.data().username || "unknown",
                 uid: friend.uid,
                 type: docSnap.data().type,
                 payload: docSnap.data().payload,
