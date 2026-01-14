@@ -17,7 +17,7 @@ const FriendsProfilePresenter = observer(function FriendsProfilePresenter(props)
             setProfile(null);
             return;
         }
-
+        
         props.model.fetchSelectedFriendUid(uid).then(setProfile);
     }, [uid]);
 

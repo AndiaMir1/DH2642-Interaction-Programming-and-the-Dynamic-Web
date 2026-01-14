@@ -1,7 +1,7 @@
 import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
-import { fetchFriendFeedForModel, addUserUpdateForModel, fetchSelectedFriendUidForModel, findUserUidByUsername, refreshFriendsList } from "../utils/firebaseUtil.js";
+import { fetchFriendFeedForModel, addUserUpdateForModel, fetchSelectedFriendUidForModel, fetchUserProfile, findUserUidByUsername } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 import {resolvePromise} from "/src/resolvePromise.js";
@@ -39,6 +39,8 @@ export const rootModel = {
 
     friends: [],
     friendFeed: [],
+    selectedFriendUid: null,
+    selectedFriendProfile: null,
 
     setSearchQuery(query) {
         this.searchParams.query = query;
@@ -238,7 +240,7 @@ export const rootModel = {
         );
     },
 
-async searchWeatherSongs(retryCount = 0) {
+    async searchWeatherSongs(retryCount = 0) {
         
         const weatherData = this.weatherPromiseState.data; 
 
@@ -363,7 +365,7 @@ async searchWeatherSongs(retryCount = 0) {
     },
 
     /***************************FRIENDS*********************************************/
-     setFriends(friendsArray) {
+    setFriends(friendsArray) {
         this.friends = friendsArray;
     },
 
@@ -391,7 +393,14 @@ async searchWeatherSongs(retryCount = 0) {
         }
         this.friends = this.friends.filter(shouldKeepACB)
     },
-
+    async fetchFriendProfile(uid) {
+        if(!uid) {
+            this.selectedFriendProfile = null;
+            return;
+        }
+        const profile = await fetchUserProfile(uid);
+        this.selectedFriendProfile = profile;
+    },
 
     /*******************************************USER************************************************/
     setUser(user) {
@@ -400,7 +409,7 @@ async searchWeatherSongs(retryCount = 0) {
     },
     
     async setUsername(name) {
-       this.currentUsername = name;
+        this.currentUsername = name;
         this.addUserUpdate("USERNAME_CHANGE", {name : name});
 
     },
@@ -433,32 +442,32 @@ async searchWeatherSongs(retryCount = 0) {
     },
 
     //test
-setCurrentPlaylist(playlistId) {
-    var playlist = null;
-    for (var i = 0; i < this.exportedPlaylists.length; i++) {
-        if (this.exportedPlaylists[i].playlistId === playlistId) {
-            playlist = this.exportedPlaylists[i];
-            break;
+    setCurrentPlaylist(playlistId) {
+        var playlist = null;
+        for (var i = 0; i < this.exportedPlaylists.length; i++) {
+            if (this.exportedPlaylists[i].playlistId === playlistId) {
+                playlist = this.exportedPlaylists[i];
+                break;
+            }
         }
-    }
-    this.currentPlaylist = playlist || null;
-},
+        this.currentPlaylist = playlist || null;
+    },
 
-closeCurrentPlaylist () {
-    this.currentPlaylist = null;
-},
+    closeCurrentPlaylist () {
+        this.currentPlaylist = null;
+    },
     
 
-async fetchSelectedFriendUid() {
-    if(!this.selectedUserUid) return null;
+    async fetchSelectedFriendUid() {
+        if(!this.selectedUserUid) return null;
 
-    const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
-    return data;
-},
+        const data = await fetchSelectedFriendUidForModel(this.selectedUserUid);
+        return data;
+    },
 
-setClearLikedSongs() {
-    this.likedSongs = [];
-}
+    setClearLikedSongs() {
+        this.likedSongs = [];
+    }
     
 
 };

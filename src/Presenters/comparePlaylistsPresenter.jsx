@@ -1,15 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../model/fireStoreModel.js";
 import CompareFriendsPlaylistsView from "../Views/comparePlaylistsView";
 
 const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
     const [selectedFriendUid, setSelectedFriendUid] = useState(null);
-    const [selectedFriendProfile, setSelectedFriendProfile] = useState(null);
     const [selectedMyPlaylist, setSelectedMyPlaylist] = useState(null);
     const [selectedFriendPlaylist, setSelectedFriendPlaylist] = useState(null);
     const [similarityScore, setSimilarityScore] = useState(null);
+    const selectedFriendProfile = model.selectedFriendProfile;
+
 
     const myPlaylists = (model.exportedPlaylists || []).map(function(p) {
         return {
@@ -18,30 +17,19 @@ const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
         };
     });
 
-    useEffect(function() {
-        if (!selectedFriendUid) {
-            setSelectedFriendProfile(null);
-            setSelectedFriendPlaylist(null);
-            setSimilarityScore(null);
-            return;
-        }
-        const docRef = doc(db, "USER", selectedFriendUid);
-        
-        getDoc(docRef).then(function(snapshot) {
-            const data = snapshot.data();
-            setSelectedFriendProfile({
-                ...data,
-                exportedPlaylists: (data.exportedPlaylists || []).map(function(p) {
-                    return {
-                        ...p,
-                        trackUris: p.trackUris || []
-                    };
-                })
-            });
-            setSelectedFriendPlaylist(null);
-            setSimilarityScore(null);
-        });
+    useEffect(function () {
+    if (!selectedFriendUid) {
+        model.selectedFriendProfile = null;
+        setSelectedFriendPlaylist(null);
+        setSimilarityScore(null);
+        return;
+    }
+
+    model.fetchFriendProfile(selectedFriendUid);
+    setSelectedFriendPlaylist(null);
+    setSimilarityScore(null);
     }, [selectedFriendUid]);
+
 
     function handleSelectMyPlaylist(pl) {
         if(selectedMyPlaylist?.playlistId === pl.playlistId)

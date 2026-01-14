@@ -10,7 +10,6 @@ const Home = observer(
     function HomeRender(props){
         const searchPromiseState = props.model.searchResultsPromiseState
         const [isLiked, setIsLiked] = useState(false);
-        const searchError = props.model.searchResultsPromiseState.error;
         const weatherPromiseState = props.model.weatherPromiseState;
         const currentCity = props.model.weatherPromiseState.data?.name ?? props.model.currentCity;
         const spotifyToken = props.model.spotifyToken;
@@ -71,7 +70,9 @@ const Home = observer(
                     getSong={
                         <GetSongsView
                             
-                            onRecommendSongs={() => props.model.searchWeatherSongs()}
+                            onRecommendSongs={async () => {
+                                await props.model.searchWeatherSongs();}}
+
                             searchResults={
                                 props.model.searchResultsPromiseState.data && props.model.searchResultsPromiseState.data.tracks
                                 ? props.model.searchResultsPromiseState.data.tracks.items
@@ -81,7 +82,6 @@ const Home = observer(
                             onSpotifyLogin={handleSpotifyLoginACB}
                             weatherError={props.model.weatherPromiseState.error}
                             cityError={cityError}
-                            likedSongs={props.model.likedSongs}
                             onLikeSong={handleLikedSong}
                             isLiked={isLiked}
                         />
