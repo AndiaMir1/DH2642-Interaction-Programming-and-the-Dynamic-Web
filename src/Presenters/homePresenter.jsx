@@ -79,6 +79,7 @@ const Home = observer(
                                 : []
                             }
                             spotifyToken={spotifyToken}
+                             likedSongs={props.model.likedSongs}
                             onSpotifyLogin={handleSpotifyLoginACB}
                             weatherError={props.model.weatherPromiseState.error}
                             cityError={cityError}

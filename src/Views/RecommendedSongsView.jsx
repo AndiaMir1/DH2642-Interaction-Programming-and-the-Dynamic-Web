@@ -67,7 +67,9 @@ export function RecommendedSongsView(props) {
                     Create Spotify Playlist with Liked Songs
                 </button>
 
-                {props.likedSongs && props.likedSongs.length > 0 && (
+                
+                <div className="playlist-placeholder">
+                    {props.likedSongs && props.likedSongs.length > 0 && (
                     <button 
                         className="buttonpopup clear-btn" 
                         onClick={() => {
@@ -80,8 +82,8 @@ export function RecommendedSongsView(props) {
                         Clear All Liked Songs
                     </button>
                 )}
-                <div className="playlist-placeholder">
                     <div className="placeholder-content">
+                        
                         
                         {props.likedSongs && props.likedSongs.length > 0 ? (
                             props.likedSongs.map((track, index) => (

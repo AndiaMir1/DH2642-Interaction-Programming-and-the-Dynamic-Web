@@ -84,7 +84,7 @@ export function GetSongsView(props) {
                             onClick={recommendSongsACB} 
                             className="get-songs-btn"
                             >
-                            {props.searchResults? "Get new songs" : "Get Songs"}
+                            {props.searchResults.length > 0 ? "Get new songs" : "Get Songs"}
                         </button>
                     </>
                     )
