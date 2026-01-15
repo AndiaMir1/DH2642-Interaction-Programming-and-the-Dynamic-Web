@@ -91,7 +91,7 @@ const CompareFriendsPlaylistsPresenter = observer(function ({ model }) {
             onSelectFriend={handleSelectFriend}
             onCompare={comparePlaylists}
             similarityScore={similarityScore}
-            friendName={selectedFriendProfile?.username || "Friend"}
+            friendName={selectedFriendProfile?.username || "Users"}
         />
     );
 });

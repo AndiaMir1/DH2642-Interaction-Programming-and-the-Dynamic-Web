@@ -6,7 +6,7 @@ export default function CompareFriendsPlaylistsView(props) {
             <h1>Compare Playlists with {props.friendName}</h1>
 
             <div className="friend-selection">
-                <h3>Select a Friend:</h3>
+                <h3>Select a user:</h3>
                 <ul className="friend-list">
                     {props.friends.map(function(friend) {
                         var isSelected = props.selectedFriendUid === friend.uid;
