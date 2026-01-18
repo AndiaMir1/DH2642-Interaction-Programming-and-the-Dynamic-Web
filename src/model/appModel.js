@@ -1,7 +1,7 @@
 import { getTrack, createSpotifyPlaylist, 
     addItemsToPlaylist, getCurrentUser,searchMusic, redirectToSpotifyLogin, getAccessTokenFromCode, addTracksToPlaylist
  } from "../apiConfig/musicSource";
-import { fetchFriendFeedForModel, addUserUpdateForModel, fetchSelectedFriendUidForModel, fetchUserProfile, findUserUidByUsername } from "../utils/firebaseUtil.js";
+import { fetchFriendFeedForModel, addUserUpdateForModel, fetchSelectedFriendUidForModel } from "../utils/firebaseUtil.js";
 import { fetchWeatherData } from "../apiConfig/weatherSource.js";
 import { weatherMusic, getWind, getTemperature, getWeatherCategory, getRandomKeyword } from "../utils/weatherUtils.js";
 import {resolvePromise} from "/src/resolvePromise.js";
@@ -41,6 +41,11 @@ export const rootModel = {
     friendFeed: [],
     selectedFriendUid: null,
     selectedFriendProfile: null,
+    selectedFriendProfilePromiseState: {},
+    searchedUsername: null,
+    searchUserPromiseState: {},
+    foundUser: null,
+
 
     setSearchQuery(query) {
         this.searchParams.query = query;
@@ -393,13 +398,9 @@ export const rootModel = {
         }
         this.friends = this.friends.filter(shouldKeepACB)
     },
+
     async fetchFriendProfile(uid) {
-        if(!uid) {
-            this.selectedFriendProfile = null;
-            return;
-        }
-        const profile = await fetchUserProfile(uid);
-        this.selectedFriendProfile = profile;
+        this.selectedUserUid = uid;
     },
 
     /*******************************************USER************************************************/
@@ -415,8 +416,8 @@ export const rootModel = {
     },
 
     async searchUser(username) {
-        const userData = await findUserUidByUsername(username);
-        return userData;
+        this.searchedUsername = username;
+        this.searchUserPromiseState = {};
     },
     
     setBio(bio) {
@@ -428,10 +429,7 @@ export const rootModel = {
         this.selectedUserUid = uid;
     },
 
-    async searchUser(username) {
-        const userData = await findUserUidByUsername(username);
-        return userData;
-    },
+    
     /******************************************FIREBASE***************************************************** */
     fetchFriendFeed() {
         fetchFriendFeedForModel(this);

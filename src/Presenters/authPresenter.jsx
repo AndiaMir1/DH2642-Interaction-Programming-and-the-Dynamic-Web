@@ -31,49 +31,53 @@ export const AuthPresenter= observer(function AuthPresenter(props) {
     }
 
     async function submit() {
+    setError("");
 
-        setError("")
-
-        if (!email.includes("@")) {
+    if (!email.includes("@")) {
         setError("Invalid email format.");
         return;
-            }
+    }
 
-
-        if (isSignUp) {
-            if(!username || username.trim() === ""){
-                setError("Username is required");
-                return;
-            }
-            if (password.length < 6) {
+    if (isSignUp) {
+        if (!username || username.trim() === "") {
+            setError("Username is required");
+            return;
+        }
+        if (password.length < 6) {
             setError("Password must be at least 6 characters.");
             return;
-            }
-            const existingUid = await model.searchUser(username);
-            if(existingUid !==null){
+        }
+
+        model.searchUser(username.trim());
+
+        try {
+            const existingUser = await model.searchUserPromiseState.promise;
+
+            if (existingUser !== null) {
                 setError("Username already taken");
                 return;
             }
-            
-            createUserWithEmailAndPassword(auth, email, password)
-            .then(function(userCredential) {
-                model.setUser(userCredential.user);
-                model.setUsername(username);
-                navigate("/");
-                
-                })
-                .catch(handleAuthError);
-                
 
-        } else {
-            signInWithEmailAndPassword(auth, email, password)
-            .then(function(userCredential) {
-                model.setUser(userCredential.user);
-               
-            })
-                .catch(handleAuthError);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            model.setUser(userCredential.user);
+            model.setUsername(username.trim());
+            navigate("/");
+
+        } catch (err) {
+            console.error("Error searching username:", err);
+            setError("Could not verify username. Try again.");
+        }
+
+    } else {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            model.setUser(userCredential.user);
+        } catch (err) {
+            handleAuthError(err);
         }
     }
+}
+
 
     function handleAuthError(err) {
         var errorCode = err.code;

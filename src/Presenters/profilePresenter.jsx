@@ -19,23 +19,33 @@ const Profile = observer(
         }
 
         async function handleUsernameChangeACB(newUsername) {
-            const trimmed = newUsername?.trim();
-            setUsernameError("");
+    const trimmed = newUsername?.trim();
+    setUsernameError("");
 
-            if(!trimmed) {
-                setUsernameError("Username cannot be empty");
-                return false;
-            }
+    if (!trimmed) {
+        setUsernameError("Username cannot be empty");
+        return false;
+    }
 
-            const existingUser = await props.model.searchUser(trimmed);
-            if(existingUser && existingUser.uid !== props.model.user?.uid) {
-                setUsernameError("This username is already taken.");
+    props.model.searchUser(trimmed);
+
+    try {
+        const existingUser = await props.model.searchUserPromiseState.promise;
+
+        if (existingUser && existingUser.uid !== props.model.user?.uid) {
+            setUsernameError("This username is already taken.");
             return false;
-            }
-            
-            props.model.setUsername(newUsername);
-            return true;
         }
+
+        props.model.setUsername(trimmed);
+        return true;
+    } catch (err) {
+        console.error("Error searching username:", err);
+        setUsernameError("Could not verify username. Try again.");
+        return false;
+    }
+}
+
     
         function handleGenreChangeACB(newGenre) {
             props.model.setGenre(newGenre); 

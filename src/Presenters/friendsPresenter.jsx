@@ -13,35 +13,34 @@ const FriendsList = observer(
         var friends = props.model.friends;
 
         async function handleSearchACB(username) {
-            try {
-                if (!username) {
-                setSearchError( "Please enter a username.");
-                setResults([]);
-                setTimeout(function () {
-                    setSearchError(null);
-                }, 3000);
-                return;
-                }
+    if (!username) {
+        setSearchError("Please enter a username.");
+        setResults([]);
+        setTimeout(() => setSearchError(null), 3000);
+        return;
+    }
 
-                const friend = await props.model.searchUser(username);
-                if (friend) {
-                    setSearchError( null);
-                    setResults([friend]);
-                } else {
-                    setSearchError( "User not found");
-                    setResults([]);
-                    setTimeout(function () {
-                    setSearchError(null);
-                }, 3000);
-                }
-            } catch (err) {
-                setSearchError( "An error occurred while searching.");
-                setResults([]);
-                setTimeout(function () {
-                    setSearchError(null);
-                }, 3000);
-            }
-        }    
+    // starta sökning i modellen
+    props.model.searchUser(username);
+
+    try {
+        // Vänta på Firestore-läsningen via resolvePromise
+        const friend = await props.model.searchUserPromiseState.promise;
+
+        if (friend) {
+            setResults([friend]);
+            setSearchError(null);
+        } else {
+            setResults([]);
+            setSearchError("User not found");
+            setTimeout(() => setSearchError(null), 3000);
+        }
+    } catch (err) {
+        setResults([]);
+        setSearchError("Error searching user");
+        setTimeout(() => setSearchError(null), 3000);
+    }
+}
 
         function handleAddFriendsACB(user) {
             const result =props.model.addFriend(user);

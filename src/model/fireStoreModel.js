@@ -2,6 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseConfig } from "../../firebaseConfig.js";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { runInAction } from "mobx";
+import { fetchUserProfile, findUserUidByUsername } from "../utils/firebaseUtil.js";
+import {resolvePromise} from "/src/resolvePromise.js";
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
@@ -41,6 +44,7 @@ export function connectToPersistence(model, watchFunction) {
                     model.currentBio = data.bio ?? null;
                     model.selectedUserUid = data.selectedUserUid ?? null;
                     model.weatherPromiseState ={};
+                    model.searchedUsername = data.searchedUsername ?? null;
 
                     model.getWeather(model.currentCity);
                     model.fetchFriendFeed();
@@ -61,6 +65,7 @@ export function connectToPersistence(model, watchFunction) {
         model.ready = true;
         model.selectedUserUid = null;
         model.weatherPromiseState ={};
+        model.searchedUsername = null;
 
     }
 }); 
@@ -83,6 +88,8 @@ export function connectToPersistence(model, watchFunction) {
                 model.currentBio,
                 model.spotifyToken,
                 model.selectedUserUid,
+                model.searchedUsername,
+                
             ];
     }
     
@@ -101,16 +108,29 @@ export function connectToPersistence(model, watchFunction) {
                exportedPlaylists: model.exportedPlaylists,
                bio: model.currentBio,
                spotifyToken: model.spotifyToken,
-               selectedUserUid : model.selectedUserUid
+               selectedUserUid : model.selectedUserUid,
+               searchedUsername: model.searchedUsername,
+               
             }, { merge : true })
             //handle asynchronous saving
             .then(persistSuccessACB) //success
             .catch(persistErrorACB); //error
 }
-    }
+    if (model.selectedUserUid) {
+            fetchUserProfile(model.selectedUserUid).then(profile => {
+                runInAction(() => { model.selectedFriendProfile = profile; });
+            }); 
+        }
+
+    if (model.searchedUsername) {
+    resolvePromise(
+        findUserUidByUsername(model.searchedUsername),
+        model.searchUserPromiseState
+    );
+}
+}
     
     //install watcher at setup
         watchFunction(watchACB, sideEffectACB);
 
 }
-        
